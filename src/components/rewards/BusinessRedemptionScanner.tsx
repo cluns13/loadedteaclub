@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import BusinessRedemptionScanner from './BusinessRedemptionScanner';
+import React, { useState } from 'react';
+import QRCodeScanner from './QRCodeScanner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
@@ -68,7 +68,7 @@ export function BusinessRedemptionScannerContainer({ clubId }: BusinessRedemptio
 
       {scanMode === 'qr' ? (
         <div className="mb-4">
-          <BusinessRedemptionScanner onScan={handleScan} />
+          <QRCodeScanner onScan={handleScan} />
         </div>
       ) : (
         <div className="space-y-4">
