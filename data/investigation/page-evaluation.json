@@ -1,0 +1,1259 @@
+{
+  "windowObjects": [
+    {
+      "key": "0",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "window",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "self",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "document",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "name",
+      "type": "string",
+      "hasProperties": false
+    },
+    {
+      "key": "location",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "customElements",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "history",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "navigation",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "locationbar",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "menubar",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "personalbar",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "scrollbars",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "statusbar",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "toolbar",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "status",
+      "type": "string",
+      "hasProperties": false
+    },
+    {
+      "key": "closed",
+      "type": "boolean",
+      "hasProperties": false
+    },
+    {
+      "key": "frames",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "length",
+      "type": "number",
+      "hasProperties": false
+    },
+    {
+      "key": "top",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "parent",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "navigator",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "origin",
+      "type": "string",
+      "hasProperties": true
+    },
+    {
+      "key": "external",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "screen",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "innerWidth",
+      "type": "number",
+      "hasProperties": false
+    },
+    {
+      "key": "innerHeight",
+      "type": "number",
+      "hasProperties": false
+    },
+    {
+      "key": "scrollX",
+      "type": "number",
+      "hasProperties": false
+    },
+    {
+      "key": "pageXOffset",
+      "type": "number",
+      "hasProperties": false
+    },
+    {
+      "key": "scrollY",
+      "type": "number",
+      "hasProperties": false
+    },
+    {
+      "key": "pageYOffset",
+      "type": "number",
+      "hasProperties": false
+    },
+    {
+      "key": "visualViewport",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "screenX",
+      "type": "number",
+      "hasProperties": false
+    },
+    {
+      "key": "screenY",
+      "type": "number",
+      "hasProperties": false
+    },
+    {
+      "key": "outerWidth",
+      "type": "number",
+      "hasProperties": false
+    },
+    {
+      "key": "outerHeight",
+      "type": "number",
+      "hasProperties": false
+    },
+    {
+      "key": "devicePixelRatio",
+      "type": "number",
+      "hasProperties": false
+    },
+    {
+      "key": "clientInformation",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "screenLeft",
+      "type": "number",
+      "hasProperties": false
+    },
+    {
+      "key": "screenTop",
+      "type": "number",
+      "hasProperties": false
+    },
+    {
+      "key": "styleMedia",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "isSecureContext",
+      "type": "boolean",
+      "hasProperties": false
+    },
+    {
+      "key": "trustedTypes",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "performance",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "crypto",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "indexedDB",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "sessionStorage",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "localStorage",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "onload",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "onpageshow",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "crossOriginIsolated",
+      "type": "boolean",
+      "hasProperties": false
+    },
+    {
+      "key": "scheduler",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "alert",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "atob",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "blur",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "btoa",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "cancelAnimationFrame",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "cancelIdleCallback",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "captureEvents",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "clearInterval",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "clearTimeout",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "close",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "confirm",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "createImageBitmap",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "fetch",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "find",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "focus",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "getComputedStyle",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "getSelection",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "matchMedia",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "moveBy",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "moveTo",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "open",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "postMessage",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "print",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "prompt",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "queueMicrotask",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "releaseEvents",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "reportError",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "requestAnimationFrame",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "requestIdleCallback",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "resizeBy",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "resizeTo",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "scroll",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "scrollBy",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "scrollTo",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "setInterval",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "setTimeout",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "stop",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "structuredClone",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "webkitCancelAnimationFrame",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "webkitRequestAnimationFrame",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "chrome",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "credentialless",
+      "type": "boolean",
+      "hasProperties": false
+    },
+    {
+      "key": "caches",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "cookieStore",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "launchQueue",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "getScreenDetails",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "queryLocalFonts",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "showDirectoryPicker",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "showOpenFilePicker",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "showSaveFilePicker",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "originAgentCluster",
+      "type": "boolean",
+      "hasProperties": false
+    },
+    {
+      "key": "speechSynthesis",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "openDatabase",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "webkitRequestFileSystem",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "webkitResolveLocalFileSystemURL",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "jQuery",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "$",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "mi_version",
+      "type": "string",
+      "hasProperties": true
+    },
+    {
+      "key": "mi_track_user",
+      "type": "boolean",
+      "hasProperties": false
+    },
+    {
+      "key": "mi_no_track_reason",
+      "type": "string",
+      "hasProperties": false
+    },
+    {
+      "key": "MonsterInsightsDefaultLocations",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "MonsterInsightsLocations",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "disableStrs",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "__gtagTrackerIsOptedOut",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "__gtagTrackerOptout",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "gaOptout",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "__gtagDataLayer",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "__gtagTracker",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "dataLayer",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "MonsterInsightsDualTracker",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "gtag",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "__gaTracker",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "monsterinsights_frontend",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "wp",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "say_what_data",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "DIVI",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "et_builder_utils_params",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "et_frontend_scripts",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "et_pb_custom",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "et_pb_box_shadow_elements",
+      "type": "object",
+      "hasProperties": false
+    },
+    {
+      "key": "Popper",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "bootstrap",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "DRTS",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "_typeof",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "_defineProperty",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "DRTS_Location_apiErrors",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "_createClass",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "_classCallCheck",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "google_tag_manager",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "google_tag_data",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "google",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "litHtmlVersions",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "litElementVersions",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "reactiveElementVersions",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "module$contents$mapsapi$overlay$overlayView_OverlayView",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "DRTS_Map_googlemapsApiKey",
+      "type": "string",
+      "hasProperties": true
+    },
+    {
+      "key": "DRTS_Location_googlemapsApiEndpoint",
+      "type": "string",
+      "hasProperties": true
+    },
+    {
+      "key": "DRTS_Location_googlemapsGeocoding",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "_get",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "_possibleConstructorReturn",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "_inherits",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "DRTS_Location_googlemapsAutocomplete",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "SearchIndex",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "Bloodhound",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "Sweetalert2",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "SweetAlert",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "Swal",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "sweetAlert",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "swal",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "autosize",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "EvEmitter",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "imagesLoaded",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "MonsterInsights",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "MonsterInsightsObject",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "gaGlobal",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "VanillaCalendar",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "jQueryBridget",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "getSize",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "matchesSelector",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "fizzyUIUtils",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "Outlayer",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "Masonry",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "_toConsumableArray",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "lazySizes",
+      "type": "object",
+      "hasProperties": true
+    },
+    {
+      "key": "Waypoint",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "et_pb_debounce",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_smooth_scroll",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_form_placeholders_init",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_duplicate_menu",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_remove_placeholder_text",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_fix_fullscreen_section",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_bar_counters_init",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_fix_pricing_currency_position",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_set_responsive_grid",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_set_tabs_height",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_box_shadow_apply_overlay",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_init_nav_menu",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_toggle_nav_menu",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_apply_sticky_image_effect",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_menu_inject_inline_centered_logo",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_menu_inject_item",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_reposition_menu_module_dropdowns",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "et_load_event_fired",
+      "type": "boolean",
+      "hasProperties": false
+    },
+    {
+      "key": "et_is_transparent_nav",
+      "type": "boolean",
+      "hasProperties": false
+    },
+    {
+      "key": "et_is_vertical_nav",
+      "type": "boolean",
+      "hasProperties": false
+    },
+    {
+      "key": "et_is_fixed_nav",
+      "type": "boolean",
+      "hasProperties": false
+    },
+    {
+      "key": "et_is_minified_js",
+      "type": "boolean",
+      "hasProperties": false
+    },
+    {
+      "key": "et_is_minified_css",
+      "type": "boolean",
+      "hasProperties": false
+    },
+    {
+      "key": "et_force_width_container_change",
+      "type": "boolean",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_init_woo_star_rating",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_wrap_woo_attribute_fields_in_span",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_init_modules",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "etFixDividerSpacing",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "etInitWooReviewsRatingStars",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_calculating_scroll_position",
+      "type": "boolean",
+      "hasProperties": false
+    },
+    {
+      "key": "et_side_nav_links_initialized",
+      "type": "boolean",
+      "hasProperties": false
+    },
+    {
+      "key": "et_location_hash",
+      "type": "string",
+      "hasProperties": false
+    },
+    {
+      "key": "et_calculate_header_values",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_change_primary_nav_position",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_fix_page_container_position",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_window_side_nav_scroll_init",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_side_nav_page_init",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_slider_init",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_countdown_timer",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_countdown_timer_labels",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_tabs_init",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_circle_counter_update",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_apply_parallax",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_parallax_set_height",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_apply_builder_css_parallax",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_play_overlayed_video",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_resize_section_video_bg",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_center_video",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_adjust_video_margin",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_fix_slider_height",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_submit_newsletter",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_fix_testimonial_inner_width",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_video_background_init",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_reinit_waypoint_modules",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_calc_fullscreen_section",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "et_calculate_fullscreen_section_size",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "debounced_et_apply_builder_css_parallax",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_parallax_init",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_fullwidth_header_scroll",
+      "type": "function",
+      "hasProperties": true
+    },
+    {
+      "key": "et_pb_search_init",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_search_percentage_custom_margin_fix",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_comments_init",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "et_pb_shop_add_hover_class",
+      "type": "function",
+      "hasProperties": false
+    },
+    {
+      "key": "waypointContextKey",
+      "type": "string",
+      "hasProperties": true
+    },
+    {
+      "key": "_xdc_",
+      "type": "object",
+      "hasProperties": false
+    }
+  ],
+  "potentialDataSources": {
+    "DRTS": [
+      "url",
+      "isRTL",
+      "domain",
+      "path",
+      "cookieHash",
+      "bsPrefix",
+      "hasFontAwesomePro",
+      "params",
+      "bsUseOriginal",
+      "scroll",
+      "init",
+      "cache",
+      "flash",
+      "popover",
+      "modal",
+      "ajaxLoader",
+      "ajax",
+      "scrollTo",
+      "states",
+      "camelize",
+      "cloneField",
+      "guid",
+      "filterUrl",
+      "setCookie",
+      "getScreenSize",
+      "sprintf",
+      "Search",
+      "Location",
+      "Map",
+      "Form",
+      "View",
+      "Voting",
+      "popoverInit"
+    ],
+    "locationData": null,
+    "googleMaps": "Present"
+  },
+  "domAnalysis": {
+    "totalElements": 1551,
+    "divCount": 867,
+    "scriptCount": 65,
+    "classesWithLocation": 73
+  }
+}

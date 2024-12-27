@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Primary brand color */
+    --primary: 172 76% 47%; /* teal-400 */
+    --primary-hover: 173 80% 40%; /* teal-500 */
+    --primary-light: 166 76% 97%; /* teal-50 */
+    
+    /* Background colors */
+    --background: 0 0% 100%;
+    --background-dark: 222 47% 11%;
+    
+    /* Text colors for light background */
+    --text-light-high: 222 47% 11%;
+    --text-light-medium: 215 25% 27%;
+    --text-light-low: 215 20% 65%;
+    
+    /* Text colors for dark background */
+    --text-dark-high: 0 0% 100%;
+    --text-dark-medium: 217 19% 77%;
+    --text-dark-low: 215 20% 65%;
+    
+    /* Border colors */
+    --border-light: 214 32% 91%;
+    --border-dark: 217 19% 27%;
+    
+    /* Input backgrounds */
+    --input-light: 0 0% 100%;
+    --input-dark: 222 47% 11%;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-teal-400 text-white hover:bg-teal-500 focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply bg-teal-50 text-teal-700 hover:bg-teal-100 focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 transition-colors;
+  }
+  
+  .input-primary {
+    @apply border border-light bg-light text-light-high placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent;
+  }
+}
+
+@layer utilities {
+  /* Light theme text utilities */
+  .text-light-high {
+    color: hsl(var(--text-light-high));
+  }
+  .text-light-medium {
+    color: hsl(var(--text-light-medium));
+  }
+  .text-light-low {
+    color: hsl(var(--text-light-low));
+  }
+  
+  /* Dark theme text utilities */
+  .text-dark-high {
+    color: hsl(var(--text-dark-high));
+  }
+  .text-dark-medium {
+    color: hsl(var(--text-dark-medium));
+  }
+  .text-dark-low {
+    color: hsl(var(--text-dark-low));
+  }
+  
+  /* Background utilities */
+  .bg-light {
+    background-color: hsl(var(--background));
+  }
+  .bg-dark {
+    background-color: hsl(var(--background-dark));
+  }
+  
+  /* Border utilities */
+  .border-light {
+    border-color: hsl(var(--border-light));
+  }
+  .border-dark {
+    border-color: hsl(var(--border-dark));
+  }
+}
+
+/* Additional global styles */
+body {
+  @apply bg-light text-light-high;
+}
+
+.dark body {
+  @apply bg-dark text-dark-high;
+}

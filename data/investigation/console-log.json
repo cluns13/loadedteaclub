@@ -1,0 +1,51 @@
+[
+  {
+    "type": "log",
+    "text": "JQMIGRATE: Migrate is installed, version 3.4.1",
+    "args": [
+      "JSHandle:JQMIGRATE: Migrate is installed, version 3.4.1"
+    ]
+  },
+  {
+    "type": "log",
+    "text": "Geocoder returned no address components.",
+    "args": [
+      "JSHandle:Geocoder returned no address components."
+    ]
+  },
+  {
+    "type": "log",
+    "text": "Geocoder returned no address components.",
+    "args": [
+      "JSHandle:Geocoder returned no address components."
+    ]
+  },
+  {
+    "type": "log",
+    "text": "Geocoder returned no address components.",
+    "args": [
+      "JSHandle:Geocoder returned no address components."
+    ]
+  },
+  {
+    "type": "log",
+    "text": "Geocoder returned no address components.",
+    "args": [
+      "JSHandle:Geocoder returned no address components."
+    ]
+  },
+  {
+    "type": "log",
+    "text": "Geocoder returned no address components.",
+    "args": [
+      "JSHandle:Geocoder returned no address components."
+    ]
+  },
+  {
+    "type": "warning",
+    "text": "Google Maps JavaScript API has been loaded directly without loading=async. This can result in suboptimal performance. For best-practice loading patterns please see https://goo.gle/js-api-loading",
+    "args": [
+      "JSHandle:Google Maps JavaScript API has been loaded directly without loading=async. This can result in suboptimal performance. For best-practice loading patterns please see https://goo.gle/js-api-loading"
+    ]
+  }
+]

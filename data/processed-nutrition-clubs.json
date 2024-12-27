@@ -1,0 +1,2335 @@
+{
+  "clubs": [
+    {
+      "_id": "club_1",
+      "name": "About You Nutrition",
+      "address": {
+        "full": "6501 Main Street, Grandview, Missouri 64030",
+        "state": "MO"
+      },
+      "contact": {
+        "phone": "816-265-0773",
+        "phoneLink": "tel:8162650773"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Aboutyounutrition",
+        "instagram": "https://www.instagram.com/Aboutyounutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/about-you-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/IMG_1974-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.616Z"
+      }
+    },
+    {
+      "_id": "club_2",
+      "name": "High Powered Nutrition",
+      "address": {
+        "full": "119 Madison Avenue, Skowhegan, Maine 04976",
+        "state": "ME"
+      },
+      "contact": {
+        "phone": "207-614-8010",
+        "phoneLink": "tel:2076148010"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/High-Powered-Nutrition-2241711096084183/",
+        "instagram": "https://www.instagram.com/hpnutrition19"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/high-powered-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/IMG_2094-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_3",
+      "name": "Jitterz on the Rez",
+      "address": {
+        "full": "1149 Old Fannin Rd, Brandon, MS 39047",
+        "state": "MS"
+      },
+      "contact": {
+        "phone": "(769) 216-2745",
+        "phoneLink": "tel:7692162745"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/jitterzontherez",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/jitterz-on-the-rez/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/04/IMG_2958-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_4",
+      "name": "Sandite Nutrition",
+      "address": {
+        "full": "400 E Broadway, Sand Springs, OK 74063",
+        "state": "OK"
+      },
+      "contact": {
+        "phone": "(539) 217-1011",
+        "phoneLink": "tel:5392171011"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Sanditenutrition/",
+        "instagram": "https://www.instagram.com/Sandite.nutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/sandite-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/Untitled-design_20230917_145337_0000-240x180.png",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_5",
+      "name": "WIT Nutrition",
+      "address": {
+        "full": "4554 Ladson Rd, Summerville, SC 29485",
+        "state": "SC"
+      },
+      "contact": {
+        "phone": "",
+        "phoneLink": "https://www.facebook.com/WITNutritionLadson/"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/WITNutritionLadson/",
+        "instagram": "https://www.instagram.com/wit.nutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/wit-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/2023-07-19-10.50.38-240x180.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_6",
+      "name": "Energy Spot Franklin Township",
+      "address": {
+        "full": "5650 South Franklin Road, Indianapolis, Indiana 46239",
+        "state": "IN"
+      },
+      "contact": {
+        "phone": "(317) 245-7415",
+        "phoneLink": "tel:3172457415"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Energy Spot Franklin Twp",
+        "instagram": "https://www.instagram.com/Theenergyspot_franklintwp"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/energy-spot-franklin-township/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2023/12/IMG_8481-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_7",
+      "name": "Sip Oxford nutrition",
+      "address": {
+        "full": "1537 University Avenue, Oxford, Mississippi 38655",
+        "state": "MS"
+      },
+      "contact": {
+        "phone": "(601) 668-8886",
+        "phoneLink": "tel:6016688886"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Sipoxford",
+        "instagram": "https://www.instagram.com/Sipoxford"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/sip-oxford-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/7FBD83F1-6A17-4336-91CA-3DE3AE9BC8AD-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_8",
+      "name": "Touch of Heaven Nutrition",
+      "address": {
+        "full": "1741 Charter Street, Jackson, Louisiana 70748",
+        "state": "LA"
+      },
+      "contact": {
+        "phone": "(225) 999-6710",
+        "phoneLink": "tel:2259996710"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/TouchofHeavenNutrition",
+        "instagram": "https://www.instagram.com/touchofheavennutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/touch-of-heaven-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/Touch-of-Heaven-Sign-PROOF-240x180.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_9",
+      "name": "Blue Wave Nutrition, LLC",
+      "address": {
+        "full": "132 Nautilus Road, St. Augustine, Florida 32086",
+        "state": "FL"
+      },
+      "contact": {
+        "phone": "(904) 547-2729",
+        "phoneLink": "tel:9045472729"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Blue Wave Nutrition/ St. Augustine",
+        "instagram": "https://www.instagram.com/Blue Wave Nutrition/ St. Augustine"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/blue-wave-nutrition-llc/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/IMG_4376-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_10",
+      "name": "Medway Nutrition",
+      "address": {
+        "full": "113 Main Street, Medway, Massachusetts 02053",
+        "state": "MA"
+      },
+      "contact": {
+        "phone": "(774) 276-0542",
+        "phoneLink": "tel:7742760542"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Medway Nutrition",
+        "instagram": "https://www.instagram.com/Medway Nutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/medway-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/IMG_5829-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_11",
+      "name": "Susan’s Nutrition",
+      "address": {
+        "full": "801 West 2nd Street, Taylor, Texas 76574",
+        "state": "TX"
+      },
+      "contact": {
+        "phone": "(512) 461-9625",
+        "phoneLink": "tel:5124619625"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Susan’s Nutrition",
+        "instagram": "https://www.instagram.com/susangonzalez9625"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/susans-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_12",
+      "name": "Flame Nutrition",
+      "address": {
+        "full": "523 South 5th Street, Brainerd, Minnesota 56401",
+        "state": "MN"
+      },
+      "contact": {
+        "phone": "(218) 454-1630",
+        "phoneLink": "tel:2184541630"
+      },
+      "socialMedia": {
+        "facebook": "https://www.instagram.com/flamenutrition",
+        "instagram": "https://www.instagram.com/flamenutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/flame-nutrition-2/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/IMG_3747-240x180.png",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_13",
+      "name": "Ninety Degree Nutrition",
+      "address": {
+        "full": "101 West Main Street, Stanton, Michigan 48888",
+        "state": "MI"
+      },
+      "contact": {
+        "phone": "6169019780",
+        "phoneLink": "tel:6169019780"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/ninetydegreenutrition",
+        "instagram": "https://www.instagram.com/ninetydegreenutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/ninety-degree-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/IMG_3912-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_14",
+      "name": "My City Nutrition",
+      "address": {
+        "full": "75 William Street, New Bedford, Massachusetts 02740",
+        "state": "MA"
+      },
+      "contact": {
+        "phone": "(508) 993-2500",
+        "phoneLink": "tel:5089932500"
+      },
+      "socialMedia": {
+        "facebook": "https://www.instagram.com/mycitynutritiondnb",
+        "instagram": "https://www.instagram.com/mycitynutritiondnb"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/my-city-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/IMG_5574-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_15",
+      "name": "Rushville Nutrition",
+      "address": {
+        "full": "202 West 2nd Street, Rushville, Indiana 46173",
+        "state": "IN"
+      },
+      "contact": {
+        "phone": "(765) 570-6519",
+        "phoneLink": "tel:7655706519"
+      },
+      "socialMedia": {
+        "facebook": "https://www.instagram.com/RushvilleNutrition",
+        "instagram": "https://www.instagram.com/RushvilleNutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/rushville-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_16",
+      "name": "Warrior Nutrition",
+      "address": {
+        "full": "7173 10th Street North, Oakdale, Minnesota 55128",
+        "state": "MN"
+      },
+      "contact": {
+        "phone": "(651) 564-2664",
+        "phoneLink": "tel:6515642664"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/warriornutritionmn",
+        "instagram": "https://www.instagram.com/warriornutritionmn"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/warrior-nutrition-8/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/Screenshot_20240106_211815_Canva-240x180.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_17",
+      "name": "Inspire Nutrition Mentor",
+      "address": {
+        "full": "6986 Heisley Road, Mentor, Ohio 44060",
+        "state": "OH"
+      },
+      "contact": {
+        "phone": "(216) 296-0213",
+        "phoneLink": "tel:2162960213"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Inspire Nutrition Mentor",
+        "instagram": "https://www.instagram.com/inspirenutritionmentor"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/inspire-nutrition-mentor/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/IMG_6609-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_18",
+      "name": "Kepler Nutrition",
+      "address": {
+        "full": "1839 Louisiana 507, Coushatta, Louisiana 71019",
+        "state": "LA"
+      },
+      "contact": {
+        "phone": "(318) 480-1037",
+        "phoneLink": "tel:3184801037"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Kepler Nutrition",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/kepler-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_19",
+      "name": "Alexandria Nutrition",
+      "address": {
+        "full": "111 Big Valley Drive, Alexandria, Alabama 36250",
+        "state": "AL"
+      },
+      "contact": {
+        "phone": "(256) 403-6402",
+        "phoneLink": "tel:2564036402"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Alexandria Nutrition",
+        "instagram": "https://www.instagram.com/Alexandria.nutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/alexandria-nutrition-2/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/IMG_6581-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_20",
+      "name": "Dam good Nutrition",
+      "address": {
+        "full": "76 Central Street, West Boylston, Massachusetts 01583",
+        "state": "MA"
+      },
+      "contact": {
+        "phone": "(774) 261-8166",
+        "phoneLink": "tel:7742618166"
+      },
+      "socialMedia": {
+        "facebook": "https://www.instagram.com/Dam good nutrition",
+        "instagram": "https://www.instagram.com/Dam good nutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/dam-good-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_21",
+      "name": "Chieftain Nutrition",
+      "address": {
+        "full": "1014 East Dewey Avenue, Sapulpa, Oklahoma 74066",
+        "state": "OK"
+      },
+      "contact": {
+        "phone": "(918) 400-9022",
+        "phoneLink": "tel:9184009022"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Chieftainnutrition",
+        "instagram": "https://www.instagram.com/chieftainnutrition?igsh=anMybG51ZXkyZnVo"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/chieftain-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_22",
+      "name": "Space Coast Nutrition",
+      "address": {
+        "full": "3770 Curtis Boulevard, Port Saint John, Florida 32927",
+        "state": "FL"
+      },
+      "contact": {
+        "phone": "(321) 877-0032",
+        "phoneLink": "tel:3218770032"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/spacecoastnutrition",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/space-coast-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_23",
+      "name": "Revive Nutrition",
+      "address": {
+        "full": "1680 Mid Valley Drive, De Pere, Wisconsin 54115",
+        "state": "WI"
+      },
+      "contact": {
+        "phone": "(920) 632-2002",
+        "phoneLink": "tel:9206322002"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/revivenutritiongb?mibextid=LQQJ4d",
+        "instagram": "https://www.instagram.com/revivenutritiondepere"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/revive-nutrition-13/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/IMG_0126-240x180.png",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_24",
+      "name": "Root 151",
+      "address": {
+        "full": "104 Chestnut Street, Chilton, Wisconsin 53014",
+        "state": "WI"
+      },
+      "contact": {
+        "phone": "(920) 418-1337",
+        "phoneLink": "tel:9204181337"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/root151?mibextid=ZbWKwL",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/root-151-2/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_25",
+      "name": "Every Body’s Nutrition",
+      "address": {
+        "full": "4640 Lebanon Pike, Nashville, Tennessee 37076",
+        "state": "TN"
+      },
+      "contact": {
+        "phone": "(805) 338-8296",
+        "phoneLink": "tel:8053388296"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Facebook.com/ebn400",
+        "instagram": "https://instagram.com/%40everybodysnutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/every-bodys-nutrition-2/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/IMG_1871-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_26",
+      "name": "The Fuel House",
+      "address": {
+        "full": "Oran, Texas 76449",
+        "state": "TX"
+      },
+      "contact": {
+        "phone": "(401) 450-1518",
+        "phoneLink": "tel:4014501518"
+      },
+      "socialMedia": {
+        "facebook": "https://l.instagram.com/?u=https%3A%2F%2Flinktr.ee%2Fthefuelhouse%3Ffbclid%3DPAAab_zofHsuv9cvgTVp1pEznsjYxowEILA6iSGItTkCan4MlHUT4Fugdburc_aem_AW-5-yC1xBLzWncdIVChh80GiDsNEgEc83mEPDa5wEkCdDv5zwrqIQ2afMkyROuga_c&e=AT3WgxnEHiGo-ha5Bs3lH8fdUO69q58Zmh2lBWB2i8",
+        "instagram": "https://l.instagram.com/?u=https%3A%2F%2Flinktr.ee%2Fthefuelhouse%3Ffbclid%3DPAAab_zofHsuv9cvgTVp1pEznsjYxowEILA6iSGItTkCan4MlHUT4Fugdburc_aem_AW-5-yC1xBLzWncdIVChh80GiDsNEgEc83mEPDa5wEkCdDv5zwrqIQ2afMkyROuga_c&e=AT3WgxnEHiGo-ha5Bs3lH8fdUO69q58Zmh2lBWB2i8"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/the-fuel-house-2/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/FF7652C3-A52C-45CF-94F0-DD4F2976AB7E-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_27",
+      "name": "Beebe Arkansas /healthy hut Nutrition",
+      "address": {
+        "full": "603 Hunters Chase Drive, Cabot, Arkansas 72023",
+        "state": "AR"
+      },
+      "contact": {
+        "phone": "(501) 628-4638",
+        "phoneLink": "tel:5016284638"
+      },
+      "socialMedia": {
+        "facebook": "",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/beebe-arkansas-healthy-hut-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_28",
+      "name": "Panther nutrition of Cabot",
+      "address": {
+        "full": "1106 South Pine Street, Cabot, Arkansas 72023",
+        "state": "AR"
+      },
+      "contact": {
+        "phone": "(501) 222-8308",
+        "phoneLink": "tel:5012228308"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Panther nutrition of cabot",
+        "instagram": "https://www.instagram.com/Panther nutrition of cabot"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/panther-nutrition-of-cabot-2/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/IMG_8642-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_29",
+      "name": "Pure Nutrition",
+      "address": {
+        "full": "13325 North Macarthur Boulevard, Oklahoma City, Oklahoma 73142",
+        "state": "OK"
+      },
+      "contact": {
+        "phone": "",
+        "phoneLink": ""
+      },
+      "socialMedia": {
+        "facebook": "",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/pure-nutrition-6/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_30",
+      "name": "Vibe Nutrition",
+      "address": {
+        "full": "12591 Antioch Road, Overland Park, Kansas 66213",
+        "state": "KS"
+      },
+      "contact": {
+        "phone": "(913) 232-7043",
+        "phoneLink": "tel:9132327043"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/vibenutritionkc",
+        "instagram": "https://www.instagram.com/vibenutritionkc"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/vibe-nutrition-12/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/35955131_401987266986871_2133007782851379200_n-240x180.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_31",
+      "name": "291 Nutrition",
+      "address": {
+        "full": "1219 Northeast Rice Road, Lee's Summit, Missouri 64086",
+        "state": "MO"
+      },
+      "contact": {
+        "phone": "(816) 600-2222",
+        "phoneLink": "tel:8166002222"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/291 Nutrition & Energy",
+        "instagram": "https://www.instagram.com/291nutritionlsmo"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/291-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_32",
+      "name": "2 Cool Nutrition",
+      "address": {
+        "full": "500 Mills Avenue, Greenville, South Carolina 29605",
+        "state": "SC"
+      },
+      "contact": {
+        "phone": "(864) 520-1411",
+        "phoneLink": "tel:8645201411"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/2Cool Nutrition",
+        "instagram": "https://www.instagram.com/2Cool_Nutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/2-cool-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/IMG_3928-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_33",
+      "name": "119 Nutrition",
+      "address": {
+        "full": "14920 West 119th Street, Olathe, Kansas 66062",
+        "state": "KS"
+      },
+      "contact": {
+        "phone": "(913) 340-6606",
+        "phoneLink": "tel:9133406606"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Www.Facebook.com%2F119nutrition",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/119-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/214DF3DA-2547-446C-8729-E0EF8E447DBB-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_34",
+      "name": "Lees Summit Nutrition",
+      "address": {
+        "full": "613 Northeast Woods Chapel Road, Lee's Summit, Missouri 64064",
+        "state": "MO"
+      },
+      "contact": {
+        "phone": "(816) 317-4466",
+        "phoneLink": "tel:8163174466"
+      },
+      "socialMedia": {
+        "facebook": "",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/lees-summit-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_35",
+      "name": "Almar Elgin Nutrition",
+      "address": {
+        "full": "1106 South Street, Elgin, Illinois 60123",
+        "state": "IL"
+      },
+      "contact": {
+        "phone": "(224) 856-5390",
+        "phoneLink": "tel:2248565390"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/almarelginnutrition",
+        "instagram": "https://www.instagram.com/almarelginnutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/almar-elgin-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_36",
+      "name": "Lake Lanier Nutrition",
+      "address": {
+        "full": "1062 Thompson Bridge Road, Gainesville, Georgia 30501",
+        "state": "GA"
+      },
+      "contact": {
+        "phone": "(770) 539-5621",
+        "phoneLink": "tel:7705395621"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/LakeLanierNutritionGA?mibextid=9R9pXO",
+        "instagram": "https://www.instagram.com/Lake Lanier Nutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/lake-lanier-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/D9E0949B-6094-40E9-8630-5E744F2D9853-240x180.png",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_37",
+      "name": "Nutra Vida",
+      "address": {
+        "full": "443 Plaza Drive, Eustis, Florida 32726",
+        "state": "FL"
+      },
+      "contact": {
+        "phone": "(352) 508-7525",
+        "phoneLink": "tel:3525087525"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/nutravidaeustis",
+        "instagram": "https://www.instagram.com/nutravida_eustis"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/nutra-vida/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_38",
+      "name": "Cloud9 Nutrition",
+      "address": {
+        "full": "826 East Baltimore Pike, Kennett Square, Pennsylvania 19348",
+        "state": "PA"
+      },
+      "contact": {
+        "phone": "(484) 732-7940",
+        "phoneLink": "tel:4847327940"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/CLOUD9NUTRITION24",
+        "instagram": "https://www.instagram.com/Cloud9_nutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/cloud9-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/inbound1144731186833394239-240x180.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_39",
+      "name": "Sacrament/ Fiesta Nutrition",
+      "address": {
+        "full": "5031 Stockton Boulevard, Sacramento, California 95820",
+        "state": "CA"
+      },
+      "contact": {
+        "phone": "(916) 822-4813",
+        "phoneLink": "tel:9168224813"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Www.Facebook.com%2FFiesta%20Nutrition",
+        "instagram": "https://www.instagram.com/FiestaNutririon24"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/sacrament-fiesta-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/IMG_6585-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_40",
+      "name": "Celebrate Nutrition",
+      "address": {
+        "full": "5645a South Eastern Avenue, Las Vegas, Nevada 89119",
+        "state": "NV"
+      },
+      "contact": {
+        "phone": "(701) 766-6262",
+        "phoneLink": "tel:7017666262"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Www.Facebook.com%2Fcelebratelasvegas",
+        "instagram": "https://www.instagram.com/celebratelasvegas"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/celebrate-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_41",
+      "name": "North Star nutrition",
+      "address": {
+        "full": "628 South Main Street, North Syracuse, New York 13212",
+        "state": "NY"
+      },
+      "contact": {
+        "phone": "(315) 299-6967",
+        "phoneLink": "tel:3152996967"
+      },
+      "socialMedia": {
+        "facebook": "https://m.facebook.com/NorthStarNutritionNY",
+        "instagram": "https://www.instagram.com/North_star_nutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/north-star-nutrition-3/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/IMG_0303-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_42",
+      "name": "Nutrition Wave",
+      "address": {
+        "full": "8384 Boyko Farm, Cicero, New York 13039",
+        "state": "NY"
+      },
+      "contact": {
+        "phone": "(315) 288-5015",
+        "phoneLink": "tel:3152885015"
+      },
+      "socialMedia": {
+        "facebook": "https://m.facebook.com/people/Nutrition-Wave-Cicero/100088167883322/",
+        "instagram": "https://www.instagram.com/Nutritionwavecicero"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/nutrition-wave-2/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_43",
+      "name": "Get Inspired Nutrition",
+      "address": {
+        "full": "157 North Main Street, Bowling Green, Ohio 43402",
+        "state": "OH"
+      },
+      "contact": {
+        "phone": "(419) 279-5685",
+        "phoneLink": "tel:4192795685"
+      },
+      "socialMedia": {
+        "facebook": "https://m.facebook.com/Get Inspired Nutrition",
+        "instagram": "https://www.instagram.com/getinspirednutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/get-inspired-nutrition-2/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/15D74A91-761D-4455-B08C-89E67CA0916B-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_44",
+      "name": "DownTown Nutrition",
+      "address": {
+        "full": "103 E Street, Roswell, New Mexico 88203",
+        "state": "NM"
+      },
+      "contact": {
+        "phone": "(575) 551-2932",
+        "phoneLink": "tel:5755512932"
+      },
+      "socialMedia": {
+        "facebook": "",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/downtown-nutrition-30/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/inbound4755854751601856052-240x180.png",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_45",
+      "name": "Inside Out Nutrition",
+      "address": {
+        "full": "3619 Simpson Ferry Road, Camp Hill, Pennsylvania 17011",
+        "state": "PA"
+      },
+      "contact": {
+        "phone": "(717) 857-6746",
+        "phoneLink": "tel:7178576746"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Inside Out Nutrition",
+        "instagram": "https://www.instagram.com/inside_out_nutrition_ch"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/inside-out-nutrition-2/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_46",
+      "name": "Lifestyle Nutrition",
+      "address": {
+        "full": "823 15th Avenue Northeast, Aberdeen, South Dakota 57401",
+        "state": "SD"
+      },
+      "contact": {
+        "phone": "(605) 725-5433",
+        "phoneLink": "tel:6057255433"
+      },
+      "socialMedia": {
+        "facebook": "https://www.instagram.com/Lifestyle.nutrition.center",
+        "instagram": "https://www.instagram.com/Lifestyle.nutrition.center"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/lifestyle-nutrition-16/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/4DB25A2C-94F9-4AF2-A6F6-A5FA5BB6AE00-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_47",
+      "name": "Inspire Nutrition - Festus",
+      "address": {
+        "full": "1164b East Gannon Drive, Festus, Missouri 63028",
+        "state": "MO"
+      },
+      "contact": {
+        "phone": "(636) 725-2656",
+        "phoneLink": "tel:6367252656"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/profile.php?id=61550233658997&mibextid=LQQJ4d",
+        "instagram": "https://www.instagram.com/insoirenutritionfestus"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/inspire-nutrition-festus/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/01/IMG_4166-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_48",
+      "name": "Winter Park Athletic Club",
+      "address": {
+        "full": "1111 Florida 436, Casselberry, Florida 32707",
+        "state": "FL"
+      },
+      "contact": {
+        "phone": "(407) 325-3602",
+        "phoneLink": "tel:4073253602"
+      },
+      "socialMedia": {
+        "facebook": "",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/winter-park-athletic-club/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/02/IMG_9571-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_49",
+      "name": "Cavalier Nutrition",
+      "address": {
+        "full": "870 East Main Street, Coldwater, Ohio 45828",
+        "state": "OH"
+      },
+      "contact": {
+        "phone": "(419) 763-1065",
+        "phoneLink": "tel:4197631065"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/profile.php?id=100068104761676&mibextid=LQQJ4d",
+        "instagram": "https://www.instagram.com/cavnutrition.coldwater"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/cavalier-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/02/IMG_8254-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_50",
+      "name": "Blessed Nutrition",
+      "address": {
+        "full": "Celina, Ohio 45822",
+        "state": "OH"
+      },
+      "contact": {
+        "phone": "(567) 890-4400",
+        "phoneLink": "tel:5678904400"
+      },
+      "socialMedia": {
+        "facebook": "https://www.instagram.com/blessednutrition.celina",
+        "instagram": "https://www.instagram.com/blessednutrition.celina"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/blessed-nutrition-4/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_51",
+      "name": "Wellness 365",
+      "address": {
+        "full": "Ashley, Ohio 43003",
+        "state": "OH"
+      },
+      "contact": {
+        "phone": "(567) 789-5875",
+        "phoneLink": "tel:5677895875"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/rockfordwellness365?mibextid=LQQJ4d",
+        "instagram": "https://www.instagram.com/Rockfordwellness365"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/wellness-365-2/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/02/IMG_6066-240x180.png",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_52",
+      "name": "Overall Nutrition",
+      "address": {
+        "full": "20720 Farm Market 1485 Road, New Caney, Texas 77357",
+        "state": "TX"
+      },
+      "contact": {
+        "phone": "(832) 480-0054",
+        "phoneLink": "tel:8324800054"
+      },
+      "socialMedia": {
+        "facebook": "https://facebook.com/Overall Nutrition",
+        "instagram": "https://www.instagram.com/Overall Nutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/overall-nutrition-2/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_53",
+      "name": "Gratitude nutrition",
+      "address": {
+        "full": "9091 Fair Oaks Parkway, Fair Oaks Ranch, Texas 78015",
+        "state": "TX"
+      },
+      "contact": {
+        "phone": "(210) 488-0713",
+        "phoneLink": "tel:2104880713"
+      },
+      "socialMedia": {
+        "facebook": "https://facebook.com/groups/Gratitude nutrition tx",
+        "instagram": "https://www.instagram.com/gratitudenutrionn"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/gratitude-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/02/IMG_9114-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_54",
+      "name": "Fit Nutrition",
+      "address": {
+        "full": "1525 Morrow Road, Morrow, Georgia 30260",
+        "state": "GA"
+      },
+      "contact": {
+        "phone": "470) 785-7492",
+        "phoneLink": "tel:4707857492"
+      },
+      "socialMedia": {
+        "facebook": "https://facebook.com/groups/Fit Nutrition Morrow",
+        "instagram": "https://www.instagram.com/fitnutrition4u"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/fit-nutrition-8/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/02/camphoto_1254324197-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_55",
+      "name": "Elevate Nutrition",
+      "address": {
+        "full": "703 Fragala Street, Rayville, Louisiana 71269",
+        "state": "LA"
+      },
+      "contact": {
+        "phone": "(318) 334-9580",
+        "phoneLink": "tel:3183349580"
+      },
+      "socialMedia": {
+        "facebook": "https://facebook.com/groups/Elevate Nutrition",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/elevate-nutrition-19/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/03/IMG_1091-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_56",
+      "name": "Hollywood Social Nutrition",
+      "address": {
+        "full": "6336 South Carolina 162, Hollywood, South Carolina 29449",
+        "state": "SC"
+      },
+      "contact": {
+        "phone": "(843) 564-1701",
+        "phoneLink": "tel:8435641701"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/profile.php?id=61554945847650&mibextid=eQY6cl",
+        "instagram": "https://www.instagram.com/hollywoodsocialnutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/hollywood-social-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/03/unnamed-240x180.png",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_57",
+      "name": "Uptown Nutrition",
+      "address": {
+        "full": "801 East McGalliard Road, Muncie, Indiana 47303",
+        "state": "IN"
+      },
+      "contact": {
+        "phone": "",
+        "phoneLink": "https://www.facebook.com/unmuncie?mibextid=LQQJ4d"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/unmuncie?mibextid=LQQJ4d",
+        "instagram": "https://www.instagram.com/Uptown_nutrition_muncie"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/uptown-nutrition-9/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/03/IMG_7385-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_58",
+      "name": "Broad Street Blends",
+      "address": {
+        "full": "Avon Park, Florida 33825",
+        "state": "FL"
+      },
+      "contact": {
+        "phone": "",
+        "phoneLink": "https://www.facebook.com/profile.php?id=100095293514718&mibextid=LQQJ4d"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/profile.php?id=100095293514718&mibextid=LQQJ4d",
+        "instagram": "https://www.instagram.com/Broadstblends"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/broad-street-blends/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/03/IMG_7386-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_59",
+      "name": "Downtown Nutrition Muncie",
+      "address": {
+        "full": "107 North High Street, Muncie, Indiana 47305",
+        "state": "IN"
+      },
+      "contact": {
+        "phone": "",
+        "phoneLink": "https://www.facebook.com/DowntownNutritionMuncie?mibextid=LQQJ4d"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/DowntownNutritionMuncie?mibextid=LQQJ4d",
+        "instagram": "https://www.instagram.com/Downtown_nutrition_muncie"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/downtown-nutrition-muncie-2/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/03/IMG_7388-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_60",
+      "name": "Balance Yorktown",
+      "address": {
+        "full": "9110 West Smith Street, Yorktown, Indiana 47396",
+        "state": "IN"
+      },
+      "contact": {
+        "phone": "",
+        "phoneLink": "https://www.facebook.com/BalanceYorktown?mibextid=LQQJ4d"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/BalanceYorktown?mibextid=LQQJ4d",
+        "instagram": "https://www.instagram.com/Balanceyorktown"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/balance-yorktown-2/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/03/IMG_7389-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_61",
+      "name": "Gulf Coast Nutrition",
+      "address": {
+        "full": "19985 South Tamiami Trail, Fort Myers, Florida 33967",
+        "state": "FL"
+      },
+      "contact": {
+        "phone": "",
+        "phoneLink": "https://www.facebook.com/gulfcoastnutritionestero?mibextid=LQQJ4d"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/gulfcoastnutritionestero?mibextid=LQQJ4d",
+        "instagram": "https://www.instagram.com/Gulfcoastnutrition_"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/gulf-coast-nutrition-2/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/03/IMG_7387-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_62",
+      "name": "Palm City Nutrition",
+      "address": {
+        "full": "3221 Southwest Mapp Road, Palm City, Florida 34990",
+        "state": "FL"
+      },
+      "contact": {
+        "phone": "(772) 210-2046",
+        "phoneLink": "tel:7722102046"
+      },
+      "socialMedia": {
+        "facebook": "",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/palm-city-nutrition-2/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/04/IMG_7396-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_63",
+      "name": "New Life Nutrition",
+      "address": {
+        "full": "802 8th Avenue Northeast, Aberdeen, South Dakota 57401",
+        "state": "SD"
+      },
+      "contact": {
+        "phone": "605) 725-5588",
+        "phoneLink": "tel:6057255588"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/newlifenutritionsd",
+        "instagram": "https://www.instagram.com/newlifenutritionsd"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/new-life-nutrition-10/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/04/shake-mega-240x180.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_64",
+      "name": "Down South Nutrition",
+      "address": {
+        "full": "508 Southwest Drive, Jonesboro, Arkansas 72401",
+        "state": "AR"
+      },
+      "contact": {
+        "phone": "(870) 707-1487",
+        "phoneLink": "tel:8707071487"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/downsouthnutrition72401?mibextid=JRoKGi",
+        "instagram": "https://www.instagram.com/down_south_nutrition_jb?igsh=ZXN6czYxdjNnOTNt&utm_source=qr"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/down-south-nutrition-3/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/04/IMG_9468-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_65",
+      "name": "The Divide Nutrition",
+      "address": {
+        "full": "13355 County Highway M, Cable, Wisconsin 54821",
+        "state": "WI"
+      },
+      "contact": {
+        "phone": "(715) 558-5991",
+        "phoneLink": "tel:7155585991"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/thedividenutrition%3Fmibextid%3DibOpuV",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/the-divide-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/04/IMG_6481-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_66",
+      "name": "Little Falls Nutrition",
+      "address": {
+        "full": "6 Pomfret Street, Putnam, Connecticut 06260",
+        "state": "CT"
+      },
+      "contact": {
+        "phone": "(860) 821-1008",
+        "phoneLink": "tel:8608211008"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Little Falls Nutrition",
+        "instagram": "https://www.instagram.com/Little Falls Nutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/little-falls-nutrition-3/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/04/9F7A2FDE-E98B-429B-94CC-E58BEA39D863-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_67",
+      "name": "Paris/ Nu Start Nutrition",
+      "address": {
+        "full": "2315 Southeast Loop 286, Paris, Texas 75460",
+        "state": "TX"
+      },
+      "contact": {
+        "phone": "",
+        "phoneLink": ""
+      },
+      "socialMedia": {
+        "facebook": "",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/paris-nu-start-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/04/IMG_4351-240x180.png",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_68",
+      "name": "Katahdin Valley Nutrition",
+      "address": {
+        "full": "21 Maple Street, East Millinocket, Maine 04430",
+        "state": "ME"
+      },
+      "contact": {
+        "phone": "207) 765-9495",
+        "phoneLink": "tel:2077659495"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/katahdinvalleynutrition?mibextid=LQQJ4d",
+        "instagram": "https://instagram.com/%40katahdinvalleynutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/katahdin-valley-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/05/IMG_5132-240x180.png",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_69",
+      "name": "Trouvaille Nutrition",
+      "address": {
+        "full": "2919 Churn Creek Road, Redding, California 96002",
+        "state": "CA"
+      },
+      "contact": {
+        "phone": "(530) 248-0792",
+        "phoneLink": "tel:5302480792"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Trouvaille_Nutrition",
+        "instagram": "https://www.instagram.com/rouvaillenutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/trouvaille-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/05/IMG_1133-240x180.png",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_70",
+      "name": "Monarch Nutrition",
+      "address": {
+        "full": "210 Winter Street, Haverhill, Massachusetts 01830",
+        "state": "MA"
+      },
+      "contact": {
+        "phone": "(978) 367-0185",
+        "phoneLink": "tel:9783670185"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/MonarchNutritionMA?mibextid=LQQJ4d",
+        "instagram": "https://www.instagram.com/monarchnutritionma?igsh=MTBnYmtkaWp0ZWNkZw%3D%3D&utm_source=qr"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/monarch-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/05/IMG_1385-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_71",
+      "name": "Brightside Nutrition",
+      "address": {
+        "full": "3050 Union Lake Road, Commerce Charter Township, Michigan 48382",
+        "state": "MI"
+      },
+      "contact": {
+        "phone": "(248) 779-7357",
+        "phoneLink": "tel:2487797357"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/brightsidenutritionclub?mibextid=LQQJ4d",
+        "instagram": "https://www.instagram.com/BrightsideNutritionClub"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/brightside-nutrition-2/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/05/IMG_3636-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_72",
+      "name": "Livn Nutrition",
+      "address": {
+        "full": "21872 23 Mile Road, Macomb, Michigan 48042",
+        "state": "MI"
+      },
+      "contact": {
+        "phone": "(586) 992-5585",
+        "phoneLink": "tel:5869925585"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/profile.php?id=100086172645455&mibextid=LQQJ4d",
+        "instagram": "https://www.instagram.com/livnnutrition2022"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/livn-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/05/IMG_5581-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_73",
+      "name": "The Healthy Pour",
+      "address": {
+        "full": "133 4th Street Place Southeast, Conover, North Carolina 28613",
+        "state": "NC"
+      },
+      "contact": {
+        "phone": "(828) 320-7979",
+        "phoneLink": "tel:8283207979"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/The Healthy Pour",
+        "instagram": "https://www.instagram.com/The Healthy Pour"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/the-healthy-pour/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/05/21692657-301D-4574-AB20-B9E1C60BF064-240x180.png",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_74",
+      "name": "BAM Nutrition",
+      "address": {
+        "full": "4 West 2nd Street, Lexington, North Carolina 27292",
+        "state": "NC"
+      },
+      "contact": {
+        "phone": "(336) 929-7572",
+        "phoneLink": "tel:3369297572"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Bamnutrition",
+        "instagram": "https://instagram.com/%40thebamnutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/bam-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/05/IMG_7903-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_75",
+      "name": "Infusion Blendz",
+      "address": {
+        "full": "3754 Highway 17, Richmond Hill, Georgia 31324",
+        "state": "GA"
+      },
+      "contact": {
+        "phone": "(912) 445-2248",
+        "phoneLink": "tel:9124452248"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/InfusionBlendz",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/infusion-blendz/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/05/Infusion-blendz-240x180.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_76",
+      "name": "12:12 Nutrition",
+      "address": {
+        "full": "4227 Lakeland Drive, Flowood, Mississippi 39232",
+        "state": "MS"
+      },
+      "contact": {
+        "phone": "601-888-0112",
+        "phoneLink": "tel:6018880112"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/1212Nutrition",
+        "instagram": "https://instagram.com/1212Nutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/1212-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/05/1212LargeLogo2-240x180.png",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_77",
+      "name": "Auburn WA/ fit city",
+      "address": {
+        "full": "120 Cross Street Southeast, Auburn, Washington 98002",
+        "state": "WA"
+      },
+      "contact": {
+        "phone": "(253) 737-5691",
+        "phoneLink": "tel:2537375691"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/fitcityauburn?mibextid=LQQJ4d",
+        "instagram": "https://instagram.com/%40fitcityauburn"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/auburn-wa-fit-city/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/05/IMG_5903-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_78",
+      "name": "Alabaster Nutrition",
+      "address": {
+        "full": "507 1st Street Southwest, Alabaster, Alabama 35007",
+        "state": "AL"
+      },
+      "contact": {
+        "phone": "(205) 704-0649",
+        "phoneLink": "tel:2057040649"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/alabaster nutrition",
+        "instagram": "https://www.instagram.com/alabaster nutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/alabaster-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/06/purple-rain-240x180.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_79",
+      "name": "Sterling Heights Nutrition",
+      "address": {
+        "full": "43787 Schoenherr Road, Sterling Heights, Michigan 48313",
+        "state": "MI"
+      },
+      "contact": {
+        "phone": "(586) 992-5585",
+        "phoneLink": "tel:5869925585"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/SterlingHeights_Nutrition",
+        "instagram": "https://www.instagram.com/SterlingHeights_Nutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/sterling-heights-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/06/Old-Logo-240x180.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_80",
+      "name": "Hickory Nutrition",
+      "address": {
+        "full": "3214 Springs Road Northeast, Hickory, North Carolina 28601",
+        "state": "NC"
+      },
+      "contact": {
+        "phone": "828) 855-0767",
+        "phoneLink": "tel:8288550767"
+      },
+      "socialMedia": {
+        "facebook": "https://m.facebook.com/HickoryNutrition",
+        "instagram": "https://www.instagram.com/hickorynutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/hickory-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/06/IMG_3224-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_81",
+      "name": "The Healthy Pour",
+      "address": {
+        "full": "133 4th Street Place Southeast, Conover, North Carolina 28613",
+        "state": "NC"
+      },
+      "contact": {
+        "phone": "(828) 320-7979",
+        "phoneLink": "tel:8283207979"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/TheHealthyPour?mibextid=LQQJ4d",
+        "instagram": "https://thehealthypour.weebly.com/"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/the-healthy-pour-2/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/06/21692657-301D-4574-AB20-B9E1C60BF064-1-240x180.png",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_82",
+      "name": "Summerville SC/ BOS Nutrition",
+      "address": {
+        "full": "105 Ashton Cove, Summerville, South Carolina 29485",
+        "state": "SC"
+      },
+      "contact": {
+        "phone": "(843) 209-5704",
+        "phoneLink": "tel:8432095704"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/profile.php?id=61560855270700&mibextid=ZbWKwL",
+        "instagram": "https://www.instagram.com/nanette_parrish?igsh=ZWhmcW9za2dqcHNx"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/summerville-sc-bos-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/07/Messenger_creation_a33c6120-5fd0-44a3-b40a-dd870703d98e-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_83",
+      "name": "The Nutrition Place",
+      "address": {
+        "full": "18211 Strack Drive, Spring, Texas 77379",
+        "state": "TX"
+      },
+      "contact": {
+        "phone": "346) 491-1130",
+        "phoneLink": "tel:3464911130"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/TheNutritionPlaceTexas",
+        "instagram": "https://www.instagram.com/thenutritionplacetexas?igsh=NjB3NXpwM20yYm5p&utm_source=qr"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/the-nutrition-place-5/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/07/ACTUAL-DESIGN-This-is-what-we-publish-2-240x180.png",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_84",
+      "name": "Pioneer Nutrition",
+      "address": {
+        "full": "207/b Delaware Street, Leavenworth, Kansas 66048",
+        "state": "KS"
+      },
+      "contact": {
+        "phone": "(913) 398-9050",
+        "phoneLink": "tel:9133989050"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/PioneerNutrition24?mibextid=LQQJ4d",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/pioneer-nutrition-4/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/07/IMG_7912-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_85",
+      "name": "Jammin' Nutrition",
+      "address": {
+        "full": "146 East 5th Avenue, Garnett, Kansas 66032",
+        "state": "KS"
+      },
+      "contact": {
+        "phone": "(785) 504-9414",
+        "phoneLink": "tel:7855049414"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Jamminnutrition",
+        "instagram": "https://www.instagram.com/jamminnutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/jammin-nutrition-2/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/07/Talon-Logo-240x180.png",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_86",
+      "name": "Gulf Coast Nutrition",
+      "address": {
+        "full": "Gulfport, Mississippi 39507",
+        "state": "MS"
+      },
+      "contact": {
+        "phone": "228) 224-9900",
+        "phoneLink": "tel:2282249900"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Gulf Coast Nutrition",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/gulf-coast-nutrition-3/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/07/IMG_3172-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_87",
+      "name": "Panther nutrition of Cabot ark",
+      "address": {
+        "full": "1106 South Pine Street, Cabot, Arkansas 72023",
+        "state": "AR"
+      },
+      "contact": {
+        "phone": "(501) 222-8308",
+        "phoneLink": "tel:5012228308"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/Panther nutrition",
+        "instagram": "https://www.instagram.com/Panther nutrition"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/panther-nutrition-of-cabot-ark/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/07/IMG_2786-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_88",
+      "name": "The Beehive Health & Wellness",
+      "address": {
+        "full": "111 North Market Street, Knoxville, Illinois 61448",
+        "state": "IL"
+      },
+      "contact": {
+        "phone": "(309) 509-2094",
+        "phoneLink": "tel:3095092094"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/thebeehivehealthandwellness",
+        "instagram": "https://www.instagram.com/Thebeehivehealthandwellness"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/the-beehive-health-wellness/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/07/the-beehive-logo-240x180.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_89",
+      "name": "Impact Nutrition",
+      "address": {
+        "full": "2670 Packerland Drive, Ashwaubenon, Wisconsin 54313",
+        "state": "WI"
+      },
+      "contact": {
+        "phone": "(920) 445-5063",
+        "phoneLink": "tel:9204455063"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/ImpactGB?mibextid=LQQJ4d",
+        "instagram": "https://www.instagram.com/Impactnutritiongb"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/impact-nutrition-28/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/07/IMG_2471-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_90",
+      "name": "RUMBALIFE",
+      "address": {
+        "full": "30 Main Street, Londonderry, New Hampshire 03053",
+        "state": "NH"
+      },
+      "contact": {
+        "phone": "860) 212-1577",
+        "phoneLink": "tel:8602121577"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/rumbalife?mibextid=LQQJ4d",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/rumbalife/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_91",
+      "name": "The Healthy Pour Nutrition",
+      "address": {
+        "full": "133 4th Street Place Southeast, Conover, North Carolina 28613",
+        "state": "NC"
+      },
+      "contact": {
+        "phone": "(828) 320-7979",
+        "phoneLink": "tel:8283207979"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/TheHealthyPour?mibextid=LQQJ4d",
+        "instagram": "https://www.facebook.com/TheHealthyPour?mibextid=LQQJ4d"
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/the-healthy-pour-nutrition/",
+      "image": "https://nutritionclubdirectory.com/wp-content/uploads/2024/09/IMG_4545-240x180.jpeg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_92",
+      "name": "1 First Evolution Nutrition Club",
+      "address": {
+        "full": "778 Rutger St, Utica, NY 13501",
+        "state": "NY"
+      },
+      "contact": {
+        "phone": "+13157960496",
+        "phoneLink": "tel:+13157960496"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/5kangry/",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/1-first-evolution-nutrition-club/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_93",
+      "name": "1:12 Nutrition & Wellness",
+      "address": {
+        "full": "13833 W Bell Rd, Surprise, AZ 85374",
+        "state": "AZ"
+      },
+      "contact": {
+        "phone": "773-980-9878",
+        "phoneLink": "tel:7739809878"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/112nutrition/",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/112-nutrition-wellness/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_94",
+      "name": "100% Mindset Nutrition",
+      "address": {
+        "full": "350 S Shelby St, Carthage, TX 75633",
+        "state": "TX"
+      },
+      "contact": {
+        "phone": "903-263-8830",
+        "phoneLink": "tel:9032638830"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/100-Mindset-Nutrition-110399523902270/",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/100-mindset-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_95",
+      "name": "10th & Main Nutrition",
+      "address": {
+        "full": "3 10th Ave South, Hopkins, MN 55343",
+        "state": "MN"
+      },
+      "contact": {
+        "phone": "+16122225323",
+        "phoneLink": "tel:+16122225323"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/10thMain/",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/10th-main-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_96",
+      "name": "11:11 Nutrition",
+      "address": {
+        "full": "13910 Fivay Rd, Hudson, FL 34667",
+        "state": "FL"
+      },
+      "contact": {
+        "phone": "813-928-7010",
+        "phoneLink": "tel:8139287010"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/1111-Nutrition-100488118342091/",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/1111-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_97",
+      "name": "114 Main Nutrition",
+      "address": {
+        "full": "114 E Main St, Mt Horeb, WI 53572",
+        "state": "WI"
+      },
+      "contact": {
+        "phone": "608-437-1141",
+        "phoneLink": "tel:6084371141"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/profile.php?id=100058858069747",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/114-main-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_98",
+      "name": "17 South Nutrition",
+      "address": {
+        "full": "6005 Center Station Court, Ravenel, SC 29470",
+        "state": "SC"
+      },
+      "contact": {
+        "phone": "+18435641818",
+        "phoneLink": "tel:+18435641818"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/17SouthNutrition/",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/17-south-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_99",
+      "name": "180 Nutrition",
+      "address": {
+        "full": "1241 Badger Street, Lacrosse, WI 54601",
+        "state": "WI"
+      },
+      "contact": {
+        "phone": "608-317-5959",
+        "phoneLink": "tel:6083175959"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/180nutritionlacrosse/",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/180-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    },
+    {
+      "_id": "club_100",
+      "name": "183 Nutrition",
+      "address": {
+        "full": "1909 US-183, Leander, TX 78641",
+        "state": "US"
+      },
+      "contact": {
+        "phone": "512-779-2554",
+        "phoneLink": "tel:5127792554"
+      },
+      "socialMedia": {
+        "facebook": "https://www.facebook.com/183Nutrition/",
+        "instagram": ""
+      },
+      "profileLink": "https://nutritionclubdirectory.com/directory-loaded_tea/listing/183-nutrition/",
+      "image": "https://nutritionclubdirectory.com/DefaultPic.jpg",
+      "metadata": {
+        "source": "Nutrition Club Directory",
+        "importedAt": "2024-12-27T04:46:39.617Z"
+      }
+    }
+  ],
+  "stateStats": [
+    {
+      "state": "FL",
+      "clubCount": 8
+    },
+    {
+      "state": "TX",
+      "clubCount": 7
+    },
+    {
+      "state": "WI",
+      "clubCount": 6
+    },
+    {
+      "state": "SC",
+      "clubCount": 5
+    },
+    {
+      "state": "IN",
+      "clubCount": 5
+    },
+    {
+      "state": "OH",
+      "clubCount": 5
+    },
+    {
+      "state": "NC",
+      "clubCount": 5
+    },
+    {
+      "state": "MO",
+      "clubCount": 4
+    },
+    {
+      "state": "MS",
+      "clubCount": 4
+    },
+    {
+      "state": "MA",
+      "clubCount": 4
+    },
+    {
+      "state": "MI",
+      "clubCount": 4
+    },
+    {
+      "state": "AR",
+      "clubCount": 4
+    },
+    {
+      "state": "KS",
+      "clubCount": 4
+    },
+    {
+      "state": "OK",
+      "clubCount": 3
+    },
+    {
+      "state": "LA",
+      "clubCount": 3
+    },
+    {
+      "state": "MN",
+      "clubCount": 3
+    },
+    {
+      "state": "GA",
+      "clubCount": 3
+    },
+    {
+      "state": "NY",
+      "clubCount": 3
+    },
+    {
+      "state": "ME",
+      "clubCount": 2
+    },
+    {
+      "state": "AL",
+      "clubCount": 2
+    },
+    {
+      "state": "IL",
+      "clubCount": 2
+    },
+    {
+      "state": "PA",
+      "clubCount": 2
+    },
+    {
+      "state": "CA",
+      "clubCount": 2
+    },
+    {
+      "state": "SD",
+      "clubCount": 2
+    },
+    {
+      "state": "TN",
+      "clubCount": 1
+    },
+    {
+      "state": "NV",
+      "clubCount": 1
+    },
+    {
+      "state": "NM",
+      "clubCount": 1
+    },
+    {
+      "state": "CT",
+      "clubCount": 1
+    },
+    {
+      "state": "WA",
+      "clubCount": 1
+    },
+    {
+      "state": "NH",
+      "clubCount": 1
+    },
+    {
+      "state": "AZ",
+      "clubCount": 1
+    },
+    {
+      "state": "US",
+      "clubCount": 1
+    }
+  ],
+  "totalClubs": 100
+}

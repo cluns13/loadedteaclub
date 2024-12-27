@@ -1,0 +1,243 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId             String  @db.ObjectId
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  
+  accounts      Account[]
+  sessions      Session[]
+  reviews       Review[]
+  collections   Collection[]
+  favoriteTeas  UserFavoriteTea[]
+  journalEntries JournalEntry[]
+  businesses    Business[]
+  
+  // Loaded Tea Club specific fields
+  phone         String?
+  globalCustomerId String?  @unique
+  
+  // Nutrition Club Owner Details
+  isClubOwner    Boolean   @default(false)
+  ownedClubId    String?   @db.ObjectId
+  clubName       String?
+}
+
+model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Tea {
+  id          String   @id @default(cuid()) @map("_id")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String
+  type        String   // Changed from enum to string
+  description String
+  benefits    String   // Changed from String[] to String
+  origin      String?
+  imageUrl    String?
+  price       Float?
+  stock       Int?     @default(0)
+  temperature Int
+  steepTime   Int      // in seconds
+  servingSize Float    // in grams
+  waterAmount Int      // in ml
+  resteeps    Int?
+
+  reviews       Review[]
+  collections   TeaToCollection[]
+  favoritedBy   UserFavoriteTea[]
+  journalEntries JournalEntry[]
+
+  @@index([type])
+}
+
+model Review {
+  id        String   @id @default(cuid()) @map("_id")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  rating    Int      @default(0)
+  comment   String?
+
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teaId     String   @db.ObjectId
+  tea       Tea      @relation(fields: [teaId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, teaId])
+}
+
+model Collection {
+  id          String   @id @default(cuid()) @map("_id")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String
+  description String?
+  imageUrl    String?
+  isPublic    Boolean  @default(false)
+
+  userId      String   @db.ObjectId
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teas        TeaToCollection[]
+}
+
+model JournalEntry {
+  id           String   @id @default(cuid()) @map("_id")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  title        String
+  notes        String
+  rating       Int?
+  brewingNotes String?
+  mood         String?
+
+  userId       String   @db.ObjectId
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teaId        String   @db.ObjectId
+  tea          Tea      @relation(fields: [teaId], references: [id], onDelete: Cascade)
+}
+
+model Business {
+  id          String    @id @default(cuid()) @map("_id")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  name        String
+  description String?
+  address     String
+  city        String
+  state       String
+  zipCode     String
+  phone       String?
+  email       String?
+  website     String?
+  imageUrl    String?
+  
+  // Business Status
+  isVerified  Boolean   @default(false)
+  isActive    Boolean   @default(true)
+  
+  // Menu Related
+  menuCategories MenuCategory[]
+  menuSources    MenuSource[]
+  
+  // Owner
+  userId      String   @db.ObjectId
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Metrics
+  viewCount   Int       @default(0)
+}
+
+model MenuSource {
+  id          String    @id @default(cuid()) @map("_id")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  businessId  String    @db.ObjectId
+  business    Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  fileUrl     String
+  fileType    String    // "PDF" or "IMAGE"
+  status      String    // "PENDING", "PROCESSING", "COMPLETED", "FAILED", "NEEDS_REVIEW"
+  processedAt DateTime?
+}
+
+model MenuCategory {
+  id          String     @id @default(cuid()) @map("_id")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  businessId  String     @db.ObjectId
+  business    Business   @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  order       Int        @default(0)
+  isActive    Boolean    @default(true)
+  items       MenuItem[]
+}
+
+model MenuItem {
+  id          String       @id @default(cuid()) @map("_id")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  categoryId  String
+  category    MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  price       Float
+  calories    Int?
+  ingredients String?      // Stored as JSON string
+  
+  // Loaded Tea Specific
+  energyLevel String?      // "High", "Medium", "Low"
+  isPopular   Boolean      @default(false)
+  isSugarFree Boolean      @default(false)
+  
+  // Customization
+  hasCustomizableEnergy Boolean @default(false)
+  hasSugarFreeOption   Boolean @default(false)
+  
+  isActive    Boolean    @default(true)
+  order       Int        @default(0)
+}
+
+model TeaToCollection {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  teaId          String   @db.ObjectId
+  tea            Tea      @relation(fields: [teaId], references: [id])
+  collectionId   String   @db.ObjectId
+  collection     Collection @relation(fields: [collectionId], references: [id])
+}
+
+model UserFavoriteTea {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String   @db.ObjectId
+  user           User     @relation(fields: [userId], references: [id])
+  teaId          String   @db.ObjectId
+  tea            Tea      @relation(fields: [teaId], references: [id])
+}

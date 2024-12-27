@@ -1,0 +1,19 @@
+{
+  "name": "nutrition-club-web-investigation",
+  "version": "1.0.0",
+  "description": "Advanced Web Investigation for Nutrition Club Directory",
+  "main": "advanced-web-investigation.js",
+  "scripts": {
+    "start": "node advanced-web-investigation.js",
+    "process-clubs": "node process-nutrition-clubs.js"
+  },
+  "dependencies": {
+    "puppeteer-core": "^19.7.5",
+    "puppeteer": "^19.7.5",
+    "mongodb": "^6.3.0",
+    "dotenv": "^16.3.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
