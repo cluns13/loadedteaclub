@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import QrReader from 'react-qr-reader';
+import BusinessRedemptionScanner from './BusinessRedemptionScanner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
@@ -11,11 +11,11 @@ interface BusinessRedemptionScannerProps {
   clubId: string;
 }
 
-export function BusinessRedemptionScanner({ clubId }: BusinessRedemptionScannerProps) {
+export function BusinessRedemptionScannerContainer({ clubId }: BusinessRedemptionScannerProps) {
   const [manualCode, setManualCode] = useState('');
   const [scanMode, setScanMode] = useState<'qr' | 'manual'>('qr');
 
-  const handleScan = async (data: string | null) => {
+  const handleScan = async (data: string) => {
     if (data) {
       try {
         // Assuming QR code contains customer ID
@@ -45,11 +45,6 @@ export function BusinessRedemptionScanner({ clubId }: BusinessRedemptionScannerP
     }
   };
 
-  const handleError = (err: Error) => {
-    console.error(err);
-    toast.error('QR Code scanning error');
-  };
-
   return (
     <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10">
       <h3 className="text-xl font-semibold mb-4 text-white">
@@ -73,12 +68,7 @@ export function BusinessRedemptionScanner({ clubId }: BusinessRedemptionScannerP
 
       {scanMode === 'qr' ? (
         <div className="mb-4">
-          <QrReader
-            delay={300}
-            onError={handleError}
-            onScan={handleScan}
-            style={{ width: '100%' }}
-          />
+          <BusinessRedemptionScanner onScan={handleScan} />
         </div>
       ) : (
         <div className="space-y-4">
