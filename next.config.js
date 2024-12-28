@@ -1,6 +1,9 @@
-import path from 'path';
-import withBundleAnalyzer from '@next/bundle-analyzer';
-import { withSentryConfig } from '@sentry/nextjs';
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+const { withSentryConfig } = require('@sentry/nextjs');
+const path = require('path');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -119,26 +122,5 @@ const nextConfig = {
   }
 };
 
-const bundleAnalyzer = withBundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-})
-
-export default withSentryConfig(
-  bundleAnalyzer(nextConfig),
-  { 
-    silent: true,
-    org: process.env.SENTRY_ORG,
-    project: process.env.SENTRY_PROJECT,
-    sourcemaps: {
-      disable: true
-    }
-  },
-  {
-    widenClientFileUpload: true,
-    transpileClientSDK: true,
-    tunnelRoute: '/monitoring',
-    hideSourceMaps: true,
-    disableLogger: true,
-    automaticVercelMonitoring: true
-  }
-);
+// Temporarily disable Sentry for deployment
+module.exports = withBundleAnalyzer(nextConfig);
