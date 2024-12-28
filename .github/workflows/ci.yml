@@ -46,7 +46,16 @@ jobs:
           ${{ runner.os }}-node-
     
     - name: Install dependencies
-      run: npm ci
+      run: npm install
+    
+    - name: Debug Dependency Installation
+      run: |
+        npm list @react-email/render
+        npm list html-to-text
+        npm list @selderee/plugin-htmlparser2
+        npm list selderee
+        npm list parseley
+        npm list peberminta
     
     - name: Run type check
       run: npm run type-check
@@ -59,6 +68,8 @@ jobs:
         echo "MongoDB URI length: ${#MONGODB_URI}"
         echo "MongoDB DB: $MONGODB_DB"
         echo "Node Environment: $NODE_ENV"
+        echo "Current directory contents:"
+        ls -la
       
     - name: Run unit tests
       run: npm run test:unit
@@ -83,7 +94,16 @@ jobs:
         cache: 'npm'
     
     - name: Install dependencies
-      run: npm ci
+      run: npm install
+    
+    - name: Debug Dependency Installation
+      run: |
+        npm list @react-email/render
+        npm list html-to-text
+        npm list @selderee/plugin-htmlparser2
+        npm list selderee
+        npm list parseley
+        npm list peberminta
     
     - name: Build application
       run: npm run build
