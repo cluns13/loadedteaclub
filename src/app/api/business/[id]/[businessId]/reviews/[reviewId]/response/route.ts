@@ -9,6 +9,16 @@ const responseSchema = z.object({
   content: z.string().min(1, 'Response content is required'),
 });
 
+interface Review {
+  _id: ObjectId;
+  businessId: ObjectId;
+  response?: {
+    content: string;
+    createdAt: string;
+    updatedAt?: string;
+  };
+}
+
 export async function POST(
   request: Request,
   { params }: { params: { businessId: string; reviewId: string } }
@@ -41,7 +51,7 @@ export async function POST(
     const review = await db.collection('reviews').findOne({
       _id: new ObjectId(params.reviewId),
       businessId: new ObjectId(params.businessId),
-    });
+    }) as Review | null;
 
     if (!review) {
       return NextResponse.json(
@@ -121,7 +131,7 @@ export async function PUT(
     const review = await db.collection('reviews').findOne({
       _id: new ObjectId(params.reviewId),
       businessId: new ObjectId(params.businessId),
-    });
+    }) as Review | null;
 
     if (!review) {
       return NextResponse.json(

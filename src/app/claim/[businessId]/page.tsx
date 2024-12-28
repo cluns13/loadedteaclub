@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
-import FileUpload from '@/components/FileUpload/FileUpload';
-import { toast } from 'react-hot-toast';
+import { Button } from '@/components/ui/Button';
 
 interface ClaimFormData {
   businessLicense: string | null;
@@ -13,23 +12,20 @@ interface ClaimFormData {
   additionalNotes: string;
 }
 
-export default function ClaimBusinessPage({ 
-  params 
-}: { 
-  params: { businessId: string } 
-}) {
+export default function BusinessClaimPage({ params }: { params: { businessId: string } }) {
+  const { businessId } = params;
   const router = useRouter();
-  const [formData, setFormData] = useState<ClaimFormData>({
+  const [formData, setFormData] = React.useState<ClaimFormData>({
     businessLicense: null,
     proofOfOwnership: null,
     governmentId: null,
     utilityBill: null,
     additionalNotes: '',
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   // Handle browser back/refresh
-  const handleBeforeUnload = useCallback((e: BeforeUnloadEvent) => {
+  const handleBeforeUnload = React.useCallback((e: BeforeUnloadEvent) => {
     if (formData.businessLicense || formData.proofOfOwnership || formData.governmentId || formData.utilityBill) {
       e.preventDefault();
       e.returnValue = '';
@@ -75,10 +71,10 @@ export default function ClaimBusinessPage({
         throw new Error(data.error || 'Failed to submit claim');
       }
 
-      toast.success('Claim submitted successfully!');
+      // toast.success('Claim submitted successfully!');
       router.push(`/claim/${params.businessId}/confirmation?claimId=${data.claimId}`);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Failed to submit claim');
+      // toast.error(err instanceof Error ? err.message : 'Failed to submit claim');
     } finally {
       setIsSubmitting(false);
     }
@@ -99,11 +95,11 @@ export default function ClaimBusinessPage({
       ...prev,
       [field]: url
     }));
-    toast.success(`${field} uploaded successfully`);
+    // toast.success(`${field} uploaded successfully`);
   };
 
   const handleUploadError = (error: Error) => {
-    toast.error(error.message);
+    // toast.error(error.message);
   };
 
   return (
@@ -118,40 +114,40 @@ export default function ClaimBusinessPage({
           </div>
           
           <form onSubmit={handleSubmit} className="space-y-6">
-            <FileUpload
+            {/* <FileUpload
               purpose="claim"
               label="Business License or Registration"
               helpText="Upload a clear photo or scan of your business license"
               required
               onUploadComplete={handleUploadComplete('businessLicense')}
               onUploadError={handleUploadError}
-            />
+            /> */}
 
-            <FileUpload
+            {/* <FileUpload
               purpose="claim"
               label="Proof of Ownership"
               helpText="Documents showing you own or are authorized to represent this business"
               required
               onUploadComplete={handleUploadComplete('proofOfOwnership')}
               onUploadError={handleUploadError}
-            />
+            /> */}
 
-            <FileUpload
+            {/* <FileUpload
               purpose="claim"
               label="Government-issued ID"
               helpText="A valid government-issued photo ID"
               required
               onUploadComplete={handleUploadComplete('governmentId')}
               onUploadError={handleUploadError}
-            />
+            /> */}
 
-            <FileUpload
+            {/* <FileUpload
               purpose="claim"
               label="Utility Bill or Lease Agreement"
               helpText="Recent utility bill or lease agreement showing business address"
               onUploadComplete={handleUploadComplete('utilityBill')}
               onUploadError={handleUploadError}
-            />
+            /> */}
 
             <div>
               <label 
@@ -181,7 +177,7 @@ export default function ClaimBusinessPage({
               >
                 Cancel
               </button>
-              <button
+              <Button
                 type="submit"
                 disabled={isSubmitting}
                 className={`px-4 py-2 text-sm text-white bg-green-600 rounded-md hover:bg-green-700 ${
@@ -189,7 +185,7 @@ export default function ClaimBusinessPage({
                 }`}
               >
                 {isSubmitting ? 'Submitting...' : 'Submit Claim'}
-              </button>
+              </Button>
             </div>
           </form>
         </div>

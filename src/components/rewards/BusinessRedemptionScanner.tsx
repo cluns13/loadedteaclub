@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import QRCodeScanner from './QRCodeScanner';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { toast } from 'sonner';
 import { trackCustomerPurchase, redeemReward } from '@/lib/services/rewardsService';
 
@@ -93,4 +93,8 @@ export function BusinessRedemptionScannerContainer({ clubId }: BusinessRedemptio
       </p>
     </div>
   );
+}
+
+export default function BusinessRedemptionScanner({ clubId }: { clubId?: string } = {}) {
+  return <BusinessRedemptionScannerContainer clubId={clubId ?? ''} />;
 }

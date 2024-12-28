@@ -19,7 +19,7 @@ export async function POST(
   try {
     // Get user from session and verify admin status
     const session = await getServerSession(authOptions);
-    if (!session?.user?.id || !session?.user?.isAdmin) {
+    if (!session?.user?.id || session?.user?.role !== 'ADMIN') {
       return NextResponse.json(
         { error: 'You must be an admin to reject claims' },
         { status: 401 }
@@ -50,9 +50,9 @@ export async function POST(
     const db = await getDb();
     
     // Find the claim
-    const claim = await db.collection<BusinessClaim>('businessClaims').findOne({
+    const claim = await db.collection('businessClaims').findOne({
       _id: new ObjectId(claimId)
-    });
+    }) as BusinessClaim | null;
 
     if (!claim) {
       return NextResponse.json(
@@ -83,7 +83,7 @@ export async function POST(
 
     // Update claim status
     const now = new Date();
-    await db.collection<BusinessClaim>('businessClaims').updateOne(
+    await db.collection('businessClaims').updateOne(
       { _id: new ObjectId(claimId) },
       { 
         $set: { 
@@ -111,12 +111,14 @@ export async function POST(
     }
 
     // Send rejection email to user
-    await sendClaimRejectedEmail(
-      { ...claim, status: 'REJECTED', updatedAt: now, rejectionReason: reason },
-      business.name,
-      user.email,
-      reason
-    );
+    await sendClaimRejectedEmail({
+      ...claim, 
+      status: 'REJECTED', 
+      updatedAt: now, 
+      rejectionReason: reason,
+      userEmail: user.email,
+      businessName: business.name
+    });
 
     return NextResponse.json({ 
       message: 'Claim rejected successfully'

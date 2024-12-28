@@ -1,24 +1,25 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Switch } from '@/components/ui/switch';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
+import { Switch } from '@/components/ui/Switch';
 import { NutritionClubService } from '@/lib/services/nutritionClubService';
 import { SquareService } from '@/lib/services/squareService';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function RewardsSettingsPage() {
+export default function RewardsSettingsPage({ searchParams }: { searchParams: URLSearchParams }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const clubId = searchParams?.get?.('clubId') ?? '';
+  const businessId = searchParams?.get?.('businessId') ?? '';
   const [rewardsEnabled, setRewardsEnabled] = useState(false);
   const [onlineOrderingAvailable, setOnlineOrderingAvailable] = useState(false);
   const [posProvider, setPosProvider] = useState<'SQUARE' | 'OTHER'>('SQUARE');
   const [merchantId, setMerchantId] = useState('');
 
   useEffect(() => {
-    const success = searchParams.get('success');
-    const error = searchParams.get('error');
-    const merchantId = searchParams.get('merchantId');
+    const success = searchParams?.get('success');
+    const error = searchParams?.get('error');
+    const merchantId = searchParams?.get('merchantId');
 
     if (success === 'square_integration' && merchantId) {
       setMerchantId(merchantId);
@@ -60,6 +61,10 @@ export default function RewardsSettingsPage() {
     }
   };
 
+  const isRewardsEnabled = searchParams?.get('rewards') === 'true';
+  const isQrEnabled = searchParams?.get('qr') === 'true';
+  const rewardsType = searchParams?.get('type') || 'standard';
+
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Rewards & Ordering Settings</h1>
@@ -69,8 +74,8 @@ export default function RewardsSettingsPage() {
           <label className="flex items-center justify-between">
             <span>Enable Rewards Program</span>
             <Switch 
-              checked={rewardsEnabled}
-              onCheckedChange={setRewardsEnabled}
+              checked={isRewardsEnabled} 
+              onCheckedChange={() => {}} 
             />
           </label>
           <p className="text-sm text-gray-500 mt-2">

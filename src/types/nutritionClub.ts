@@ -1,28 +1,31 @@
 import { MenuItem } from './menu';
-import { Coordinates } from './location';
 
 export interface NutritionClub {
   id: string;
   name: string;
   address: string;
-  coordinates?: Coordinates;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  coordinates?: {
+    latitude: number;
+    longitude: number;
+  };
   phone: string;
   email?: string;
   
-  // New Rewards & Ordering Features
+  // Business capabilities
   rewardsEnabled: boolean;
   onlineOrderingAvailable: boolean;
   
-  // POS Integration Details
+  // Payment and integration
   posIntegration?: {
     provider: 'SQUARE' | 'OTHER';
     merchantId?: string;
   };
-
-  // Menu Details
-  menuItems?: MenuItem[];
   
-  // Optional Business Hours
+  // Menu and business details
+  menuItems?: MenuItem[];
   businessHours?: {
     monday: string;
     tuesday: string;
@@ -32,4 +35,10 @@ export interface NutritionClub {
     saturday: string;
     sunday: string;
   };
+  
+  // Additional metadata
+  description?: string;
+  coverPhoto?: string;
+  rating?: number;
+  reviewCount?: number;
 }

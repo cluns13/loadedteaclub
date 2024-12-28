@@ -18,6 +18,31 @@ export interface IPlacesService {
   searchNearby(location: LocationDetails): Promise<LoadedTeaClub[]>;
 }
 
+type Location = {
+  lat: number;
+  lng: number;
+};
+
+type PlaceGeometry = {
+  location?: Location;
+};
+
+type Place = {
+  place_id?: string;
+  name?: string;
+  formatted_address?: string;
+  geometry?: PlaceGeometry;
+  rating?: number;
+  user_ratings_total?: number;
+  vicinity?: string;
+};
+
+type Photo = {
+  photo_reference?: string;
+  width?: number;
+  height?: number;
+};
+
 export class PlacesService implements IPlacesService {
   async searchNearby(location: LocationDetails): Promise<LoadedTeaClub[]> {
     try {
@@ -31,21 +56,14 @@ export class PlacesService implements IPlacesService {
       }));
 
       // If no nutrition clubs, fall back to Google Places API
-      const response = await client.nearbySearch({
-        params: {
-          location: {
-            lat: location.latitude!,
-            lng: location.longitude!
-          },
-          radius: 10000, // 10 km
-          keyword: 'loaded tea',
-          key: process.env.GOOGLE_MAPS_API_KEY!
-        }
+      const nearbyPlaces = await searchNearby({
+        lat: location.latitude!,
+        lng: location.longitude!
       });
 
-      const places = response.data.results || [];
+      const places = nearbyPlaces || [];
       
-      const unclaimed = places.map(place => ({
+      const unclaimed = places.map((place: Place) => ({
         id: place.place_id,
         name: place.name,
         location: {
@@ -68,6 +86,22 @@ export class PlacesService implements IPlacesService {
     }
   }
 }
+
+export const searchNearby = async (location: Location) => {
+  const response = await client.nearbySearch({
+    params: {
+      location: {
+        lat: location.lat,
+        lng: location.lng
+      },
+      radius: 5000, // 5 km
+      type: 'restaurant',
+      key: process.env.GOOGLE_MAPS_API_KEY!
+    }
+  });
+
+  return response.data.results || [];
+};
 
 export async function getPlacePhotos(placeId: string, forceUpdate = false): Promise<PlacePhotos> {
   // Redis cache key
@@ -135,7 +169,7 @@ export async function getPlacePhotos(placeId: string, forceUpdate = false): Prom
 
     // Get the photo references
     const photoRefs = placeDetails.data.result.photos.map(
-      (photo) => photo.photo_reference
+      (photo: Photo) => photo.photo_reference
     );
 
     // Convert photo references to URLs
@@ -190,3 +224,13 @@ export async function getPlacePhotos(placeId: string, forceUpdate = false): Prom
     return emptyPhotos;
   }
 }
+
+export const getPlaceDetails = async (place: Place) => {
+  if (!place.geometry?.location) {
+    throw new Error('Invalid place location');
+  }
+
+  const client = new Client({});
+  // Implement place details retrieval
+  return {};
+};

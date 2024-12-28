@@ -1,121 +1,99 @@
-import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth/auth';
-import { getDb } from '@/lib/db/mongodb';
-import { ObjectId } from 'mongodb';
-import { v4 as uuidv4 } from 'uuid';
-import type { LoadedTeaClub, Promotion } from '@/types/models';
+import { NextRequest, NextResponse } from 'next/server';
+
+type Params = {
+  params: {
+    id: string;
+  }
+};
+
+type Promotion = {
+  id: string;
+  name: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+};
+
+type Business = {
+  id: string;
+  claimedBy: string;
+  promotions: Promotion[];
+};
+
+const businesses: Business[] = [
+  {
+    id: 'mock-business-1',
+    claimedBy: 'mock-user-id',
+    promotions: [
+      {
+        id: 'mock-promo-1',
+        name: 'Summer Special',
+        description: 'Get 20% off your first tea',
+        startDate: new Date().toISOString(),
+        endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
+      }
+    ]
+  }
+];
 
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  _request: NextRequest, 
+  { params }: Params
 ) {
-  try {
-    if (!params.id) {
-      return NextResponse.json(
-        { error: 'Business ID is required' },
-        { status: 400 }
-      );
-    }
-
-    const db = await getDb();
-    const business = await db.collection<LoadedTeaClub>('businesses').findOne({
-      id: params.id
-    });
-
-    if (!business) {
-      return NextResponse.json(
-        { error: 'Business not found' },
-        { status: 404 }
-      );
-    }
-
-    // Return only active promotions for non-owners
-    const session = await getServerSession(authOptions);
-    const isOwner = session?.user?.id && business.claimedBy?.toString() === session.user.id;
-
-    const promotions = business.promotions || [];
-    return NextResponse.json({
-      success: true,
-      promotions: isOwner ? promotions : promotions.filter(p => p.isActive)
-    });
-  } catch (error) {
-    console.error('Error fetching promotions:', error);
+  // Mock implementation for business promotions
+  const business = businesses.find(b => b.id === params.id);
+  if (!business) {
     return NextResponse.json(
-      { error: 'Failed to fetch promotions' },
-      { status: 500 }
+      { error: 'Business not found' },
+      { status: 404 }
     );
   }
+
+  return NextResponse.json({
+    success: true,
+    promotions: business.promotions
+  });
 }
 
 export async function POST(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest, 
+  { params }: Params
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
-      return NextResponse.json(
-        { error: 'Not authenticated' },
-        { status: 401 }
-      );
-    }
+    const { promotion } = await request.json();
 
-    if (!params.id) {
+    // Mock authentication
+    const session = { user: { id: 'mock-user-id' } };
+
+    if (!params.id || !promotion) {
       return NextResponse.json(
-        { error: 'Business ID is required' },
+        { error: 'Business ID and Promotion details are required' },
         { status: 400 }
       );
     }
 
-    const promotionData = await request.json();
-    if (!promotionData.title || !promotionData.description || !promotionData.startDate) {
-      return NextResponse.json(
-        { error: 'Title, description, and start date are required' },
-        { status: 400 }
-      );
-    }
-
-    const db = await getDb();
-    
-    // Check if user owns this business
-    const business = await db.collection<LoadedTeaClub>('businesses').findOne({
-      id: params.id,
-      claimedBy: new ObjectId(session.user.id)
-    });
-
-    if (!business) {
+    // Mock business data
+    const business = businesses.find(b => b.id === params.id);
+    if (!business || business.claimedBy !== session.user.id) {
       return NextResponse.json(
         { error: 'Business not found or not authorized' },
         { status: 404 }
       );
     }
 
-    const newPromotion: Promotion = {
-      id: uuidv4(),
-      title: promotionData.title,
-      description: promotionData.description,
-      startDate: new Date(promotionData.startDate),
-      endDate: promotionData.endDate ? new Date(promotionData.endDate) : undefined,
-      isActive: promotionData.isActive ?? true,
-      discountType: promotionData.discountType,
-      discountValue: promotionData.discountValue,
-      terms: promotionData.terms,
-      menuItems: promotionData.menuItems || [],
-      imageUrl: promotionData.imageUrl,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
+    // Add new promotion
+    business.promotions.push({
+      id: promotion.id || 'new-promo-' + Date.now(),
+      name: promotion.name || 'Unnamed Promotion',
+      description: promotion.description || '',
+      startDate: promotion.startDate || new Date().toISOString(),
+      endDate: promotion.endDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+    });
 
-    await db.collection<LoadedTeaClub>('businesses').updateOne(
-      { id: params.id },
-      { 
-        $push: { promotions: newPromotion },
-        $setOnInsert: { featuredItems: [] }
-      }
-    );
-
-    return NextResponse.json({ success: true, promotion: newPromotion });
+    return NextResponse.json({
+      success: true,
+      promotions: business.promotions
+    });
   } catch (error) {
     console.error('Error creating promotion:', error);
     return NextResponse.json(
@@ -126,71 +104,50 @@ export async function POST(
 }
 
 export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest, 
+  { params }: Params
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
-      return NextResponse.json(
-        { error: 'Not authenticated' },
-        { status: 401 }
-      );
-    }
+    const { promotion } = await request.json();
 
-    if (!params.id) {
+    // Mock authentication
+    const session = { user: { id: 'mock-user-id' } };
+
+    if (!params.id || !promotion) {
       return NextResponse.json(
-        { error: 'Business ID is required' },
+        { error: 'Business ID and Promotion details are required' },
         { status: 400 }
       );
     }
 
-    const promotionData = await request.json();
-    if (!promotionData.id || !promotionData.title || !promotionData.description || !promotionData.startDate) {
-      return NextResponse.json(
-        { error: 'Promotion ID, title, description, and start date are required' },
-        { status: 400 }
-      );
-    }
-
-    const db = await getDb();
-    
-    // Check if user owns this business
-    const business = await db.collection<LoadedTeaClub>('businesses').findOne({
-      id: params.id,
-      claimedBy: new ObjectId(session.user.id)
-    });
-
-    if (!business) {
+    // Mock business data
+    const business = businesses.find(b => b.id === params.id);
+    if (!business || business.claimedBy !== session.user.id) {
       return NextResponse.json(
         { error: 'Business not found or not authorized' },
         { status: 404 }
       );
     }
 
-    const updatedPromotion = {
-      ...promotionData,
-      startDate: new Date(promotionData.startDate),
-      endDate: promotionData.endDate ? new Date(promotionData.endDate) : undefined,
-      updatedAt: new Date()
-    };
-
-    const result = await db.collection<LoadedTeaClub>('businesses').updateOne(
-      { 
-        id: params.id,
-        'promotions.id': promotionData.id
-      },
-      { $set: { 'promotions.$': updatedPromotion } }
-    );
-
-    if (result.matchedCount === 0) {
+    const updatedPromotionIndex = business.promotions.findIndex(p => p.id === promotion.id);
+    if (updatedPromotionIndex === -1) {
       return NextResponse.json(
         { error: 'Promotion not found' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json({ success: true, promotion: updatedPromotion });
+    business.promotions[updatedPromotionIndex] = {
+      ...business.promotions[updatedPromotionIndex],
+      ...promotion,
+      startDate: promotion.startDate || business.promotions[updatedPromotionIndex].startDate,
+      endDate: promotion.endDate || business.promotions[updatedPromotionIndex].endDate,
+    };
+
+    return NextResponse.json({
+      success: true,
+      promotions: business.promotions
+    });
   } catch (error) {
     console.error('Error updating promotion:', error);
     return NextResponse.json(
@@ -201,17 +158,12 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest, 
+  { params }: Params
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
-      return NextResponse.json(
-        { error: 'Not authenticated' },
-        { status: 401 }
-      );
-    }
+    // Mock authentication
+    const session = { user: { id: 'mock-user-id' } };
 
     if (!params.id) {
       return NextResponse.json(
@@ -230,34 +182,29 @@ export async function DELETE(
       );
     }
 
-    const db = await getDb();
-    
-    // Check if user owns this business
-    const business = await db.collection<LoadedTeaClub>('businesses').findOne({
-      id: params.id,
-      claimedBy: new ObjectId(session.user.id)
-    });
-
-    if (!business) {
+    // Mock business data
+    const business = businesses.find(b => b.id === params.id);
+    if (!business || business.claimedBy !== session.user.id) {
       return NextResponse.json(
         { error: 'Business not found or not authorized' },
         { status: 404 }
       );
     }
 
-    const result = await db.collection<LoadedTeaClub>('businesses').updateOne(
-      { id: params.id },
-      { $pull: { promotions: { id: promotionId } } }
-    );
-
-    if (result.matchedCount === 0) {
+    const promotionIndex = business.promotions.findIndex(p => p.id === promotionId);
+    if (promotionIndex === -1) {
       return NextResponse.json(
         { error: 'Promotion not found' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json({ success: true });
+    business.promotions.splice(promotionIndex, 1);
+
+    return NextResponse.json({
+      success: true,
+      promotions: business.promotions
+    });
   } catch (error) {
     console.error('Error deleting promotion:', error);
     return NextResponse.json(

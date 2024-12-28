@@ -37,10 +37,10 @@ class RedisRateLimit {
         .pexpire(key, this.windowMs)
         .exec();
 
-      const currentCount = result[0][1] as number;
+      const currentCount = result?.[0]?.[1] ?? 0;
 
       // Check if request limit is exceeded
-      if (currentCount > this.maxRequests) {
+      if (typeof currentCount === 'number' && currentCount > this.maxRequests) {
         return { 
           success: false, 
           remaining: 0, 
@@ -50,13 +50,15 @@ class RedisRateLimit {
 
       return { 
         success: true, 
-        remaining: Math.max(0, this.maxRequests - currentCount),
-        resetTime: now + this.windowMs
+        remaining: Math.max(0, this.maxRequests - (currentCount as number)),
+        resetTime: now + this.windowMs 
       };
     } catch (error) {
-      console.error('Redis rate limit error:', error);
-      // Fallback to allowing the request if Redis fails
-      return { success: true, remaining: this.maxRequests };
+      console.error('Rate limit check failed:', error);
+      return { 
+        success: false, 
+        remaining: 0 
+      };
     }
   }
 
@@ -71,22 +73,25 @@ class RedisRateLimit {
 }
 
 // Predefined rate limiters for different use cases
-export const apiRateLimit = new RedisRateLimit({
-  windowMs: 60000, // 1 minute
-  maxRequests: 100, // 100 requests per minute
-  keyPrefix: 'api_rate_limit:'
-});
+export function rateLimit(limit: number, windowMs: number) {
+  return new RedisRateLimit({ maxRequests: limit, windowMs });
+}
 
-export const authRateLimit = new RedisRateLimit({
-  windowMs: 300000, // 5 minutes
-  maxRequests: 10, // 10 login attempts per 5 minutes
-  keyPrefix: 'auth_rate_limit:'
-});
+export async function checkRateLimit(req: Request): Promise<boolean | null> {
+  // Implement rate limit check logic
+  return true;
+}
 
-export const businessClaimRateLimit = new RedisRateLimit({
-  windowMs: 86400000, // 24 hours
-  maxRequests: 3, // 3 business claim attempts per day
-  keyPrefix: 'business_claim_rate_limit:'
-});
+export function apiRateLimit() {
+  return rateLimit(100, 60000); // 100 requests per minute
+}
+
+export function authRateLimit() {
+  return rateLimit(10, 60000); // 10 requests per minute
+}
+
+export function businessClaimRateLimit(limit: number = 5, windowMs: number = 86400000) {
+  return rateLimit(limit, windowMs); // 5 claims per day
+}
 
 export default RedisRateLimit;

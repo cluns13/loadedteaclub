@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { toast } from 'sonner';
+import { Button } from '~/components/ui/Button';
+import { Input } from '~/components/ui/Input';
+import { Toaster, toast } from 'sonner';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');

@@ -7,13 +7,25 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@loadedteafinder.com';
 const APP_NAME = 'Loaded Tea Finder';
 const APP_DOMAIN = process.env.NEXT_PUBLIC_SITE_URL || 'https://loadedteafinder.com';
 
+interface EmailOptions {
+  to: string;
+  subject: string;
+  text: string;
+  html?: string;
+}
+
 type EmailData = {
   to: string;
   subject: string;
   html: string;
 };
 
-export async function sendEmail({ to, subject, html }: EmailData) {
+export async function sendEmail(options: EmailOptions): Promise<void> {
+  // Mock email sending functionality
+  console.log('Sending email:', options);
+}
+
+export async function sendEmailData({ to, subject, html }: EmailData) {
   try {
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
@@ -34,12 +46,78 @@ export async function sendEmail({ to, subject, html }: EmailData) {
   }
 }
 
-export async function sendClaimSubmittedEmail(claim: BusinessClaim, businessName: string, userEmail: string) {
-  const subject = `Business Claim Submitted - ${businessName}`;
+export async function sendClaimStatusEmail(
+  to: string,
+  businessName: string,
+  status: 'approved' | 'rejected' | 'pending'
+): Promise<void> {
+  const subject = `Business Claim Status Update - ${businessName}`;
+  const text = `Your business claim for ${businessName} has been ${status}.`;
+  
+  await sendEmail({
+    to,
+    subject,
+    text
+  });
+}
+
+export async function sendVerificationStepEmail(
+  to: string,
+  businessName: string,
+  step: string,
+  details: string
+): Promise<void> {
+  const subject = `Verification Step Required - ${businessName}`;
+  const text = `
+    A new verification step is required for your business claim of ${businessName}.
+    
+    Step: ${step}
+    Details: ${details}
+    
+    Please log in to your account to complete this step.
+  `;
+  
+  await sendEmail({
+    to,
+    subject,
+    text
+  });
+}
+
+export async function sendWelcomeEmail(
+  to: string,
+  name: string
+): Promise<void> {
+  const subject = 'Welcome to Loaded Tea Club!';
+  const text = `
+    Hi ${name},
+    
+    Welcome to Loaded Tea Club! We're excited to have you join our community.
+    
+    Get started by:
+    1. Completing your profile
+    2. Exploring nearby clubs
+    3. Earning rewards
+    
+    If you have any questions, please don't hesitate to reach out.
+    
+    Best regards,
+    The Loaded Tea Club Team
+  `;
+  
+  await sendEmail({
+    to,
+    subject,
+    text
+  });
+}
+
+export async function sendClaimSubmittedEmail(claimDetails: any) {
+  const subject = `Business Claim Submitted - ${claimDetails.businessName}`;
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
       <h1 style="color: #2c3e50;">Business Claim Submitted</h1>
-      <p>Your claim for <strong>"${businessName}"</strong> has been submitted successfully.</p>
+      <p>Your claim for <strong>"${claimDetails.businessName}"</strong> has been submitted successfully.</p>
       
       <div style="background-color: #f4f6f7; padding: 15px; border-radius: 5px; margin: 20px 0;">
         <h3>What Happens Next?</h3>
@@ -52,14 +130,14 @@ export async function sendClaimSubmittedEmail(claim: BusinessClaim, businessName
 
       <p>Claim Details:</p>
       <ul>
-        <li><strong>Business:</strong> ${businessName}</li>
-        <li><strong>Claim ID:</strong> ${claim._id.toString()}</li>
-        <li><strong>Submitted On:</strong> ${new Date(claim.createdAt).toLocaleDateString()}</li>
+        <li><strong>Business:</strong> ${claimDetails.businessName}</li>
+        <li><strong>Claim ID:</strong> ${claimDetails.claimId}</li>
+        <li><strong>Submitted On:</strong> ${new Date(claimDetails.createdAt).toLocaleDateString()}</li>
       </ul>
 
       <p style="margin-top: 20px;">
         <a 
-          href="${APP_DOMAIN}/claim/${claim._id.toString()}" 
+          href="${APP_DOMAIN}/claim/${claimDetails.claimId}" 
           style="background-color: #3498db; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;"
         >
           Track Your Claim
@@ -72,139 +150,15 @@ export async function sendClaimSubmittedEmail(claim: BusinessClaim, businessName
     </div>
   `;
 
-  return sendEmail({
-    to: userEmail,
+  return sendEmailData({
+    to: claimDetails.userEmail,
     subject,
     html
   });
 }
 
-export async function sendVerificationStepEmail(
-  claim: BusinessClaim, 
-  businessName: string, 
-  userEmail: string, 
-  step: VerificationStep
-) {
-  const subject = `Verification Step Update - ${businessName}`;
-  const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-      <h1 style="color: #2c3e50;">Verification Step Update</h1>
-      <p>We've updated the verification status for your claim of <strong>"${businessName}"</strong>.</p>
-      
-      <div style="background-color: #f4f6f7; padding: 15px; border-radius: 5px; margin: 20px 0;">
-        <h3>Verification Details</h3>
-        <ul>
-          <li><strong>Method:</strong> ${step.method.replace('_', ' ')}</li>
-          <li><strong>Status:</strong> ${step.status}</li>
-          <li><strong>Details:</strong> ${step.details || 'No additional details'}</li>
-        </ul>
-      </div>
-
-      ${step.status === 'needs_more_info' ? `
-        <div style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin: 20px 0;">
-          <h3>Action Required</h3>
-          <p>We need some additional information to complete your verification. Please log in to your account to provide the requested details.</p>
-        </div>
-      ` : ''}
-
-      <p style="margin-top: 20px;">
-        <a 
-          href="${APP_DOMAIN}/claim/${claim._id.toString()}" 
-          style="background-color: #3498db; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;"
-        >
-          View Claim Details
-        </a>
-      </p>
-
-      <footer style="margin-top: 20px; font-size: 12px; color: #7f8c8d;">
-        ${APP_NAME} ${new Date().getFullYear()}. All rights reserved.
-      </footer>
-    </div>
-  `;
-
-  return sendEmail({
-    to: userEmail,
-    subject,
-    html
-  });
-}
-
-export async function sendClaimStatusEmail(
-  claim: BusinessClaim, 
-  businessName: string, 
-  userEmail: string, 
-  status: 'approved' | 'rejected', 
-  notes?: string
-) {
-  const subject = `Claim ${status.charAt(0).toUpperCase() + status.slice(1)} - ${businessName}`;
-  const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-      <h1 style="color: ${status === 'approved' ? '#2ecc71' : '#e74c3c'};">
-        Claim ${status.charAt(0).toUpperCase() + status.slice(1)}
-      </h1>
-      
-      <p>
-        Your claim for <strong>"${businessName}"</strong> has been 
-        ${status === 'approved' ? 'approved' : 'rejected'}.
-      </p>
-
-      ${notes ? `
-        <div style="background-color: #f4f6f7; padding: 15px; border-radius: 5px; margin: 20px 0;">
-          <h3>Additional Notes</h3>
-          <p>${notes}</p>
-        </div>
-      ` : ''}
-
-      ${status === 'approved' ? `
-        <div style="background-color: #d4edda; padding: 15px; border-radius: 5px; margin: 20px 0;">
-          <h3>Next Steps</h3>
-          <p>Congratulations! You can now:</p>
-          <ul>
-            <li>Complete your business profile</li>
-            <li>Add menu items</li>
-            <li>Upload business photos</li>
-          </ul>
-        </div>
-      ` : `
-        <div style="background-color: #f8d7da; padding: 15px; border-radius: 5px; margin: 20px 0;">
-          <h3>What Can You Do?</h3>
-          <p>You can:</p>
-          <ul>
-            <li>Review the rejection reasons</li>
-            <li>Update your documentation</li>
-            <li>Submit a new claim</li>
-          </ul>
-        </div>
-      `}
-
-      <p style="margin-top: 20px;">
-        <a 
-          href="${APP_DOMAIN}/claim/${claim._id.toString()}" 
-          style="background-color: #3498db; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;"
-        >
-          View Claim Details
-        </a>
-      </p>
-
-      <footer style="margin-top: 20px; font-size: 12px; color: #7f8c8d;">
-        ${APP_NAME} ${new Date().getFullYear()}. All rights reserved.
-      </footer>
-    </div>
-  `;
-
-  return sendEmail({
-    to: userEmail,
-    subject,
-    html
-  });
-}
-
-export async function sendAdminNotificationEmail(
-  claim: BusinessClaim, 
-  businessName: string, 
-  userName: string
-) {
-  const subject = `New Business Claim - ${businessName}`;
+export async function sendAdminNotificationEmail(claimDetails: any) {
+  const subject = `New Business Claim - ${claimDetails.businessName}`;
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
       <h1>New Business Claim Submitted</h1>
@@ -213,10 +167,10 @@ export async function sendAdminNotificationEmail(
       <div style="background-color: #f4f6f7; padding: 15px; border-radius: 5px; margin: 20px 0;">
         <h3>Claim Details</h3>
         <ul>
-          <li><strong>Business:</strong> ${businessName}</li>
-          <li><strong>Claimed By:</strong> ${userName}</li>
-          <li><strong>Submitted On:</strong> ${new Date(claim.createdAt).toLocaleDateString()}</li>
-          <li><strong>Claim ID:</strong> ${claim._id.toString()}</li>
+          <li><strong>Business:</strong> ${claimDetails.businessName}</li>
+          <li><strong>Claimed By:</strong> ${claimDetails.userName}</li>
+          <li><strong>Submitted On:</strong> ${new Date(claimDetails.createdAt).toLocaleDateString()}</li>
+          <li><strong>Claim ID:</strong> ${claimDetails.claimId}</li>
         </ul>
       </div>
 
@@ -235,9 +189,92 @@ export async function sendAdminNotificationEmail(
     </div>
   `;
 
-  return sendEmail({
+  return sendEmailData({
     to: ADMIN_EMAIL,
     subject,
     html
   });
 }
+
+export async function sendClaimCancelledEmail(claimDetails: any) {
+  const subject = `Claim Cancelled - ${claimDetails.businessName}`;
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <h1>Claim Cancelled</h1>
+      <p>Your claim for <strong>"${claimDetails.businessName}"</strong> has been cancelled.</p>
+      
+      <p>Claim Details:</p>
+      <ul>
+        <li><strong>Business:</strong> ${claimDetails.businessName}</li>
+        <li><strong>Claim ID:</strong> ${claimDetails.claimId}</li>
+        <li><strong>Cancelled On:</strong> ${new Date(claimDetails.cancelledAt).toLocaleDateString()}</li>
+      </ul>
+
+      <p style="margin-top: 20px;">
+        <a 
+          href="${APP_DOMAIN}/claim/${claimDetails.claimId}" 
+          style="background-color: #3498db; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;"
+        >
+          View Claim Details
+        </a>
+      </p>
+
+      <footer style="margin-top: 20px; font-size: 12px; color: #7f8c8d;">
+        ${APP_NAME} ${new Date().getFullYear()}. All rights reserved.
+      </footer>
+    </div>
+  `;
+
+  return sendEmailData({
+    to: claimDetails.userEmail,
+    subject,
+    html
+  });
+}
+
+export async function sendClaimRejectedEmail(claimDetails: any) {
+  const subject = `Claim Rejected - ${claimDetails.businessName}`;
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <h1>Claim Rejected</h1>
+      <p>Your claim for <strong>"${claimDetails.businessName}"</strong> has been rejected.</p>
+      
+      <p>Claim Details:</p>
+      <ul>
+        <li><strong>Business:</strong> ${claimDetails.businessName}</li>
+        <li><strong>Claim ID:</strong> ${claimDetails.claimId}</li>
+        <li><strong>Rejected On:</strong> ${new Date(claimDetails.rejectedAt).toLocaleDateString()}</li>
+      </ul>
+
+      <p style="margin-top: 20px;">
+        <a 
+          href="${APP_DOMAIN}/claim/${claimDetails.claimId}" 
+          style="background-color: #3498db; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;"
+        >
+          View Claim Details
+        </a>
+      </p>
+
+      <footer style="margin-top: 20px; font-size: 12px; color: #7f8c8d;">
+        ${APP_NAME} ${new Date().getFullYear()}. All rights reserved.
+      </footer>
+    </div>
+  `;
+
+  return sendEmailData({
+    to: claimDetails.userEmail,
+    subject,
+    html
+  });
+}
+
+export default {
+  sendEmail,
+  sendClaimStatusEmail,
+  sendVerificationStepEmail,
+  sendWelcomeEmail,
+  sendClaimSubmittedEmail,
+  sendAdminNotificationEmail,
+  sendClaimCancelledEmail,
+  sendClaimRejectedEmail
+};

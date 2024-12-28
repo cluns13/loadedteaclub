@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, Clock, MapPin, Phone, Mail, Globe, Plus } from 'lucide-react';
 
 const fadeInUp = {

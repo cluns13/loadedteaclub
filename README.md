@@ -1,73 +1,59 @@
-# Tea Finder Next
+# Loaded Tea Club
 
-## Project Overview
-Discover and connect with local Loaded Tea Clubs, powered by Next.js and modern web technologies.
-
-## Tech Stack
-- Next.js 14
-- React
-- TypeScript
-- Tailwind CSS
-- MongoDB
-- Redis
-- NextAuth
-- Prisma ORM
+## Overview
+Discover and connect with local Loaded Tea Clubs
 
 ## Prerequisites
-- Node.js 18+
-- npm or yarn
-- MongoDB database
-- Redis instance
-- Google Maps API Key
+- Node.js 20.x
+- npm 
+- MongoDB
+- Vercel Account
 
-## Local Development Setup
+## Local Development
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create `.env.local` with required environment variables
+4. Run development server:
+   ```bash
+   npm run dev
+   ```
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/yourusername/tea-finder-next.git
-cd tea-finder-next
-```
-
-### 2. Install Dependencies
-```bash
-npm install
-```
-
-### 3. Environment Configuration
-Create a `.env.local` file with the following variables:
-- `DATABASE_URL`
+## Deployment Preparation
+### Environment Variables
+Required environment variables:
+- `MONGODB_URI`
 - `NEXTAUTH_SECRET`
 - `GOOGLE_MAPS_API_KEY`
-- `REDIS_URL`
-- Other necessary API keys
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
 
-### 4. Database Setup
-```bash
-npx prisma generate
-npx prisma db push
-```
+### Vercel Deployment
+1. Connect GitHub repository to Vercel
+2. Set environment variables in Vercel Dashboard
+3. Configure production branch
 
-### 5. Run Development Server
-```bash
-npm run dev
-```
-
-## Deployment
-- Recommended: Vercel
-- Alternative: Netlify, DigitalOcean
-
-## Scripts
+## Key Scripts
 - `npm run dev`: Start development server
 - `npm run build`: Production build
 - `npm run start`: Start production server
-- `npm run lint`: Run linter
+- `npm run lint`: Run ESLint
+- `npm run type-check`: TypeScript type checking
+
+## Technologies
+- Next.js 14
+- React
+- TypeScript
+- MongoDB
+- Prisma
+- Tailwind CSS
+- NextAuth
 
 ## Contributing
 1. Fork the repository
-2. Create your feature branch
+2. Create feature branch
 3. Commit changes
-4. Push to the branch
-5. Create a Pull Request
-
-## License
-MIT License
+4. Push to branch
+5. Create Pull Request

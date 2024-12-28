@@ -1,25 +1,66 @@
 import { NextResponse } from 'next/server';
-import { getDb } from '@/lib/db/mongodb';
-import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth';
-import type { BusinessClaim } from '@/types/models';
 import { z } from 'zod';
-import { sendClaimSubmittedEmail, sendAdminNotificationEmail } from '@/lib/email/email';
-import { businessClaimRateLimit } from '@/lib/rateLimit';
 
-const claimSchema = z.object({
-  businessId: z.string().min(1, 'Business ID is required'),
-  businessLicense: z.string().min(1, 'Business license is required'),
-  proofOfOwnership: z.string().min(1, 'Proof of ownership is required'),
-  governmentId: z.string().min(1, 'Government ID is required'),
-  utilityBill: z.string().nullable(),
-  additionalNotes: z.string().optional(),
+const BusinessClaimSchema = z.object({
+  id: z.string().optional(),
+  businessId: z.string(),
+  claimant: z.object({
+    name: z.string(),
+    email: z.string().email(),
+  }),
+  status: z.enum(['pending', 'approved', 'rejected']).default('pending'),
+  verificationDocuments: z.record(z.string()).optional(),
+  paymentStatus: z.enum(['unpaid', 'paid']).optional(),
+  paymentAmount: z.number().optional(),
+  subscriptionEndDate: z.date().optional(),
+  createdAt: z.date().default(() => new Date()),
+  priority: z.enum(['standard', 'urgent']).optional(),
 });
+
+type BusinessClaim = {
+  id: string;
+  userId: string;
+  businessId: string;
+  claimant: {
+    name: string;
+    email: string;
+  };
+  status: 'pending' | 'approved' | 'rejected';
+  verificationDocuments: { [key: string]: string };
+  paymentStatus: 'unpaid' | 'paid';
+  paymentAmount: number;
+  subscriptionEndDate: Date;
+  createdAt: Date;
+  priority: 'standard' | 'urgent';
+};
+
+const mockBusinessClaims: BusinessClaim[] = [];
+const mockBusinesses = [
+  { _id: 'business-1', name: 'Business 1', claimed: false },
+  { _id: 'business-2', name: 'Business 2', claimed: false },
+];
+
+const convertBusinessClaim = (claim: BusinessClaim): BusinessClaim => {
+  return {
+    ...claim,
+    id: claim.id || `claim-${Date.now()}`,
+    status: claim.status || 'pending',
+    verificationDocuments: claim.verificationDocuments || {},
+    paymentStatus: claim.paymentStatus || 'unpaid',
+    paymentAmount: claim.paymentAmount || 0,
+    subscriptionEndDate: claim.subscriptionEndDate || new Date(),
+  };
+};
+
+const handleError = (issue: unknown) => {
+  console.error('Claim submission error:', issue);
+  return NextResponse.json({ error: 'Claim submission failed' }, { status: 500 });
+};
 
 export async function POST(request: Request) {
   try {
-    // Get user from session
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -28,45 +69,22 @@ export async function POST(request: Request) {
       );
     }
 
-    // Apply rate limiting based on user ID
-    const rateLimitResult = await businessClaimRateLimit.check(session.user.id);
-    if (!rateLimitResult.success) {
+    const body = await request.json();
+    const result = BusinessClaimSchema.safeParse(body);
+
+    if (!result.success) {
       return NextResponse.json(
-        { 
-          error: 'Too many business claim attempts. Please try again later.',
-          resetTime: rateLimitResult.resetTime,
-          remaining: rateLimitResult.remaining
-        }, 
-        { status: 429 } // Too Many Requests
+        { error: 'Invalid claim data', details: result.error.errors },
+        { status: 400 }
       );
     }
 
-    // Parse and validate request body
-    const body = await request.json();
-    const result = claimSchema.safeParse(body);
-    
-    if (!result.success) {
-      const errorMessage = result.error.issues
-        .map(issue => issue.message)
-        .join(', ');
-      return NextResponse.json({ error: errorMessage }, { status: 400 });
-    }
+    const claimData = result.data;
 
-    const { 
-      businessId,
-      businessLicense,
-      proofOfOwnership,
-      governmentId,
-      utilityBill,
-      additionalNotes = ''
-    } = result.data;
-
-    const db = await getDb();
-    
     // Check if business exists
-    const business = await db.collection('businesses').findOne({
-      _id: new ObjectId(businessId)
-    });
+    const business = mockBusinesses.find(
+      (business) => business._id === claimData.businessId
+    );
 
     if (!business) {
       return NextResponse.json(
@@ -84,10 +102,9 @@ export async function POST(request: Request) {
     }
 
     // Check if user has any pending claims
-    const userPendingClaims = await db.collection<BusinessClaim>('businessClaims').findOne({
-      userId: new ObjectId(session.user.id),
-      status: 'PENDING'
-    });
+    const userPendingClaims = mockBusinessClaims.find(
+      (claim) => claim.userId === session.user.id && claim.status === 'pending'
+    );
 
     if (userPendingClaims) {
       return NextResponse.json(
@@ -97,10 +114,9 @@ export async function POST(request: Request) {
     }
 
     // Check if there's already a pending claim for this business
-    const existingClaim = await db.collection<BusinessClaim>('businessClaims').findOne({
-      businessId: new ObjectId(businessId),
-      status: 'PENDING'
-    });
+    const existingClaim = mockBusinessClaims.find(
+      (claim) => claim.businessId === claimData.businessId && claim.status === 'pending'
+    );
 
     if (existingClaim) {
       return NextResponse.json(
@@ -109,50 +125,32 @@ export async function POST(request: Request) {
       );
     }
 
-    // Collect all uploaded document URLs
-    const documents = [
-      businessLicense,
-      proofOfOwnership,
-      governmentId,
-      ...(utilityBill ? [utilityBill] : [])
-    ];
-
-    // Create claim request
-    const claim: Omit<BusinessClaim, '_id'> = {
-      id: new ObjectId().toString(),
-      businessId: new ObjectId(businessId),
-      userId: new ObjectId(session.user.id),
-      status: 'PENDING',
-      verificationDocuments: documents,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      paymentStatus: 'PENDING',
+    // Create a new business claim
+    const newClaim: BusinessClaim = {
+      id: `claim-${Date.now()}`,
+      userId: session.user.id,
+      businessId: claimData.businessId,
+      claimant: claimData.claimant,
+      status: 'pending',
+      verificationDocuments: claimData.verificationDocuments || {},
+      paymentStatus: 'unpaid',
       paymentAmount: 0,
-      subscriptionEndDate: new Date()
+      subscriptionEndDate: new Date(),
+      createdAt: new Date(),
+      priority: 'standard'
     };
 
-    const insertResult = await db.collection<BusinessClaim>('businessClaims').insertOne({
-      ...claim,
-      _id: new ObjectId()
-    });
-    const insertedClaim = { ...claim, _id: insertResult.insertedId };
+    mockBusinessClaims.push(newClaim);
 
-    // Send notification emails
-    await Promise.all([
-      sendClaimSubmittedEmail(insertedClaim as BusinessClaim, business.name, session.user.email!),
-      sendAdminNotificationEmail(insertedClaim as BusinessClaim, business.name, session.user.name!)
-    ]);
-
-    return NextResponse.json({ 
-      message: 'Claim submitted successfully',
-      status: 'pending',
-      claimId: insertResult.insertedId.toString()
+    return NextResponse.json({
+      success: true,
+      claim: convertBusinessClaim(newClaim),
     });
   } catch (error) {
-    console.error('Error processing business claim:', error);
-    return NextResponse.json(
-      { error: 'Failed to process business claim' },
-      { status: 500 }
-    );
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: 'Validation failed', details: error.errors }, { status: 400 });
+    }
+
+    return handleError(error);
   }
 }

@@ -1,22 +1,13 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { MapPin, Star, Clock, Zap, Navigation } from 'lucide-react';
+import { MapPin, Star } from 'lucide-react';
 import { MetadataGenerator } from '@/lib/utils/metadata';
 import { CityService } from '@/lib/db/services/cityService';
 import { generateStaticCityPaths } from '@/lib/utils/staticPaths';
 import SearchResults from '@/components/SearchResults/SearchResults';
 import SchemaMarkup from '@/components/SEO/SchemaMarkup';
-import { Card } from '@/components/ui/Card';
 import { LoadingButton } from '@/components/ui/LoadingButton';
-import { LoadedTeaClub } from '@/types/models';
-import { CityData } from '@/types/cityTypes';
-
-interface CityPageProps {
-  params: {
-    city: string;
-    state: string;
-  };
-}
+import { CityData, SearchResult } from '@/types/cityTypes';
 
 export async function generateStaticParams() {
   return generateStaticCityPaths();
@@ -54,42 +45,6 @@ export async function generateMetadata({
   };
 }
 
-function generateCitySchema(cityData: CityData | null) {
-  if (!cityData) return null;
-
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'City',
-    'name': cityData.businesses[0].city,
-    'containsPlace': cityData.businesses.map(business => ({
-      '@type': 'FoodEstablishment',
-      'name': business.name,
-      'image': business.images?.[0],
-      'address': {
-        '@type': 'PostalAddress',
-        'streetAddress': business.address,
-        'addressLocality': business.city,
-        'addressRegion': business.state,
-        'postalCode': business.zipCode
-      },
-      'geo': {
-        '@type': 'GeoCoordinates',
-        'latitude': business.latitude,
-        'longitude': business.longitude
-      },
-      'aggregateRating': business.rating ? {
-        '@type': 'AggregateRating',
-        'ratingValue': business.rating,
-        'reviewCount': business.reviewCount
-      } : undefined,
-      'openingHours': business.hours,
-      'servesCuisine': ['Loaded Tea', 'Energy Drinks', 'Healthy Beverages'],
-      'priceRange': '$$',
-      'telephone': business.phone
-    }))
-  };
-}
-
 export default async function CityPage({ 
   params 
 }: { 
@@ -112,20 +67,52 @@ export default async function CityPage({
     return notFound();
   }
 
-  // Destructure city data
+  // Destructure with default values and type safety
   const { 
-    businesses, 
-    totalBusinesses, 
-    averageRating, 
-    cityStats,
-    popularItems,
-    topRated,
-    nearbyCities
-  } = cityData;
+    businesses = [], 
+    totalBusinesses = 0, 
+    cityStats = { 
+      totalReviews: 0, 
+      averageRating: 0,
+      claimedBusinesses: 0 
+    },
+    averageRating = 0
+  } = cityData || {};
+
+  // Convert LoadedTeaClub to SearchResult with type-safe hours mapping
+  const searchResults: SearchResult[] = businesses.map(business => {
+    // Transform BusinessHours to array format for SearchResult
+    const transformedHours = business.hours ? Object.entries(business.hours).map(([day, hours]) => ({
+      open: hours.open,
+      close: hours.close,
+      day: day as 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday',
+      isOpen: hours.isOpen
+    })) : [];
+
+    return {
+      ...business,
+      hours: transformedHours
+    };
+  });
+
+  // Ensure averageRating is always available
+  const displayAverageRating = cityStats?.averageRating ?? averageRating ?? 0;
+  const displayTotalReviews = cityStats?.totalReviews ?? 0;
+
+  const schemaData = {
+    '@type': 'City',
+    name: `${city}, ${state}`,
+    description: `Discover ${totalBusinesses} loaded tea clubs serving energizing drinks and healthy shakes.`,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: displayAverageRating,
+      reviewCount: displayTotalReviews
+    }
+  };
 
   return (
     <main className="min-h-screen bg-[var(--background)]">
-      <SchemaMarkup data={generateCitySchema(cityData)} />
+      <SchemaMarkup data={schemaData} />
       
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-primary py-16">
@@ -148,9 +135,9 @@ export default async function CityPage({
             </div>
             <p className="text-xl text-white/90 mb-8">
               Discover {totalBusinesses} loaded tea clubs serving energizing drinks and healthy shakes.
-              {cityStats.averageRating > 0 && (
+              {displayAverageRating > 0 && (
                 <span className="ml-1">
-                  Rated {cityStats.averageRating.toFixed(1)}★ from {cityStats.totalReviews.toLocaleString()} reviews.
+                  Rated {displayAverageRating.toFixed(1)}★ from {displayTotalReviews.toLocaleString()} reviews.
                 </span>
               )}
             </p>
@@ -171,143 +158,32 @@ export default async function CityPage({
                 size="lg"
               >
                 <Star className="h-5 w-5 mr-2" />
-                Popular Drinks
+                Top Rated Clubs
               </LoadingButton>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <Card>
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-xl bg-[var(--primary)]/10">
-                <Star className="h-6 w-6 text-[var(--primary)]" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-[var(--foreground)]">
-                  Top Rated
-                </h3>
-                <p className="text-[var(--foreground-muted)]">
-                  {cityStats.averageRating.toFixed(1)}★ Average
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card>
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-xl bg-[var(--primary)]/10">
-                <MapPin className="h-6 w-6 text-[var(--primary)]" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-[var(--foreground)]">
-                  Locations
-                </h3>
-                <p className="text-[var(--foreground-muted)]">
-                  {totalBusinesses} Clubs
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card>
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-xl bg-[var(--primary)]/10">
-                <Clock className="h-6 w-6 text-[var(--primary)]" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-[var(--foreground)]">
-                  Open Now
-                </h3>
-                <p className="text-[var(--foreground-muted)]">
-                  {businesses.filter(b => b.isOpen).length} Available
-                </p>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Popular Items */}
-        {popularItems && popularItems.length > 0 && (
-          <section className="mb-12">
-            <div className="flex items-center gap-2 mb-6">
-              <Star className="h-6 w-6 text-[var(--primary)]" />
-              <h2 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                Popular in {city}
-              </h2>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {popularItems.map((item, index) => (
-                <span
-                  key={index}
-                  className="px-4 py-2 bg-[var(--secondary)] rounded-xl text-[var(--foreground)] text-sm font-medium"
-                >
-                  {item}
-                </span>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Top Rated Section */}
-        {topRated && topRated.length > 0 && (
-          <section className="mb-12">
-            <div className="flex items-center gap-2 mb-6">
-              <Star className="h-6 w-6 text-[var(--primary)]" />
-              <h2 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                Highest Rated Clubs
-              </h2>
-            </div>
-            <SearchResults
-              results={topRated as LoadedTeaClub[]}
-              city={city}
-              state={state}
-            />
-          </section>
-        )}
-
-        {/* All Locations */}
-        <section className="mb-12">
-          <div className="flex items-center gap-2 mb-6">
-            <MapPin className="h-6 w-6 text-[var(--primary)]" />
-            <h2 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              All Locations
+      {/* Locations Section */}
+      <section id="locations" className="container mx-auto px-4 py-16">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">
+              Loaded Tea Clubs in {city}
             </h2>
+            <p className="text-xl text-gray-600">
+              {totalBusinesses} clubs serving energizing and healthy drinks
+            </p>
           </div>
+          
           <SearchResults
-            results={businesses as LoadedTeaClub[]}
+            results={searchResults}
             city={city}
             state={state}
           />
-        </section>
-
-        {/* Nearby Cities */}
-        {nearbyCities && nearbyCities.length > 0 && (
-          <section className="mt-16">
-            <div className="flex items-center gap-2 mb-6">
-              <Navigation className="h-6 w-6 text-[var(--primary)]" />
-              <h2 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                Nearby Cities
-              </h2>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {nearbyCities.map((nearbyCity) => (
-                <LoadingButton
-                  key={nearbyCity.name}
-                  as="a"
-                  href={`/${nearbyCity.state.toLowerCase()}/${nearbyCity.name.toLowerCase().replace(/\s+/g, '-')}`}
-                >
-                  <MapPin className="h-4 w-4 mr-2" />
-                  {nearbyCity.name}, {nearbyCity.state}
-                </LoadingButton>
-              ))}
-            </div>
-          </section>
-        )}
-      </div>
+        </div>
+      </section>
     </main>
   );
 }

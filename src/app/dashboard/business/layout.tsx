@@ -2,18 +2,9 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import {
-  LayoutDashboard,
-  Store,
-  TrendingUp,
-  MessageSquare,
-  Settings,
-  PieChart,
-  Megaphone,
-  Gift
-} from 'lucide-react';
 
 const fadeIn = {
   hidden: { opacity: 0 },
@@ -21,14 +12,14 @@ const fadeIn = {
 };
 
 const navItems = [
-  { name: 'Overview', href: '/dashboard/business', icon: LayoutDashboard },
-  { name: 'Listing', href: '/dashboard/business/listing', icon: Store },
-  { name: 'Analytics', href: '/dashboard/business/analytics', icon: TrendingUp },
-  { name: 'Reviews', href: '/dashboard/business/reviews', icon: MessageSquare },
-  { name: 'Marketing', href: '/dashboard/business/marketing', icon: Megaphone },
-  { name: 'Promotions', href: '/dashboard/business/promotions', icon: Gift },
-  { name: 'Insights', href: '/dashboard/business/insights', icon: PieChart },
-  { name: 'Settings', href: '/dashboard/business/settings', icon: Settings },
+  { name: 'Overview', href: '/dashboard/business', icon: Menu },
+  { name: 'Listing', href: '/dashboard/business/listing', icon: Menu },
+  { name: 'Analytics', href: '/dashboard/business/analytics', icon: Menu },
+  { name: 'Reviews', href: '/dashboard/business/reviews', icon: Menu },
+  { name: 'Marketing', href: '/dashboard/business/marketing', icon: Menu },
+  { name: 'Promotions', href: '/dashboard/business/promotions', icon: Menu },
+  { name: 'Insights', href: '/dashboard/business/insights', icon: Menu },
+  { name: 'Settings', href: '/dashboard/business/settings', icon: Menu },
 ];
 
 export default function BusinessDashboardLayout({

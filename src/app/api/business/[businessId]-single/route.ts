@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth';
-import { getDb } from '@/lib/db/mongodb';
-import { ObjectId } from 'mongodb';
 import { z } from 'zod';
 
 // Schema for updating business details
@@ -29,9 +27,30 @@ const updateBusinessSchema = z.object({
   }).optional(),
 });
 
+type Params = {
+  params: {
+    businessId: string;
+  }
+};
+
+const mockBusinesses = [
+  {
+    id: 'mock-business-1',
+    name: 'Loaded Tea Downtown',
+    address: '123 Main St',
+    city: 'Anytown',
+    state: 'CA',
+    zipCode: '12345',
+    phone: '(555) 123-4567',
+    rewardsEnabled: true,
+    onlineOrderingAvailable: true,
+    menuItems: []
+  }
+];
+
 export async function PUT(
   request: Request,
-  { params }: { params: { businessId: string } }
+  { params }: Params
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -39,21 +58,6 @@ export async function PUT(
       return NextResponse.json(
         { error: 'Not authenticated' },
         { status: 401 }
-      );
-    }
-
-    const db = await getDb();
-    
-    // Check if user owns this business
-    const business = await db.collection('businesses').findOne({
-      _id: new ObjectId(params.businessId),
-      claimedBy: new ObjectId(session.user.id),
-    });
-
-    if (!business) {
-      return NextResponse.json(
-        { error: 'Business not found or not authorized' },
-        { status: 404 }
       );
     }
 
@@ -70,12 +74,17 @@ export async function PUT(
     const updateData = result.data;
 
     // Update business
-    await db.collection('businesses').updateOne(
-      { _id: new ObjectId(params.businessId) },
-      { $set: updateData }
-    );
+    const business = mockBusinesses.find(b => b.id === params.businessId);
+    if (!business) {
+      return NextResponse.json(
+        { error: 'Business not found' },
+        { status: 404 }
+      );
+    }
 
-    return NextResponse.json({ success: true, business: { ...business, ...updateData } });
+    Object.assign(business, updateData);
+
+    return NextResponse.json({ success: true, business });
   } catch (error) {
     console.error('Error updating business:', error);
     return NextResponse.json(
@@ -86,8 +95,8 @@ export async function PUT(
 }
 
 export async function GET(
-  request: Request,
-  { params }: { params: { businessId: string } }
+  _request: Request, 
+  { params }: Params
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -98,20 +107,19 @@ export async function GET(
       );
     }
 
-    const db = await getDb();
-    const business = await db.collection('businesses').findOne({
-      _id: new ObjectId(params.businessId),
-      claimedBy: new ObjectId(session.user.id),
-    });
+    const business = mockBusinesses.find(b => b.id === params.businessId);
 
     if (!business) {
       return NextResponse.json(
-        { error: 'Business not found or not authorized' },
+        { error: 'Business not found' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json({ business });
+    return NextResponse.json({
+      success: true,
+      business
+    });
   } catch (error) {
     console.error('Error fetching business:', error);
     return NextResponse.json(

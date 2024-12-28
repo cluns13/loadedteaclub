@@ -79,6 +79,6 @@ async function createMenuItems(businessId: string, processedMenu: any) {
   }));
 
   if (menuItems.length > 0) {
-    await db.collection('menuItems').insertMany(menuItems);
+    await db.collection('menuItems').insertOne({ menuItems });
   }
 }

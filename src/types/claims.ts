@@ -8,73 +8,68 @@ export type VerificationMethod = 'phone' | 'email' | 'mail' | 'documents' | 'men
 export interface VerificationStep {
   method: VerificationMethod;
   status: 'pending' | 'in_progress' | 'completed' | 'failed';
-  details?: string;
-  completedAt?: Date;
-  assignedTo?: ObjectId;
+  details?: string | undefined;
+  completedAt?: Date | undefined;
+  assignedTo?: ObjectId | undefined;
+  value?: string | boolean | number | null | undefined;
 }
 
 export interface VerificationStatus {
   method: VerificationMethod;
   verified: boolean;
-  verifiedAt?: Date;
-  verificationCode?: string;
+  verifiedAt?: Date | undefined;
+  verificationCode?: string | undefined;
   attempts: number;
-  lastAttempt?: Date;
-  menuItems?: MenuItem[];
-  menuVerificationNotes?: string;
+  lastAttempt?: Date | undefined;
+  menuItems?: MenuItem[] | undefined;
+  menuVerificationNotes?: string | undefined;
 }
 
 export interface ClaimDocuments {
-  businessLicense: string;
-  proofOfOwnership: string;
-  governmentId: string;
-  utilityBill?: string;
-  taxDocument?: string;
-  articleOfIncorporation?: string;
-  bankStatement?: string;
-  leaseAgreement?: string;
-  menuPhotos?: string[];
-  drinkPhotos?: string[];
-  additionalDocuments?: string[];
+  businessLicense?: string | undefined;
+  proofOfOwnership?: string | undefined;
+  governmentId?: string | undefined;
+  utilityBill?: string | undefined;
+  taxDocument?: string | undefined;
+  articleOfIncorporation?: string | undefined;
+  bankStatement?: string | undefined;
+  leaseAgreement?: string | undefined;
+  menuPhotos?: string[] | undefined;
+  drinkPhotos?: string[] | undefined;
+  additionalDocuments?: string[] | undefined;
 }
 
 export interface BusinessClaim {
-  _id?: ObjectId;
+  _id?: ObjectId | undefined;
   businessId: ObjectId;
   userId: ObjectId;
   status: ClaimStatus;
   documents: ClaimDocuments;
   verificationSteps: VerificationStep[];
   verificationStatus: VerificationStatus[];
-  businessEmail?: string;
-  businessPhone?: string;
-  additionalNotes?: string;
-  reviewNotes?: string;
-  reviewedBy?: ObjectId;
-  reviewedAt?: Date;
+  businessEmail?: string | undefined;
+  businessPhone?: string | undefined;
   createdAt: Date;
   updatedAt: Date;
-  estimatedReviewTime?: number; // in hours
-  priority?: 'standard' | 'urgent';
-  menu?: {
-    items: MenuItem[];
-    lastUpdated: Date;
-    verifiedAt?: Date;
-    verifiedBy?: ObjectId;
-  };
+  estimatedReviewTime: number;
+  priority: 'standard' | 'urgent' | 'high_priority';
+  reviewedBy?: ObjectId | undefined;
+  reviewedAt?: Date | undefined;
+  reviewNotes?: string | undefined;
 }
 
 export interface ClaimReviewAction {
   claimId: string;
   action: 'approve' | 'reject';
-  reviewNotes?: string;
+  reviewNotes?: string | undefined;
   menuVerification?: {
     isValid: boolean;
-    notes?: string;
-  };
+    notes?: string | undefined;
+  } | undefined;
 }
 
-export interface ClaimWithDetails extends Omit<BusinessClaim, 'businessId' | 'userId' | 'reviewedBy'> {
+export interface ClaimWithDetails {
+  _id: ObjectId;
   business: {
     _id: string;
     name: string;
@@ -87,8 +82,12 @@ export interface ClaimWithDetails extends Omit<BusinessClaim, 'businessId' | 'us
     name: string;
     email: string;
   };
+  status: ClaimStatus;
+  verificationSteps: VerificationStep[];
   reviewer?: {
     _id: string;
     name: string;
-  };
+  } | undefined;
+  createdAt: Date;
+  updatedAt: Date;
 }

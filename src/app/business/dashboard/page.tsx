@@ -6,11 +6,13 @@ import {
   Bar, 
   XAxis, 
   YAxis, 
+  CartesianGrid, 
   Tooltip, 
+  Legend, 
   ResponsiveContainer 
 } from 'recharts';
-import { BusinessRedemptionScanner } from '@/components/rewards/BusinessRedemptionScanner';
-import { Button } from '@/components/ui/button';
+import BusinessRedemptionScanner from '@/components/rewards/BusinessRedemptionScanner';
+import { Button } from '@/components/ui/Button';
 import { toast } from 'sonner';
 
 // Mock data - will be replaced with real API calls

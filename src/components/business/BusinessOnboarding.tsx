@@ -2,7 +2,29 @@ import { useState } from 'react';
 import { Check, Store, Mail, Phone, MapPin } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { LoadingButton } from '../ui/LoadingButton';
-import { Input } from '../ui/Input';
+
+interface InputFieldProps {
+  label: string;
+  placeholder: string;
+  as?: string;
+  [key: string]: any;
+}
+
+const InputField = ({ 
+  label, 
+  placeholder, 
+  as = 'input', 
+  ...props 
+}: InputFieldProps) => (
+  <div>
+    <label>{label}</label>
+    <input 
+      type={as} 
+      placeholder={placeholder} 
+      {...props} 
+    />
+  </div>
+);
 
 const steps = [
   {
@@ -107,11 +129,11 @@ export function BusinessOnboarding() {
             <p className="text-[var(--foreground-muted)]">
               Enter your business details to start the verification process.
             </p>
-            <Input
+            <InputField
               label="Business Name"
               placeholder="Enter your business name"
             />
-            <Input
+            <InputField
               label="Business Address"
               placeholder="Enter your business address"
             />
@@ -132,11 +154,11 @@ export function BusinessOnboarding() {
             <p className="text-[var(--foreground-muted)]">
               We'll need to verify your identity and business ownership.
             </p>
-            <Input
+            <InputField
               label="Business Registration Number"
               placeholder="Enter your business registration number"
             />
-            <Input
+            <InputField
               label="Tax ID"
               placeholder="Enter your tax ID"
             />
@@ -163,12 +185,12 @@ export function BusinessOnboarding() {
             <p className="text-[var(--foreground-muted)]">
               Add your business contact information.
             </p>
-            <Input
+            <InputField
               label="Business Email"
               type="email"
               placeholder="Enter your business email"
             />
-            <Input
+            <InputField
               label="Business Phone"
               type="tel"
               placeholder="Enter your business phone"
@@ -196,12 +218,12 @@ export function BusinessOnboarding() {
             <p className="text-[var(--foreground-muted)]">
               Complete your business profile.
             </p>
-            <Input
+            <InputField
               label="Business Description"
               placeholder="Enter a description of your business"
               as="textarea"
             />
-            <Input
+            <InputField
               label="Business Hours"
               placeholder="Enter your business hours"
             />

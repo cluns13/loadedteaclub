@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import QRCode from 'qrcode.react';
+import { QRCodeSVG } from 'qrcode.react';
 import { useSession } from 'next-auth/react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { createHash } from 'crypto';
 
 // Utility function to generate secure token
@@ -101,7 +101,7 @@ export function RewardsQRGenerator({
       {qrData ? (
         <div className="flex flex-col items-center">
           <div className="bg-white/10 p-4 rounded-xl mb-4">
-            <QRCode 
+            <QRCodeSVG 
               value={qrData} 
               size={256} 
               level={'H'} 

@@ -1,4 +1,4 @@
-import { MenuValidationService, MenuItem } from '@/lib/services/menuValidationService';
+import { MenuValidationService, MenuItem, CategoryType } from '@/lib/services/menuValidationService';
 
 describe('MenuValidationService', () => {
   describe('validateMenu', () => {
@@ -7,35 +7,35 @@ describe('MenuValidationService', () => {
         items: [
           {
             name: 'Blue Hawaiian',
-            category: 'Loaded Teas',
+            category: CategoryType.LoadedTeas,
             description: 'Tropical loaded tea',
           },
           {
             name: 'Mermaid',
-            category: 'Loaded Teas',
+            category: CategoryType.LoadedTeas,
             description: 'Blue raspberry loaded tea',
           },
           {
             name: 'Cherry Bomb',
-            category: 'Lit Teas',
+            category: CategoryType.LitTeas,
             description: 'Cherry lit tea',
           },
           {
             name: 'Peach Perfect',
-            category: 'Lit Teas',
+            category: CategoryType.LitTeas,
             description: 'Peach lit tea',
           },
           {
             name: 'Chocolate Shake',
-            category: 'Meal Replacements',
+            category: CategoryType.MealReplacements,
             description: 'Chocolate protein shake',
           },
           {
             name: 'Vanilla Dream',
-            category: 'Meal Replacements',
+            category: CategoryType.MealReplacements,
             description: 'Vanilla protein shake',
           },
-        ],
+        ] as MenuItem[],
       };
 
       const result = MenuValidationService.validateMenu(menu);
@@ -49,21 +49,21 @@ describe('MenuValidationService', () => {
         items: [
           {
             name: 'Blue Hawaiian',
-            category: 'Loaded Teas',
+            category: CategoryType.LoadedTeas,
             description: 'Tropical loaded tea',
           },
           {
             name: 'Mermaid',
-            category: 'Loaded Teas',
+            category: CategoryType.LoadedTeas,
             description: 'Blue raspberry loaded tea',
           },
-        ],
+        ] as MenuItem[],
       };
 
       const result = MenuValidationService.validateMenu(menu);
       expect(result.isValid).toBe(false);
-      expect(result.missingCategories).toContain('Lit Teas');
-      expect(result.missingCategories).toContain('Meal Replacements');
+      expect(result.missingCategories).toContain(CategoryType.LitTeas);
+      expect(result.missingCategories).toContain(CategoryType.MealReplacements);
     });
 
     it('should fail validation when category has less than 2 items', () => {
@@ -71,30 +71,30 @@ describe('MenuValidationService', () => {
         items: [
           {
             name: 'Blue Hawaiian',
-            category: 'Loaded Teas',
+            category: CategoryType.LoadedTeas,
             description: 'Tropical loaded tea',
           },
           {
             name: 'Cherry Bomb',
-            category: 'Lit Teas',
+            category: CategoryType.LitTeas,
             description: 'Cherry lit tea',
           },
           {
             name: 'Peach Perfect',
-            category: 'Lit Teas',
+            category: CategoryType.LitTeas,
             description: 'Peach lit tea',
           },
           {
             name: 'Chocolate Shake',
-            category: 'Meal Replacements',
+            category: CategoryType.MealReplacements,
             description: 'Chocolate protein shake',
           },
-        ],
+        ] as MenuItem[],
       };
 
       const result = MenuValidationService.validateMenu(menu);
       expect(result.isValid).toBe(false);
-      expect(result.errors).toContain("Category 'Loaded Teas' must have at least 2 items");
+      expect(result.errors).toContain(`Category '${CategoryType.LoadedTeas}' must have at least 2 items`);
     });
   });
 
@@ -102,7 +102,7 @@ describe('MenuValidationService', () => {
     it('should validate a valid menu item', () => {
       const item: MenuItem = {
         name: 'Blue Hawaiian',
-        category: 'Loaded Teas',
+        category: CategoryType.LoadedTeas,
         description: 'Tropical loaded tea',
         price: 8.99,
         popular: true,
@@ -117,11 +117,11 @@ describe('MenuValidationService', () => {
 
     it('should fail validation for invalid menu item', () => {
       const item = {
-        category: 'Loaded Teas',
+        category: CategoryType.LoadedTeas,
         description: 'Tropical loaded tea',
-      };
+      } as MenuItem;
 
-      const result = MenuValidationService.validateMenuItem(item as MenuItem);
+      const result = MenuValidationService.validateMenuItem(item);
       expect(result.isValid).toBe(false);
       expect(result.errors).toContain('Item name is required');
     });

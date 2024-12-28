@@ -6,8 +6,14 @@ import { useSession, signOut } from 'next-auth/react';
 import { Menu, X, User, LogOut, Store, ChevronDown } from 'lucide-react';
 import { LoadingButton } from '../ui/LoadingButton';
 import { useState } from 'react';
+import { Session } from 'next-auth';
 
-const navigation = [
+type NavigationItem = {
+  name: string;
+  href: string;
+};
+
+const navigation: NavigationItem[] = [
   { name: 'Home', href: '/' },
   { name: 'Order', href: '/order' },
   { name: 'Rewards', href: '/rewards' },
@@ -15,7 +21,7 @@ const navigation = [
   { name: 'About', href: '/about' },
 ];
 
-const userNavigation = {
+const userNavigation: Record<string, NavigationItem[]> = {
   user: [
     { name: 'My Saved Places', href: '/dashboard/saved' },
     { name: 'My Reviews', href: '/dashboard/reviews' },
@@ -45,11 +51,16 @@ export function Navigation() {
     signOut({ callbackUrl: '/' });
   };
 
-  const userRole = session?.user?.role || 'USER';
-  const isBusinessOwner = userRole === 'BUSINESS_OWNER';
-  const isAdmin = userRole === 'ADMIN';
+  const getUserRole = (session: Session | null): string => {
+    if (!session?.user) return 'USER';
+    return session.user.role || 'USER';
+  };
 
-  const getCurrentNavigation = () => {
+  const userRole = getUserRole(session);
+  const isBusinessOwner = userRole === 'BUSINESS_OWNER';
+  const isAdmin = session?.user?.isAdmin || false;
+
+  const getCurrentNavigation = (): NavigationItem[] => {
     if (isAdmin) return userNavigation.admin;
     if (isBusinessOwner) return userNavigation.business;
     return userNavigation.user;
@@ -90,7 +101,10 @@ export function Navigation() {
           <div className="hidden md:flex md:items-center md:space-x-4">
             {/* Auth Section */}
             {status === 'loading' ? (
-              <LoadingButton className="w-8 h-8" />
+              <LoadingButton 
+                className="w-8 h-8"
+                children={undefined}  
+              />
             ) : session ? (
               <div className="relative">
                 <button
@@ -100,7 +114,7 @@ export function Navigation() {
                   <div className="w-8 h-8 rounded-full bg-[hsl(var(--primary))] text-white flex items-center justify-center">
                     {session.user?.name?.[0]?.toUpperCase() || <User className="w-4 h-4" />}
                   </div>
-                  <span>{session.user?.name}</span>
+                  <span>{session.user?.name || 'User'}</span>
                   <ChevronDown className="w-4 h-4 text-gray-500" />
                 </button>
 
@@ -199,53 +213,60 @@ export function Navigation() {
                         <div className="w-8 h-8 rounded-full bg-[hsl(var(--primary))] text-white flex items-center justify-center">
                           {session.user?.name?.[0]?.toUpperCase() || <User className="w-4 h-4" />}
                         </div>
-                        <span className="ml-3 text-base font-medium text-gray-700">
-                          {session.user?.name}
-                        </span>
+                        <div className="ml-3">
+                          <div className="text-base font-medium text-gray-800">
+                            {session.user?.name || 'User'}
+                          </div>
+                          <div className="text-sm font-medium text-gray-500">
+                            {session.user?.email || 'No email'}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-3 space-y-1">
+                        {getCurrentNavigation().map((item) => (
+                          <Link
+                            key={item.name}
+                            href={item.href}
+                            className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-[hsl(var(--primary))]"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            {item.name}
+                          </Link>
+                        ))}
+
+                        <button
+                          onClick={handleSignOut}
+                          className="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-[hsl(var(--primary))]"
+                        >
+                          <LogOut className="w-4 h-4 mr-2 inline-block" />
+                          Sign out
+                        </button>
                       </div>
                     </div>
-                    {getCurrentNavigation().map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-[hsl(var(--primary))]"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
-                    <button
-                      onClick={handleSignOut}
-                      className="w-full text-left flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-[hsl(var(--primary))]"
-                    >
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Sign out
-                    </button>
                   </div>
                 </>
               ) : (
-                <div className="pt-4 border-t border-gray-100">
+                <div className="px-3 py-2 space-y-2">
                   <Link
                     href="/login"
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-[hsl(var(--primary))]"
-                    onClick={() => setIsOpen(false)}
+                    className="block w-full text-center px-4 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-[hsl(var(--primary))]"
                   >
                     Sign in
                   </Link>
                   <Link
                     href="/register"
-                    className="block px-3 py-2 rounded-md text-base font-medium text-[hsl(var(--primary))]"
-                    onClick={() => setIsOpen(false)}
+                    className="block w-full text-center px-4 py-2 rounded-md text-sm font-medium bg-[hsl(var(--primary))] text-white hover:opacity-90 transition-colors"
                   >
                     Sign up
                   </Link>
+                  {/* List Your Business Button (only show if not a business owner) */}
                   {!isBusinessOwner && !isAdmin && (
                     <Link
                       href="/register?role=business"
-                      className="block px-3 py-2 rounded-md text-base font-medium text-[hsl(var(--primary))]"
-                      onClick={() => setIsOpen(false)}
+                      className="block w-full text-center inline-flex items-center justify-center px-4 py-2 rounded-md text-sm font-medium border border-[hsl(var(--primary))] text-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))] hover:text-white transition-colors"
                     >
-                      <Store className="w-4 h-4 inline-block mr-2" />
+                      <Store className="w-4 h-4 mr-2" />
                       List Your Business
                     </Link>
                   )}

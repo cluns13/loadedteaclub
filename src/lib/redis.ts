@@ -5,7 +5,7 @@ const globalForRedis = global as unknown as { redis: Redis | undefined };
 
 export const redis = 
   globalForRedis.redis ||
-  new Redis(process.env.REDIS_URL, {
+  new Redis(process.env.REDIS_URL || 'redis://localhost:6379', {
     connectTimeout: 5000,
     maxRetriesPerRequest: 3,
     retryStrategy: (times) => {

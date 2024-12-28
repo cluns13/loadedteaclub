@@ -6,137 +6,84 @@ on:
   pull_request:
     branches: [ main, develop ]
 
-env:
-  MONGODB_URI: ${{ secrets.MONGODB_URI }}
-  MONGODB_DB: ${{ secrets.MONGODB_DB }}
-  VERCEL_DEPLOY_TOKEN: ${{ secrets.VERCEL_DEPLOY_TOKEN }}
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-  NODE_OPTIONS: '--max_old_space_size=4096'
-
-# Testing MongoDB connection
-# Trigger new workflow run after dependency sync
 jobs:
-  lint-and-test:
-    name: Lint, Type Check, and Test
+  type-check-and-lint:
+    name: Type Check and Lint
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    
-    - name: Setup Node.js
+    - uses: actions/checkout@v4
+    - name: Use Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18.x'
         cache: 'npm'
     
-    - name: Cache npm dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+    - name: Install Dependencies
+      run: npm ci
     
-    - name: Install dependencies
-      run: npm install
-    
-    - name: Debug Dependency Installation
-      run: |
-        npm list @react-email/render
-        npm list html-to-text
-        npm list @selderee/plugin-htmlparser2
-        npm list selderee
-        npm list parseley
-        npm list peberminta
-    
-    - name: Run type check
+    - name: Type Check
       run: npm run type-check
-      
-    - name: Run lint
+    
+    - name: Lint
       run: npm run lint
-      
-    - name: Debug MongoDB Connection
-      run: |
-        echo "MongoDB URI length: ${#MONGODB_URI}"
-        echo "MongoDB DB: $MONGODB_DB"
-        echo "Node Environment: $NODE_ENV"
-        echo "Current directory contents:"
-        ls -la
-      
-    - name: Run unit tests
-      run: npm run test:unit
-      
-    - name: Run integration tests
-      run: npm run test:integration
 
-  build-and-deploy:
-    name: Build and Deploy
-    needs: lint-and-test
+  test:
+    needs: type-check-and-lint
+    name: Run Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Setup Node.js
+    - uses: actions/checkout@v4
+    - name: Use Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18.x'
         cache: 'npm'
     
-    - name: Install dependencies
-      run: npm install
+    - name: Install Dependencies
+      run: npm ci
     
-    - name: Debug Dependency Installation
-      run: |
-        npm list @react-email/render
-        npm list html-to-text
-        npm list @selderee/plugin-htmlparser2
-        npm list selderee
-        npm list parseley
-        npm list peberminta
+    - name: Run Tests
+      env:
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        MONGODB_DB: ${{ secrets.MONGODB_DB }}
+        VERCEL_DEPLOY_TOKEN: ${{ secrets.VERCEL_DEPLOY_TOKEN }}
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        NODE_OPTIONS: '--max_old_space_size=4096'
+      run: npm test
+
+  deploy:
+    needs: [type-check-and-lint, test]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
     
-    - name: Build application
-      run: npm run build
-      
-    - name: Run database migrations
-      run: npm run migrate
-      
-    - name: Create Sentry Release
-      run: |
-        npm install -g @sentry/cli
-        export SENTRY_RELEASE=$(git rev-parse HEAD)
-        sentry-cli releases new -p loadedteafinder $SENTRY_RELEASE
+    - name: Install Vercel CLI
+      run: npm install -g vercel
     
     - name: Deploy to Vercel
-      if: github.ref == 'refs/heads/main'
-      run: npx vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      run: |
+        vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+        vercel build --prod --token=$VERCEL_TOKEN
+        vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
     
-    - name: Deploy to Vercel (Preview)
-      if: github.event_name == 'pull_request'
-      run: npx vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
-
-  notify:
-    name: Notify Deployment Status
-    needs: [lint-and-test, build-and-deploy]
-    if: always()
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Slack Notification
+    - name: Notify Slack on Failure
+      if: failure()
       uses: 8398a7/action-slack@v3
       with:
         status: ${{ job.status }}
         fields: repo,message,commit,author,action,eventName,ref,workflow
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-      if: failure() # Only send notification on failure

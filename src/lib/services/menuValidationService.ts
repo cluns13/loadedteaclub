@@ -1,12 +1,19 @@
 import { z } from 'zod';
 
+// Define required drink categories as an enum
+export enum CategoryType {
+  LoadedTeas = 'Loaded Teas',
+  LitTeas = 'Lit Teas',
+  MealReplacements = 'Meal Replacements'
+}
+
 // Define required drink categories
-export const REQUIRED_CATEGORIES = ['Loaded Teas', 'Lit Teas', 'Meal Replacements'] as const;
+export const REQUIRED_CATEGORIES = Object.values(CategoryType);
 
 // Define menu item schema
 export const menuItemSchema = z.object({
   name: z.string().min(1, 'Item name is required'),
-  category: z.enum(REQUIRED_CATEGORIES),
+  category: z.nativeEnum(CategoryType),
   description: z.string().optional(),
   price: z.number().optional(),
   popular: z.boolean().optional(),
@@ -27,7 +34,7 @@ export class MenuValidationService {
    */
   static validateMenu(menu: { items: MenuItem[] }): {
     isValid: boolean;
-    missingCategories: string[];
+    missingCategories: CategoryType[];
     errors: string[];
   } {
     const result = menuSchema.safeParse(menu);
@@ -36,7 +43,7 @@ export class MenuValidationService {
     if (!result.success) {
       return {
         isValid: false,
-        missingCategories: [...REQUIRED_CATEGORIES],
+        missingCategories: REQUIRED_CATEGORIES as CategoryType[],
         errors: result.error.issues.map(i => i.message),
       };
     }
@@ -57,7 +64,7 @@ export class MenuValidationService {
 
     return {
       isValid: missingCategories.length === 0 && errors.length === 0,
-      missingCategories,
+      missingCategories: missingCategories as CategoryType[],
       errors,
     };
   }

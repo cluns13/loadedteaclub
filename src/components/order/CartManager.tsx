@@ -6,7 +6,7 @@ import { OrderService } from '@/lib/services/orderService';
 import { NutritionClub } from '@/types/nutritionClub';
 import { MenuItem } from '@/types/menu';
 import { OrderConfirmation } from './OrderConfirmation';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { useSession } from 'next-auth/react';
 
 interface CartManagerProps {

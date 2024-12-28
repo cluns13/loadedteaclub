@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { Order } from '@/lib/services/orderService';
 import { CartItem } from '@/lib/services/cartService';
-import { Button } from '@/components/ui/button';
-import { format } from 'date-fns';
+import { Button } from '@/components/ui/Button';
+import { format, parseISO } from 'date-fns'; 
 
 interface OrderConfirmationProps {
   order: Order;
@@ -48,7 +48,7 @@ export function OrderConfirmation({ order, onClose }: OrderConfirmationProps) {
             Order #{order.id.slice(-6)}
           </p>
           <p className="text-gray-600">
-            {format(order.createdAt, 'MMMM d, yyyy h:mm a')}
+            {format(parseISO(order.createdAt), 'MMMM d, yyyy h:mm a')}
           </p>
         </div>
 

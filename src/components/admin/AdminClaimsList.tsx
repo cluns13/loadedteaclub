@@ -2,9 +2,29 @@
 
 import { useState, useEffect } from 'react';
 import { ClaimStatus, VerificationStep, VerificationMethod } from '@/types/claims';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { toast } from 'react-hot-toast';
 import { ObjectId } from 'mongodb';
+
+// Define types for business claim
+type BusinessClaim = {
+  _id?: ObjectId;
+  business?: {
+    name: string;
+    address: string;
+    city: string;
+    state: string;
+  };
+  claimant?: {
+    name: string;
+    email: string;
+  };
+  createdAt?: Date;
+  verificationSteps?: VerificationStep[];
+  documents?: {
+    [key: string]: string;
+  };
+};
 
 const VERIFICATION_METHODS: VerificationMethod[] = [
   'documents', 
@@ -29,9 +49,9 @@ const safeToString = (id: ObjectId | string | undefined): string => {
 };
 
 export default function AdminClaimsList() {
-  const [claims, setClaims] = useState([]);
+  const [claims, setClaims] = useState<BusinessClaim[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedClaim, setSelectedClaim] = useState(null);
+  const [selectedClaim, setSelectedClaim] = useState<BusinessClaim | null>(null);
   const [reviewNotes, setReviewNotes] = useState('');
   const [submittingReview, setSubmittingReview] = useState(false);
 
@@ -147,13 +167,13 @@ export default function AdminClaimsList() {
             <div key={safeToString(claim._id)} className="bg-white p-6 rounded-lg shadow">
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="text-xl font-semibold">{claim.business.name}</h3>
+                  <h3 className="text-xl font-semibold">{claim.business?.name}</h3>
                   <p className="text-gray-600">
-                    {claim.business.address}, {claim.business.city}, {claim.business.state}
+                    {claim.business?.address}, {claim.business?.city}, {claim.business?.state}
                   </p>
                   <div className="mt-2">
                     <p className="text-sm text-gray-600">
-                      Claimed by: {claim.claimant.name} ({claim.claimant.email})
+                      Claimed by: {claim.claimant?.name} ({claim.claimant?.email})
                     </p>
                     <p className="text-sm text-gray-600">
                       Submitted: {formatDate(claim.createdAt)}
@@ -173,7 +193,7 @@ export default function AdminClaimsList() {
               <div className="mt-4">
                 <h4 className="font-medium mb-2">Verification Steps</h4>
                 <div className="space-y-2">
-                  {claim.verificationSteps.map((step) => (
+                  {claim.verificationSteps?.map((step) => (
                     <div 
                       key={step.method} 
                       className={`p-2 rounded flex justify-between items-center ${getVerificationStepColor(step)}`}
@@ -189,7 +209,7 @@ export default function AdminClaimsList() {
               <div className="mt-4">
                 <h4 className="font-medium mb-2">Uploaded Documents</h4>
                 <div className="grid grid-cols-2 gap-2">
-                  {Object.entries(claim.documents)
+                  {Object.entries(claim.documents || {})
                     .filter(([key, value]) => value && key !== 'additionalDocuments')
                     .map(([key, value]) => (
                       <a 

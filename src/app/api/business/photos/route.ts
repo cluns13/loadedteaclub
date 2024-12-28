@@ -43,7 +43,7 @@ export async function POST(request: Request) {
     
     // Check if user owns this business
     const business = await db.collection<LoadedTeaClub>('businesses').findOne({
-      id: businessId,
+      _id: new ObjectId(businessId),
       claimedBy: new ObjectId(session.user.id)
     });
 
@@ -76,7 +76,7 @@ export async function POST(request: Request) {
     // Update business with new photo URLs
     if (isCoverPhoto) {
       await db.collection<LoadedTeaClub>('businesses').updateOne(
-        { id: businessId },
+        { _id: new ObjectId(businessId) },
         { 
           $set: { coverPhoto: photoUrls[0] },
           $push: { photos: photoUrls[0] }
@@ -84,7 +84,7 @@ export async function POST(request: Request) {
       );
     } else {
       await db.collection<LoadedTeaClub>('businesses').updateOne(
-        { id: businessId },
+        { _id: new ObjectId(businessId) },
         { $push: { photos: { $each: photoUrls } } }
       );
     }
@@ -115,7 +115,7 @@ export async function PATCH(request: Request) {
     
     // Check if user owns this business
     const business = await db.collection<LoadedTeaClub>('businesses').findOne({
-      id: businessId,
+      _id: new ObjectId(businessId),
       claimedBy: new ObjectId(session.user.id)
     });
 
@@ -128,7 +128,7 @@ export async function PATCH(request: Request) {
 
     // Set photo as cover photo
     await db.collection<LoadedTeaClub>('businesses').updateOne(
-      { id: businessId },
+      { _id: new ObjectId(businessId) },
       { $set: { coverPhoto: photoUrl } }
     );
 
@@ -167,7 +167,7 @@ export async function DELETE(request: Request) {
 
     // Check if user owns this business
     const business = await db.collection<LoadedTeaClub>('businesses').findOne({
-      id: businessId,
+      _id: new ObjectId(businessId),
       claimedBy: new ObjectId(session.user.id)
     });
 
@@ -189,18 +189,18 @@ export async function DELETE(request: Request) {
 
     // Remove URL from business
     await db.collection<LoadedTeaClub>('businesses').updateOne(
-      { id: businessId },
+      { _id: new ObjectId(businessId) },
       { $pull: { photos: photoUrl } }
     );
 
     // If the deleted photo is the cover photo, remove it
     const businessData = await db.collection<LoadedTeaClub>('businesses').findOne(
-      { id: businessId }
+      { _id: new ObjectId(businessId) }
     );
 
     if (businessData?.coverPhoto === photoUrl) {
       await db.collection<LoadedTeaClub>('businesses').updateOne(
-        { id: businessId },
+        { _id: new ObjectId(businessId) },
         { $unset: { coverPhoto: '' } }
       );
     }

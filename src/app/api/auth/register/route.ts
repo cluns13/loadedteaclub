@@ -54,9 +54,9 @@ export async function POST(request: Request) {
     const db = await getDb();
     
     // Check if user already exists
-    const existingUser = await db.collection<User>('users').findOne({
+    const existingUser = await db.collection('users').findOne({
       email: email.toLowerCase()
-    });
+    }) as User | null;
 
     if (existingUser) {
       return NextResponse.json(
@@ -84,7 +84,7 @@ export async function POST(request: Request) {
     }
 
     // Insert user
-    const result = await db.collection<User>('users').insertOne(user as User);
+    const result = await db.collection('users').insertOne(user as User);
 
     return NextResponse.json({
       message: 'Account created successfully',

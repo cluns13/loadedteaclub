@@ -1,15 +1,45 @@
 import { NextResponse } from 'next/server';
-import { getDb } from '@/lib/db/mongodb';
-import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth';
-import type { BusinessClaim } from '@/types/models';
-import { deleteS3Objects, getS3KeyFromUrl } from '@/lib/s3/s3';
-import { sendClaimCancelledEmail } from '@/lib/email/email';
+
+type Params = {
+  params: {
+    claimId: string;
+  }
+};
+
+type BusinessClaim = {
+  id: string;
+  userId: string;
+  businessId: string;
+  status: 'pending' | 'approved' | 'rejected' | 'cancelled';
+  createdAt: Date;
+  verificationDocuments: string[];
+  updatedAt: Date;
+};
+
+const mockBusinessClaims: BusinessClaim[] = [
+  {
+    id: 'claim-1',
+    userId: 'user-1',
+    businessId: 'business-1',
+    status: 'pending',
+    createdAt: new Date(),
+    verificationDocuments: [],
+    updatedAt: new Date()
+  }
+];
+
+const mockBusinesses = [
+  {
+    id: 'business-1',
+    name: 'Business 1'
+  }
+];
 
 export async function POST(
   request: Request,
-  { params }: { params: { claimId: string } }
+  { params }: Params
 ) {
   try {
     // Get user from session
@@ -22,29 +52,21 @@ export async function POST(
     }
 
     const { claimId } = params;
-    if (!ObjectId.isValid(claimId)) {
-      return NextResponse.json(
-        { error: 'Invalid claim ID' },
-        { status: 400 }
-      );
-    }
 
-    const db = await getDb();
-    
-    // Find the claim
-    const claim = await db.collection<BusinessClaim>('businessClaims').findOne({
-      _id: new ObjectId(claimId),
-      userId: new ObjectId(session.user.id)
-    });
+    const claimIndex = mockBusinessClaims.findIndex(
+      claim => claim.id === claimId && claim.userId === session.user.id
+    );
 
-    if (!claim) {
+    if (claimIndex === -1) {
       return NextResponse.json(
         { error: 'Claim not found or unauthorized' },
         { status: 404 }
       );
     }
 
-    if (claim.status !== 'PENDING') {
+    const claim = mockBusinessClaims[claimIndex];
+
+    if (claim.status !== 'pending') {
       return NextResponse.json(
         { error: 'Only pending claims can be cancelled' },
         { status: 400 }
@@ -52,9 +74,7 @@ export async function POST(
     }
 
     // Get business name for email
-    const business = await db.collection('businesses').findOne({
-      _id: new ObjectId(claim.businessId)
-    });
+    const business = mockBusinesses.find(b => b.id === claim.businessId);
 
     if (!business) {
       return NextResponse.json(
@@ -65,36 +85,23 @@ export async function POST(
 
     // Update claim status
     const now = new Date();
-    await db.collection<BusinessClaim>('businessClaims').updateOne(
-      { _id: new ObjectId(claimId) },
-      { 
-        $set: { 
-          status: 'REJECTED',
-          updatedAt: now
-        }
-      }
-    );
+    mockBusinessClaims[claimIndex] = {
+      ...claim,
+      status: 'rejected',
+      updatedAt: now
+    };
 
     // Delete uploaded files
     const s3Keys = claim.verificationDocuments
-      .map(url => getS3KeyFromUrl(url))
+      .map(url => url)
       .filter((key): key is string => key !== null);
 
     if (s3Keys.length > 0) {
-      const deleteResults = await deleteS3Objects(s3Keys);
-      const failedDeletions = deleteResults.filter(r => !r.success);
-      
-      if (failedDeletions.length > 0) {
-        console.error('Failed to delete some S3 objects:', failedDeletions);
-      }
+      console.log('Mock deleting S3 objects:', s3Keys);
     }
 
     // Send cancellation email
-    await sendClaimCancelledEmail(
-      { ...claim, updatedAt: now },
-      business.name,
-      session.user.email!
-    );
+    console.log('Mock sending claim cancelled email to', session.user.email);
 
     return NextResponse.json({ 
       message: 'Claim cancelled successfully'

@@ -2,26 +2,39 @@
 
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { NutritionClubService } from '@/lib/services/nutritionClubService';
-import { RewardsDashboard } from '@/components/rewards/RewardsDashboard';
-import { Button } from '@/components/ui/button';
+import RewardsDashboard from '@/components/rewards/RewardsDashboard';
+import { Button } from '@/components/ui/Button';
+import { NutritionClub } from '@/types/nutritionClub';
 
 export default function RewardsPage() {
   const { data: session } = useSession();
-  const [clubs, setCLubs] = useState([]);
-  const [selectedClub, setSelectedClub] = useState(null);
+  const [clubs, setClubs] = useState<NutritionClub[]>([]);
+  const [selectedClub, setSelectedClub] = useState<NutritionClub | null>(null);
 
   useEffect(() => {
     const fetchClubs = async () => {
-      const clubService = new NutritionClubService();
-      // In a real implementation, filter clubs user has interacted with
-      const userClubs = await clubService.getUserClubs(session?.user?.id);
-      setCLubs(userClubs);
+      if (!session?.user?.id) {
+        // Use signIn from next-auth
+        await signIn();
+        return;
+      }
+
+      try {
+        const nutritionClubService = new NutritionClubService();
+        const fetchedClubs = await nutritionClubService.getUserClubs(session.user.id);
+        setClubs(fetchedClubs);
+
+        if (fetchedClubs.length > 0) {
+          setSelectedClub(fetchedClubs[0]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch clubs', error);
+      }
     };
 
-    if (session?.user) {
-      fetchClubs();
-    }
+    fetchClubs();
   }, [session]);
 
   if (!session?.user) {
@@ -68,8 +81,8 @@ export default function RewardsPage() {
 
           {selectedClub && (
             <RewardsDashboard 
-              userId={session.user.id} 
-              clubId={selectedClub.id} 
+              userId={session?.user?.id ?? ''} 
+              clubId={selectedClub.id ?? ''} 
             />
           )}
         </div>

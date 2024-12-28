@@ -92,24 +92,24 @@ export async function POST(request: Request) {
         params: {
           location: { lat, lng },
           radius: SEARCH_RADIUS,
-          keyword: keyword,
-          key: PLACES_API_KEY!
+          keyword: keyword ?? '',
+          key: PLACES_API_KEY ?? ''
         }
       });
 
-      console.log(`Found ${response.data.results.length} results for "${keyword}"`);
+      console.log(`Found ${response.data.results.length} results for "${keyword ?? ''}"`);
 
       for (const place of response.data.results) {
-        if (seenPlaceIds.has(place.place_id)) continue;
+        if (!place.place_id || seenPlaceIds.has(place.place_id)) continue;
         seenPlaceIds.add(place.place_id);
 
         // Get place details
-        console.log('Getting details for:', place.name);
+        console.log('Getting details for:', place.name ?? 'Unknown Place');
         const detailsResponse = await client.placeDetails({
           params: {
             place_id: place.place_id,
             fields: ['formatted_address', 'formatted_phone_number', 'website', 'opening_hours'],
-            key: PLACES_API_KEY!
+            key: PLACES_API_KEY ?? ''
           }
         });
 
@@ -118,44 +118,43 @@ export async function POST(request: Request) {
 
         // Parse address
         const addressParts = details.formatted_address.split(',').map(part => part.trim());
-        const street = addressParts[0];
-        const cityState = addressParts[1].split(' ');
-        const stateCode = cityState.pop()!;
-        const cityName = cityState.join(' ');
+        const street = addressParts[0] ?? '';
+        const city = addressParts[1] ?? '';
+        const stateZip = addressParts[2] ?? '';
+        const stateCode = stateZip.split(' ')[0] ?? '';
 
-        // Parse hours
-        const hours: Record<string, string> = {};
-        if (details.opening_hours?.periods) {
-          const weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-          details.opening_hours.periods.forEach(period => {
-            if (!period.close) return;
-            const day = weekdays[period.open.day];
-            const open = `${period.open.time.slice(0, 2)}:${period.open.time.slice(2)}`;
-            const close = `${period.close.time.slice(0, 2)}:${period.close.time.slice(2)}`;
-            hours[day] = `${open}-${close}`;
-          });
-        }
+        // Safely handle periods and geometry
+        const safeBusinessHours = details.opening_hours?.periods?.map(period => ({
+          open: period.open?.time ?? '',
+          close: period.close?.time ?? '',
+          day: period.open?.day ?? 0
+        })) ?? [];
+
+        const location = place.geometry?.location ? {
+          lat: place.geometry.location.lat || 0,
+          lng: place.geometry.location.lng || 0
+        } : { lat: 0, lng: 0 };
 
         businesses.push({
           placeId: place.place_id,
-          name: place.name,
+          name: place.name ?? '',
           address: street,
-          city: cityName,
+          city: city,
           state: stateCode,
-          latitude: place.geometry.location.lat,
-          longitude: place.geometry.location.lng,
-          phone: details.formatted_phone_number,
-          website: details.website,
-          hours,
-          rating: place.rating,
-          reviewCount: place.user_ratings_total,
+          latitude: location.lat,
+          longitude: location.lng,
+          phone: details.formatted_phone_number ?? '',
+          website: details.website ?? '',
+          hours: safeBusinessHours,
+          rating: place.rating ?? 0,
+          reviewCount: place.user_ratings_total ?? 0,
           isVerified: false,
           isClaimed: false,
           createdAt: new Date(),
           menu: [],
           images: place.photos?.map(photo => 
             `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${PLACES_API_KEY}`
-          ) || [],
+          ) ?? [],
           source: 'google-places'
         });
       }

@@ -65,11 +65,13 @@ export class PerformanceOptimizer {
   }
 
   // Client-side code splitting and lazy loading
-  static lazyLoad<T>(
+  static lazyLoad<T extends ComponentType<any>>(
     importFn: () => Promise<{ default: T }>, 
     fallback?: React.ReactNode
-  ): LazyExoticComponent<FunctionComponent<T>> {
-    return React.lazy(importFn);
+  ): LazyExoticComponent<T> {
+    return React.lazy(() => 
+      importFn().then(module => ({ default: module.default as T }))
+    );
   }
 }
 

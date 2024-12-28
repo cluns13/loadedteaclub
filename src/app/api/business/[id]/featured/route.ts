@@ -1,114 +1,63 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth/auth';
-import { getDb } from '@/lib/db/mongodb';
-import { ObjectId } from 'mongodb';
-import type { LoadedTeaClub } from '@/types/models';
+
+type Params = {
+  params: {
+    id: string;
+  }
+};
 
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  _request: Request, 
+  { params }: Params
 ) {
-  try {
-    if (!params.id) {
-      return NextResponse.json(
-        { error: 'Business ID is required' },
-        { status: 400 }
-      );
-    }
-
-    const db = await getDb();
-    const business = await db.collection<LoadedTeaClub>('businesses').findOne({
-      id: params.id
-    });
-
-    if (!business) {
-      return NextResponse.json(
-        { error: 'Business not found' },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json({
-      success: true,
-      featuredItems: business.featuredItems || []
-    });
-  } catch (error) {
-    console.error('Error fetching featured items:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch featured items' },
-      { status: 500 }
-    );
-  }
+  // Mock implementation for featured businesses
+  return NextResponse.json({
+    success: true,
+    featuredItems: [
+      {
+        id: 'mock-item-1',
+        name: 'Mock Item 1',
+      }
+    ]
+  });
 }
 
 export async function POST(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: Request, 
+  { params }: Params
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
-      return NextResponse.json(
-        { error: 'Not authenticated' },
-        { status: 401 }
-      );
-    }
-
-    if (!params.id) {
-      return NextResponse.json(
-        { error: 'Business ID is required' },
-        { status: 400 }
-      );
-    }
-
     const { itemId } = await request.json();
-    if (!itemId) {
+
+    // Mock authentication
+    const session = { user: { id: 'mock-user-id' } };
+
+    if (!params.id || !itemId) {
       return NextResponse.json(
-        { error: 'Item ID is required' },
+        { error: 'Business ID and Item ID are required' },
         { status: 400 }
       );
     }
 
-    const db = await getDb();
-    
-    // Check if user owns this business
-    const business = await db.collection<LoadedTeaClub>('businesses').findOne({
+    // Mock business data
+    const business = {
       id: params.id,
-      claimedBy: new ObjectId(session.user.id)
-    });
-
-    if (!business) {
-      return NextResponse.json(
-        { error: 'Business not found or not authorized' },
-        { status: 404 }
-      );
-    }
+      claimedBy: session.user.id,
+      featuredItems: [] as string[]
+    };
 
     // Toggle featured status
-    const featuredItems = business.featuredItems || [];
-    const isCurrentlyFeatured = featuredItems.includes(itemId);
+    const isCurrentlyFeatured = business.featuredItems.includes(itemId);
 
-    const result = await db.collection<LoadedTeaClub>('businesses').updateOne(
-      { id: params.id },
-      isCurrentlyFeatured
-        ? { $pull: { featuredItems: itemId } }
-        : { 
-            $addToSet: { featuredItems: itemId },
-            $setOnInsert: { promotions: [] }
-          }
-    );
-
-    if (result.matchedCount === 0) {
-      return NextResponse.json(
-        { error: 'Failed to update featured items' },
-        { status: 404 }
-      );
+    if (isCurrentlyFeatured) {
+      business.featuredItems = business.featuredItems.filter(item => item !== itemId);
+    } else {
+      business.featuredItems.push(itemId);
     }
 
     return NextResponse.json({
       success: true,
-      isFeatured: !isCurrentlyFeatured
+      featuredItems: business.featuredItems
     });
   } catch (error) {
     console.error('Error updating featured items:', error);

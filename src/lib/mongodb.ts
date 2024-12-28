@@ -1,34 +1,35 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, Db, Collection } from 'mongodb';
 
-if (!process.env.MONGODB_URI) {
-  throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
-}
-
-const uri = process.env.MONGODB_URI;
-const options = {};
-
-let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
-
-if (process.env.NODE_ENV === 'development') {
-  // In development mode, use a global variable to preserve the connection
-  let globalWithMongo = global as typeof globalThis & {
-    _mongoClientPromise?: Promise<MongoClient>;
+// Mock database connection for client-side compatibility
+export async function connectToDatabase(): Promise<{ client: any; db: MockDatabase }> {
+  // Return a mock database connection object
+  return {
+    client: {},
+    db: new MockDatabase(),
   };
+}
 
-  if (!globalWithMongo._mongoClientPromise) {
-    client = new MongoClient(uri, options);
-    globalWithMongo._mongoClientPromise = client.connect();
+export class MockDatabase {
+  collection<T>(name: string) {
+    return {
+      find: () => ({
+        toArray: async (): Promise<T[]> => [],
+        sort: () => ({ toArray: async (): Promise<T[]> => [] }),
+      }),
+      findOne: async (): Promise<T | null> => null,
+      insertOne: async (doc: T) => ({ insertedId: null }),
+      updateOne: async () => ({ modifiedCount: 0 }),
+      findOneAndUpdate: async () => ({ value: null }),
+    };
   }
-  clientPromise = globalWithMongo._mongoClientPromise;
-} else {
-  // In production mode, create a new connection
-  client = new MongoClient(uri, options);
-  clientPromise = client.connect();
 }
 
-export async function connectToDatabase() {
-  const client = await clientPromise;
-  const db = client.db(process.env.MONGODB_DB);
-  return { client, db };
+export async function closeDatabaseConnection() {
+  // No-op for mock implementation
+  return;
 }
+
+// Provide a mock for any other database-related functions
+export const ObjectId = {
+  createFromHexString: (id: string) => id,
+};

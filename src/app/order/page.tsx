@@ -1,15 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession, signIn } from 'next-auth/react';
 import { NutritionClubService } from '@/lib/services/nutritionClubService';
+import { NutritionClub } from '@/types/nutritionClub';
 import { CartManager } from '@/components/order/CartManager';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 
 export default function OrderPage() {
   const { data: session } = useSession();
-  const [clubs, setClubs] = useState([]);
-  const [selectedClub, setSelectedClub] = useState(null);
+  const [clubs, setClubs] = useState<NutritionClub[]>([]);
+  const [selectedClub, setSelectedClub] = useState<NutritionClub | null>(null);
   const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {

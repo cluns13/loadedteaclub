@@ -81,6 +81,36 @@ export const BusinessValidationSchema = z.object({
   ).optional()
 });
 
+interface BusinessValidationResult {
+  isComplete: boolean;
+  issues: string[];
+  missingFields?: string[];
+}
+
+interface BusinessData {
+  name: string;
+  contact: {
+    phone: string;
+    email: string;
+  };
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+  };
+  hours: Array<{
+    day: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
+    open: string;
+    close: string;
+  }>;
+  menu?: Array<{
+    name: string;
+    price?: number;
+  }>;
+  images?: string[];
+}
+
 export class BusinessValidationService {
   // Validate entire business object
   static validateBusiness(business: any) {
@@ -146,18 +176,27 @@ export class BusinessValidationService {
   }
 
   // Comprehensive Integrity Check
-  static checkBusinessIntegrity(business: any) {
-    const validationResult = this.validateBusiness(business);
-    
-    if (!validationResult.isValid) {
+  static checkBusinessIntegrity(business: BusinessData): BusinessValidationResult {
+    // Check if the business object has the required structure
+    const requiredFields = [
+      'name', 
+      'contact', 
+      'address', 
+      'hours'
+    ];
+
+    const missingFields = requiredFields.filter(field => !business[field]);
+
+    if (missingFields.length > 0) {
       return {
         isComplete: false,
-        missingFields: validationResult.errors.map(err => err.path)
+        issues: [],
+        missingFields
       };
     }
 
     // Additional custom integrity checks
-    const integrityIssues = [];
+    const integrityIssues: string[] = [];
 
     if (!business.menu || business.menu.length === 0) {
       integrityIssues.push('No menu items');
