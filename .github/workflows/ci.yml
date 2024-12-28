@@ -18,6 +18,7 @@ env:
   NODE_OPTIONS: '--max_old_space_size=4096'
 
 # Testing MongoDB connection
+# Trigger new workflow run after dependency sync
 jobs:
   lint-and-test:
     name: Lint, Type Check, and Test
