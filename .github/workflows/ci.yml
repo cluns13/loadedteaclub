@@ -2,45 +2,114 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
 
+env:
+  MONGODB_URI: ${{ secrets.MONGODB_URI }}
+  MONGODB_DB: ${{ secrets.MONGODB_DB }}
+  VERCEL_DEPLOY_TOKEN: ${{ secrets.VERCEL_DEPLOY_TOKEN }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  NODE_OPTIONS: '--max_old_space_size=4096'
+
+# Testing MongoDB connection
 jobs:
-  build:
+  lint-and-test:
+    name: Lint, Type Check, and Test
     runs-on: ubuntu-latest
-
+    timeout-minutes: 15
+    
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js
-      uses: actions/setup-node@v3
+    - name: Checkout code
+      uses: actions/checkout@v4
       with:
-        node-version: '18'
+        fetch-depth: 0
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
         cache: 'npm'
-
-    - name: Install Dependencies
-      run: npm ci
-
-    - name: Lint
-      run: npm run lint
-
-    - name: Build
-      run: npm run build
-
-    - name: Test
-      run: npm test || true  # Add actual test command if you have tests
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Deploy to Vercel
-      uses: amondnet/vercel-action@v20
+    
+    - name: Cache npm dependencies
+      uses: actions/cache@v3
       with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run type check
+      run: npm run type-check
+      
+    - name: Run lint
+      run: npm run lint
+      
+    - name: Run unit tests
+      run: npm run test:unit
+      
+    - name: Run integration tests
+      run: npm run test:integration
+
+  build-and-deploy:
+    name: Build and Deploy
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build application
+      run: npm run build
+      
+    - name: Run database migrations
+      run: npm run migrate
+      
+    - name: Create Sentry Release
+      run: |
+        npm install -g @sentry/cli
+        export SENTRY_RELEASE=$(git rev-parse HEAD)
+        sentry-cli releases new -p loadedteafinder $SENTRY_RELEASE
+    
+    - name: Deploy to Vercel
+      if: github.ref == 'refs/heads/main'
+      run: npx vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+    
+    - name: Deploy to Vercel (Preview)
+      if: github.event_name == 'pull_request'
+      run: npx vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
+
+  notify:
+    name: Notify Deployment Status
+    needs: [lint-and-test, build-and-deploy]
+    if: always()
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Slack Notification
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        fields: repo,message,commit,author,action,eventName,ref,workflow
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+      if: failure() # Only send notification on failure
