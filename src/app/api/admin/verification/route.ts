@@ -1,11 +1,29 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth/authOptions';
-import ClaimService from '@/lib/services/claimService';
+import { authOptions } from '@/app/api/auth/[...nextauth]/auth';
+import { ClaimService } from '@/lib/services/claimService';
 import { z } from 'zod';
-import { VerificationMethod, BusinessClaim } from '@/types/claims';
+import type { VerificationMethod } from '@/types/claims';
 
-// Schema for verification step update
+// Extend the session type to include role
+type AdminSession = {
+  user: {
+    id: string;
+    role: 'USER' | 'BUSINESS_OWNER' | 'ADMIN';
+    email?: string | null;
+    name?: string | null;
+    image?: string | null;
+    globalCustomerId?: string | null;
+    isClubOwner?: boolean;
+  };
+}
+
+async function requireAdminAccess(session: AdminSession | null): Promise<void> {
+  if (!session || session.user.role !== 'ADMIN') {
+    throw new Error('Unauthorized: Admin access required');
+  }
+}
+
 const verificationSchema = z.object({
   claimId: z.string().min(1, 'Claim ID is required'),
   stepMethod: z.string().min(1, 'Step method is required'),
@@ -23,13 +41,8 @@ const verificationSchema = z.object({
 
 // GET /api/admin/verification - Get verification steps for a claim
 export async function GET(request: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.id || session.user.role !== 'ADMIN') {
-    return NextResponse.json(
-      { error: 'Unauthorized access' },
-      { status: 401 }
-    );
-  }
+  const session = await getServerSession(authOptions) as AdminSession | null;
+  await requireAdminAccess(session);
 
   try {
     const { searchParams } = new URL(request.url);
@@ -42,7 +55,7 @@ export async function GET(request: Request) {
       );
     }
 
-    const claim = await ClaimService.getClaimById(claimId);
+    const claim = await ClaimService.findClaimById(claimId);
     if (!claim) {
       return NextResponse.json(
         { error: 'Claim not found' },
@@ -65,13 +78,8 @@ export async function GET(request: Request) {
 
 // POST /api/admin/verification - Update verification step
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.id || session.user.role !== 'ADMIN') {
-    return NextResponse.json(
-      { error: 'Unauthorized access' },
-      { status: 401 }
-    );
-  }
+  const session = await getServerSession(authOptions) as AdminSession | null;
+  await requireAdminAccess(session);
 
   try {
     const body = await request.json();
@@ -86,13 +94,12 @@ export async function POST(request: Request) {
 
     const { claimId, stepMethod, status, notes } = result.data;
 
-    // Add method to ClaimService to update verification step
     const updateResult = await ClaimService.updateVerificationStep(
-      claimId,
+      claimId, 
       {
         method: stepMethod as VerificationMethod,
         status,
-        details: notes || '' // Ensure details is always a string
+        details: notes || ''
       }
     );
 
@@ -104,7 +111,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({
-      success: true,
+      message: 'Verification step updated successfully',
       claim: updateResult.data
     });
 

@@ -1,117 +1,136 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth/authOptions';
-import ClaimService from '@/lib/services/claimService';
-import { ClaimStatus, VerificationStatus } from '@/types/claims';
-import { User } from '@/types/models';
-import { ObjectId } from 'mongodb';
+import { authOptions } from '@/app/api/auth/[...nextauth]/auth';
+import { ClaimService } from '@/lib/services/claimService';
 import { z } from 'zod';
+import { sendClaimStatusEmail } from '@/lib/email/email';
+import { getMongoDb } from '@/lib/db/mongodb';
+import { ObjectId } from 'mongodb';
+import { BusinessClaim } from '@/types/claims';
 
-// Validation schema for claim update
-const claimUpdateSchema = z.object({
-  claimId: z.string(),
-  status: z.enum(['pending', 'approved', 'rejected']),
-  reviewedBy: z.string().optional(),
+// Extend the session type to include role
+type AdminSession = {
+  user: {
+    id: string;
+    role: 'ADMIN' | 'USER' | 'BUSINESS_OWNER';
+  }
+};
+
+const claimActionSchema = z.object({
+  claimId: z.string().min(1, 'Claim ID is required'),
+  action: z.enum(['approve', 'reject'], {
+    errorMap: () => ({ message: 'Invalid action type' })
+  }),
   reviewNotes: z.string().optional(),
-  verificationStatus: z.array(z.enum(['documents', 'ownership', 'location'])).optional()
 });
 
-// Validate admin access
-async function requireAdminAccess(session: { user: Pick<User, 'id' | 'role'> } | null): Promise<Pick<User, 'id' | 'role'>> {
-  if (!session || session.user.role !== 'ADMIN') {
-    throw new Error('Unauthorized');
-  }
-  return session.user;
-}
-
-// GET /api/admin/claims
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    const adminUser = await requireAdminAccess(session as { user: Pick<User, 'id' | 'role'> } | null);
-
-    const { searchParams } = new URL(request.url);
-    const status = searchParams.get('status') as ClaimStatus | null;
-    const limit = parseInt(searchParams.get('limit') || '10', 10);
-    const page = parseInt(searchParams.get('page') || '1', 10);
-
-    // Validate pagination parameters
-    if (isNaN(limit) || isNaN(page) || limit <= 0 || page <= 0) {
-      return NextResponse.json(
-        { error: 'Invalid pagination parameters' }, 
-        { status: 400 }
-      );
-    }
-
-    const claims = status 
-      ? await ClaimService.getClaimsByStatus(status, limit, page)
-      : await ClaimService.getRecentClaims(limit, page);
-
-    const total = await ClaimService.getPendingClaimsCount();
-
-    return NextResponse.json({
-      claims,
-      total,
-      page,
-      limit
-    });
-  } catch (error) {
-    console.error('Claims retrieval error:', error);
-    const errorMessage = error instanceof Error 
-      ? error.message 
-      : 'Failed to retrieve claims';
-
-    return NextResponse.json(
-      { error: errorMessage }, 
-      { status: errorMessage === 'Unauthorized' ? 401 : 500 }
-    );
-  }
-}
-
-// POST /api/admin/claims
-export async function POST(req: NextRequest) {
-  try {
-    // Validate user session and role
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions) as AdminSession | null;
+    
     if (!session || session.user.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
-    // Parse request body
-    const body = await req.json();
-    const validatedData = claimUpdateSchema.parse(body);
+    const db = await getMongoDb();
+    const claimsCollection = db.collection<BusinessClaim>('businessClaims');
 
-    // Prepare claim update data
-    const updateData: ClaimStatus = {
-      status: validatedData.status,
-      reviewedBy: validatedData.reviewedBy ? new ObjectId(validatedData.reviewedBy) : undefined,
-      reviewNotes: validatedData.reviewNotes,
-      verificationStatus: validatedData.verificationStatus || []
-    };
+    // Fetch recent claims with pagination
+    const claims = await claimsCollection
+      .find({ status: 'pending' })
+      .limit(10)
+      .toArray();
 
-    // Update claim
-    const result = await ClaimService.updateClaimStatus(
-      validatedData.claimId, 
-      updateData
+    const claimsWithDetails = await Promise.all(
+      claims.map(async (claim) => {
+        const userCollection = db.collection('users');
+        const businessCollection = db.collection('businesses');
+
+        const user = await userCollection.findOne({ _id: claim.userId });
+        const business = await businessCollection.findOne({ _id: claim.businessId });
+
+        return {
+          ...claim,
+          user: {
+            id: user?._id,
+            name: user?.name,
+            email: user?.email
+          },
+          business: {
+            id: business?._id,
+            name: business?.name
+          }
+        };
+      })
     );
 
-    if (!result.success) {
-      return NextResponse.json({ error: result.error }, { status: 400 });
-    }
-
-    return NextResponse.json(result.data, { status: 200 });
+    return NextResponse.json({
+      claims: claimsWithDetails,
+      total: await claimsCollection.countDocuments({ status: 'pending' })
+    });
   } catch (error) {
-    console.error('Claim update error:', error);
+    console.error('Error fetching claims:', error);
+    return NextResponse.json({ 
+      error: error instanceof Error ? error.message : 'Failed to fetch claims' 
+    }, { status: 500 });
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions) as AdminSession | null;
     
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ 
-        error: 'Invalid input', 
-        details: error.errors 
-      }, { status: 400 });
+    // Ensure user is an admin
+    if (!session || session.user.role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
+    const body = await request.json();
+    const { claimId, action, reviewNotes } = claimActionSchema.parse(body);
+
+    const claim = await ClaimService.findClaimById(claimId);
+    
+    if (!claim) {
+      return NextResponse.json({ error: 'Claim not found' }, { status: 404 });
+    }
+
+    const db = await getMongoDb();
+    const userCollection = db.collection('users');
+    const businessCollection = db.collection('businesses');
+
+    const status = action === 'approve' ? 'approved' : 'rejected';
+
+    // Fetch user and business details for email
+    const user = await userCollection.findOne({ _id: new ObjectId(claim.userId.toString()) });
+    const business = await businessCollection.findOne({ _id: new ObjectId(claim.businessId.toString()) });
+
+    // Update claim status
+    const updatedClaim = await ClaimService.updateClaimStatus(
+      claimId, 
+      status, 
+      reviewNotes, 
+      session.user.id
+    );
+
+    if (user?.email) {
+      await sendClaimStatusEmail({
+        to: user.email, 
+        businessName: business?.name || 'Your Business', 
+        status: action === 'approve' ? 'approved' : 'rejected',
+        notes: reviewNotes
+      });
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: `Claim ${action}d successfully`,
+      claim: updatedClaim
+    });
+
+  } catch (error) {
+    console.error('Error processing claim:', error);
     return NextResponse.json({ 
-      error: 'Internal server error' 
+      error: error instanceof Error ? error.message : 'Failed to process claim' 
     }, { status: 500 });
   }
 }

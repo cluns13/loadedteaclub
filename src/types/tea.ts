@@ -1,4 +1,4 @@
-export interface Tea {
+export type Tea = {
   id: string
   name: string
   type: TeaType
@@ -21,7 +21,7 @@ export type TeaType =
   | 'Rooibos'
   | 'Blend'
 
-export interface BrewingInstructions {
+export type BrewingInstructions = {
   temperature: number // in Celsius
   steepTime: number // in minutes
   servingSize: number // in grams
@@ -29,7 +29,7 @@ export interface BrewingInstructions {
   resteeps?: number
 }
 
-export interface Review {
+export type Review = {
   id: string
   userId: string
   userName: string
@@ -39,7 +39,7 @@ export interface Review {
   updatedAt?: Date
 }
 
-export interface TeaCollection {
+export type TeaCollection = {
   id: string
   name: string
   description: string

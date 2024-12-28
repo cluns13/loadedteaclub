@@ -12,22 +12,21 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-interface ReviewNotificationData {
+type ReviewNotificationData = {
+  businessId: string;
   businessName: string;
-  reviewerName: string;
-  rating: number;
-  content: string;
-  createdAt: string;
-  businessUrl: string;
   reviewId: string;
-}
+  reviewerName: string;
+  reviewText: string;
+  rating: number;
+};
 
 export async function sendReviewNotification(
   ownerEmail: string,
   data: ReviewNotificationData
 ) {
   const stars = '★'.repeat(data.rating) + '☆'.repeat(5 - data.rating);
-  const timeAgo = formatDistanceToNow(new Date(data.createdAt), { addSuffix: true });
+  const timeAgo = formatDistanceToNow(new Date(data.reviewText), { addSuffix: true });
 
   const html = `
     <!DOCTYPE html>
@@ -97,12 +96,12 @@ export async function sendReviewNotification(
             <div class="review">
               <div class="rating">${stars}</div>
               <p><strong>${data.reviewerName}</strong> • ${timeAgo}</p>
-              <p>${data.content}</p>
+              <p>${data.reviewText}</p>
             </div>
 
             <p>You can respond to this review to show your customers you value their feedback.</p>
             
-            <a href="${data.businessUrl}?review=${data.reviewId}" class="button">
+            <a href="${data.businessId}?review=${data.reviewId}" class="button">
               Respond to Review
             </a>
 

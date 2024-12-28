@@ -1,6 +1,8 @@
-/** @type {import('next').NextConfig} */
-const { withSentryConfig } = require('@sentry/nextjs');
+import path from 'path';
+import withBundleAnalyzer from '@next/bundle-analyzer';
+import { withSentryConfig } from '@sentry/nextjs';
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -14,6 +16,9 @@ const nextConfig = {
 
   // Webpack configuration
   webpack: (config, { isServer, webpack }) => {
+    config.resolve.alias['~'] = path.join(__dirname, 'src');
+    config.resolve.alias['@'] = path.join(__dirname, 'src');
+    
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -114,13 +119,19 @@ const nextConfig = {
   }
 };
 
-// Sentry configuration
-module.exports = withSentryConfig(
-  nextConfig, 
-  {
+const bundleAnalyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+})
+
+export default withSentryConfig(
+  bundleAnalyzer(nextConfig),
+  { 
     silent: true,
-    org: 'loadedteaclub',
-    project: 'web-app'
+    org: process.env.SENTRY_ORG,
+    project: process.env.SENTRY_PROJECT,
+    sourcemaps: {
+      disable: true
+    }
   },
   {
     widenClientFileUpload: true,

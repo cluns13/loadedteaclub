@@ -1,14 +1,19 @@
 import { ObjectId } from 'mongodb';
 
-// Base interface for all documents
-interface BaseDocument {
+// Type for documents with an _id
+export type WithId<T> = T & {
+  _id: ObjectId;
+}
+
+// Base type for all documents
+type BaseDocument = {
   _id?: ObjectId;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
 // User related types
-export interface User extends BaseDocument {
+export type User = BaseDocument & {
   email: string;
   name: string;
   hashedPassword: string;
@@ -21,7 +26,7 @@ export interface User extends BaseDocument {
 }
 
 // Business related types
-export interface LoadedTeaClub extends BaseDocument {
+export type LoadedTeaClub = BaseDocument & {
   name: string;
   description?: string;
   address: string;
@@ -51,7 +56,7 @@ export interface LoadedTeaClub extends BaseDocument {
   verificationStatus?: 'UNVERIFIED' | 'PENDING' | 'VERIFIED';
 }
 
-export interface BusinessHours {
+export type BusinessHours = {
   monday: { open: string; close: string };
   tuesday: { open: string; close: string };
   wednesday: { open: string; close: string };
@@ -61,7 +66,7 @@ export interface BusinessHours {
   sunday: { open: string; close: string };
 }
 
-export interface MenuItem extends BaseDocument {
+export type MenuItem = BaseDocument & {
   name: string;
   description: string;
   price: number;
@@ -72,7 +77,7 @@ export interface MenuItem extends BaseDocument {
   caffeine: number;
 }
 
-export interface Review extends BaseDocument {
+export type Review = BaseDocument & {
   userId: ObjectId;
   businessId: ObjectId;
   rating: number;
@@ -85,7 +90,7 @@ export interface Review extends BaseDocument {
   };
 }
 
-export interface BusinessPromotion extends BaseDocument {
+export type BusinessPromotion = BaseDocument & {
   text: string;
   active: boolean;
   startDate: string;
@@ -93,14 +98,14 @@ export interface BusinessPromotion extends BaseDocument {
 }
 
 // Analytics related types
-export interface BusinessAnalytics extends BaseDocument {
+export type BusinessAnalytics = BaseDocument & {
   businessId: ObjectId;
   totalViews: number;
   totalClicks: number;
   avgDuration: number;
 }
 
-export interface BusinessClaim extends BaseDocument {
+export type BusinessClaim = BaseDocument & {
   businessId: ObjectId;
   userId: ObjectId;
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
@@ -113,8 +118,8 @@ export interface BusinessClaim extends BaseDocument {
   rejectedAt?: Date;
 }
 
-// Database interface
-export interface DatabaseCollections {
+// Database type
+export type DatabaseCollections = {
   users: User;
   businesses: LoadedTeaClub;
   menuItems: MenuItem;

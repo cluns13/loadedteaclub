@@ -1,21 +1,21 @@
 import { useState, useEffect, useRef } from 'react';
 import type { UploadPurpose } from '@/lib/storage/s3';
 
-interface UploadState {
+type UploadState = {
   progress: number;
   error: string | null;
   uploading: boolean;
   url: string | null;
 }
 
-interface UseFileUploadOptions {
+type UseFileUploadOptions = {
   purpose: UploadPurpose;
   maxRetries?: number;
   onSuccess?: (url: string) => void;
   onError?: (error: Error) => void;
 }
 
-interface UseFileUploadReturn {
+type UseFileUploadReturn = {
   uploadState: UploadState;
   uploadFile: (file: File) => Promise<string>;
   resetUpload: () => void;

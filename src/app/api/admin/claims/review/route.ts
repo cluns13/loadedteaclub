@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { ObjectId } from 'mongodb';
-import ClaimService from '@/lib/services/claimService';
+import { ClaimService } from '@/lib/services/claimService';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth/authOptions';
+import { authOptions } from '@/app/api/auth/[...nextauth]/auth';
 import { VerificationStep, VerificationMethod } from '@/types/claims';
 
 // Validation schema for verification step

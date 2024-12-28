@@ -1,6 +1,7 @@
-import type { LoadedTeaClub, MenuItem, Review } from './models';
+import type { LoadedTeaClub, MenuItem, Review, ObjectId } from './models';
+import { Location } from './location';
 
-export interface SearchResult extends Partial<LoadedTeaClub> {
+export type SearchResult = Partial<LoadedTeaClub> & {
   // Override and extend LoadedTeaClub type for search-specific use
   placeId?: string;
   
@@ -31,7 +32,7 @@ export interface SearchResult extends Partial<LoadedTeaClub> {
   }[];
 }
 
-export interface SearchProps {
+export type SearchProps = {
   onSearchResults: (results: SearchResult[]) => void;
   initialCity?: string;
   initialState?: string;
@@ -45,7 +46,7 @@ export interface SearchProps {
   };
 }
 
-export interface SearchState {
+export type SearchState = {
   location: string;
   loading: boolean;
   error: string | null;
@@ -59,12 +60,12 @@ export interface SearchState {
   };
 }
 
-export interface SearchFilter {
+export type SearchFilter = {
   type: 'category' | 'rating' | 'distance' | 'price' | 'availability';
   value: string | number | [number, number] | boolean;
 }
 
-export interface SearchSuggestion {
+export type SearchSuggestion = {
   id: string;
   name: string;
   type: 'business' | 'menu_item' | 'location';

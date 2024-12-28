@@ -1,28 +1,25 @@
 import "next-auth";
+import { type DefaultSession, type DefaultUser } from "next-auth";
+import { type DefaultJWT } from "next-auth/jwt";
 
 declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-      name?: string | null;
-      email?: string | null;
-      image?: string | null;
-      globalCustomerId?: string | null;
-      isClubOwner?: boolean;
-    }
+  interface User extends DefaultUser {
+    id: string;
+    role: 'USER' | 'BUSINESS_OWNER' | 'ADMIN';
+    isClubOwner?: boolean;
+    globalCustomerId?: string | null;
   }
 
-  interface User {
-    id: string;
-    globalCustomerId?: string;
-    isClubOwner?: boolean;
+  interface Session extends DefaultSession {
+    user: User & DefaultSession["user"];
   }
 }
 
 declare module "next-auth/jwt" {
-  interface JWT {
+  interface JWT extends DefaultJWT {
     id: string;
-    globalCustomerId?: string;
-    isClubOwner?: boolean;
+    role: 'USER' | 'BUSINESS_OWNER' | 'ADMIN';
+    isClubOwner: boolean;
+    globalCustomerId: string | null;
   }
 }

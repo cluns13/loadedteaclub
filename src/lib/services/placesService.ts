@@ -1,236 +1,128 @@
-import { Client } from '@googlemaps/google-maps-services-js';
-import { getDb } from '@/lib/db/mongodb';
-import { NutritionClubService } from './nutritionClubService';
-import { LocationDetails } from './locationInterfaces';
-import { LoadedTeaClub } from '@/types/models';
-import redis from '@/lib/redis';
+import { Client } from "@googlemaps/google-maps-services-js";
+import { LoadedTeaClub, BusinessHours } from "@/types/models";
+import { AddressType, PlacePhoto } from "@googlemaps/google-maps-services-js";
 
-const client = new Client({});
-const nutritionClubService = new NutritionClubService();
-
-export interface PlacePhotos {
-  coverPhoto?: string;
-  photos: string[];
-  lastUpdated: Date;
+interface IPlacesService {
+  searchNearby(query: string, location: { lat: number; lng: number }, radius: number): Promise<LoadedTeaClub[]>;
+  getPlaceDetails(placeId: string): Promise<LoadedTeaClub | null>;
+  getPlacePhotos(placeId: string): Promise<string[]>;
 }
 
-export interface IPlacesService {
-  searchNearby(location: LocationDetails): Promise<LoadedTeaClub[]>;
-}
+class PlacesService implements IPlacesService {
+  private client: Client;
 
-type Location = {
-  lat: number;
-  lng: number;
-};
+  constructor() {
+    this.client = new Client({});
+  }
 
-type PlaceGeometry = {
-  location?: Location;
-};
-
-type Place = {
-  place_id?: string;
-  name?: string;
-  formatted_address?: string;
-  geometry?: PlaceGeometry;
-  rating?: number;
-  user_ratings_total?: number;
-  vicinity?: string;
-};
-
-type Photo = {
-  photo_reference?: string;
-  width?: number;
-  height?: number;
-};
-
-export class PlacesService implements IPlacesService {
-  async searchNearby(location: LocationDetails): Promise<LoadedTeaClub[]> {
+  async searchNearby(
+    query: string, 
+    location: { lat: number; lng: number }, 
+    radius: number
+  ): Promise<LoadedTeaClub[]> {
     try {
-      // First, try nutrition clubs from our database
-      const nutritionClubs = await nutritionClubService.searchByLocation(location);
-      
-      // Mark these as claimed
-      const claimedClubs = nutritionClubs.map(club => ({
-        ...club,
-        isClaimed: true
-      }));
-
-      // If no nutrition clubs, fall back to Google Places API
-      const nearbyPlaces = await searchNearby({
-        lat: location.latitude!,
-        lng: location.longitude!
+      const response = await this.client.textSearch({
+        params: {
+          query,
+          location: `${location.lat},${location.lng}`,
+          radius,
+          key: process.env.GOOGLE_MAPS_API_KEY || ''
+        }
       });
 
-      const places = nearbyPlaces || [];
-      
-      const unclaimed = places.map((place: Place) => ({
-        id: place.place_id,
-        name: place.name,
+      return response.data.results.map(place => ({
+        id: place.place_id || '',
+        name: place.name || '',
+        address: place.formatted_address || '',
         location: {
-          address: place.vicinity,
-          lat: place.geometry?.location.lat,
-          lng: place.geometry?.location.lng,
-          city: location.city,
-          state: location.state
+          lat: place.geometry?.location?.lat || 0,
+          lng: place.geometry?.location?.lng || 0,
+          type: 'Point'
         },
-        rating: place.rating,
-        totalRatings: place.user_ratings_total,
-        isClaimed: false
+        rating: place.rating || 0,
+        userRatingsTotal: place.user_ratings_total || 0,
+        photos: place.photos?.map(photo => 
+          `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${process.env.GOOGLE_MAPS_API_KEY || ''}`
+        ) || [],
+        businessHours: {} as BusinessHours,
+        website: '',
+        phoneNumber: '',
+        priceLevel: place.price_level || 0,
+        types: place.types || [],
+        menuItems: [],
+        featuredItemIds: []
       }));
-
-      // Combine and prioritize claimed businesses
-      return [...claimedClubs, ...unclaimed];
     } catch (error) {
       console.error('Error searching nearby places:', error);
       return [];
     }
   }
-}
 
-export const searchNearby = async (location: Location) => {
-  const response = await client.nearbySearch({
-    params: {
-      location: {
-        lat: location.lat,
-        lng: location.lng
-      },
-      radius: 5000, // 5 km
-      type: 'restaurant',
-      key: process.env.GOOGLE_MAPS_API_KEY!
-    }
-  });
+  async getPlaceDetails(placeId: string): Promise<LoadedTeaClub | null> {
+    try {
+      const response = await this.client.placeDetails({
+        params: {
+          place_id: placeId,
+          fields: ['name', 'formatted_address', 'geometry', 'photos', 'rating', 'user_ratings_total', 'website', 'formatted_phone_number', 'price_level', 'types'],
+          key: process.env.GOOGLE_MAPS_API_KEY || ''
+        }
+      });
 
-  return response.data.results || [];
-};
-
-export async function getPlacePhotos(placeId: string, forceUpdate = false): Promise<PlacePhotos> {
-  // Redis cache key
-  const cacheKey = `place_photos:${placeId}`;
-
-  // Check Redis cache first
-  if (!forceUpdate) {
-    const cachedPhotos = await redis.get(cacheKey);
-    if (cachedPhotos) {
-      const parsedPhotos = JSON.parse(cachedPhotos);
-      return {
-        ...parsedPhotos,
-        lastUpdated: new Date(parsedPhotos.lastUpdated)
-      };
-    }
-  }
-
-  const db = await getDb();
-  
-  // Check if we have cached photos in MongoDB and they're less than 30 days old
-  const cachedBusiness = await db.collection('businesses').findOne(
-    { placeId },
-    { projection: { photos: 1, coverPhoto: 1, photosLastUpdated: 1 } }
-  );
-
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-  if (
-    !forceUpdate &&
-    cachedBusiness?.photos?.length &&
-    cachedBusiness.photosLastUpdated &&
-    new Date(cachedBusiness.photosLastUpdated) > thirtyDaysAgo
-  ) {
-    const photos = {
-      coverPhoto: cachedBusiness.coverPhoto,
-      photos: cachedBusiness.photos,
-      lastUpdated: new Date(cachedBusiness.photosLastUpdated),
-    };
-
-    // Cache in Redis for faster future access
-    await redis.set(cacheKey, JSON.stringify(photos), 'EX', 86400 * 30); // 30 days
-
-    return photos;
-  }
-
-  try {
-    // Fetch new photos from Google Places API
-    const placeDetails = await client.placeDetails({
-      params: {
-        place_id: placeId,
-        fields: ['photos'],
-        key: process.env.GOOGLE_MAPS_API_KEY!,
-      },
-    });
-
-    if (!placeDetails.data.result.photos) {
-      const emptyPhotos = { photos: [], lastUpdated: new Date() };
-      
-      // Cache empty result to prevent repeated API calls
-      await redis.set(cacheKey, JSON.stringify(emptyPhotos), 'EX', 86400); // 1 day
-      
-      return emptyPhotos;
-    }
-
-    // Get the photo references
-    const photoRefs = placeDetails.data.result.photos.map(
-      (photo: Photo) => photo.photo_reference
-    );
-
-    // Convert photo references to URLs
-    const photoUrls = photoRefs.map((ref) => 
-      `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${ref}&key=${process.env.GOOGLE_MAPS_API_KEY}`
-    );
-
-    const photos = {
-      coverPhoto: photoUrls[0],
-      photos: photoUrls,
-      lastUpdated: new Date(),
-    };
-
-    // Update the cached photos in our database
-    await db.collection('businesses').updateOne(
-      { placeId },
-      {
-        $set: {
-          photos: photos.photos,
-          coverPhoto: photos.coverPhoto,
-          photosLastUpdated: photos.lastUpdated,
-        },
+      const place = response.data.result;
+      if (!place) {
+        return null;
       }
-    );
 
-    // Cache in Redis
-    await redis.set(cacheKey, JSON.stringify(photos), 'EX', 86400 * 30); // 30 days
-
-    return photos;
-  } catch (error) {
-    console.error('Error fetching place photos:', error);
-    
-    // Return cached photos if available, even if they're old
-    if (cachedBusiness?.photos) {
-      const photos = {
-        coverPhoto: cachedBusiness.coverPhoto,
-        photos: cachedBusiness.photos,
-        lastUpdated: new Date(cachedBusiness.photosLastUpdated),
+      return {
+        id: placeId,
+        name: place.name || '',
+        address: place.formatted_address || '',
+        location: {
+          lat: place.geometry?.location?.lat || 0,
+          lng: place.geometry?.location?.lng || 0,
+          type: 'Point'
+        },
+        photos: place.photos?.map(photo => 
+          `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${process.env.GOOGLE_MAPS_API_KEY || ''}`
+        ) || [],
+        rating: place.rating || 0,
+        userRatingsTotal: place.user_ratings_total || 0,
+        website: place.website || '',
+        phoneNumber: place.formatted_phone_number || '',
+        priceLevel: place.price_level || 0,
+        types: place.types || [],
+        businessHours: {} as BusinessHours,
+        menuItems: [],
+        featuredItemIds: []
       };
-
-      // Cache in Redis
-      await redis.set(cacheKey, JSON.stringify(photos), 'EX', 86400); // 1 day
-      
-      return photos;
+    } catch (error) {
+      console.error('Error fetching place details:', error);
+      return null;
     }
+  }
 
-    const emptyPhotos = { photos: [], lastUpdated: new Date() };
-    
-    // Cache empty result to prevent repeated API calls
-    await redis.set(cacheKey, JSON.stringify(emptyPhotos), 'EX', 86400); // 1 day
-    
-    return emptyPhotos;
+  async getPlacePhotos(placeId: string): Promise<string[]> {
+    try {
+      const response = await this.client.placeDetails({
+        params: {
+          place_id: placeId,
+          fields: ['photos'],
+          key: process.env.GOOGLE_MAPS_API_KEY || ''
+        }
+      });
+
+      if (!response.data.result.photos) {
+        return [];
+      }
+
+      return response.data.result.photos.map(photo => 
+        `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${photo.photo_reference}&key=${process.env.GOOGLE_MAPS_API_KEY}`
+      );
+    } catch (error) {
+      console.error('Error fetching place photos:', error);
+      return [];
+    }
   }
 }
 
-export const getPlaceDetails = async (place: Place) => {
-  if (!place.geometry?.location) {
-    throw new Error('Invalid place location');
-  }
-
-  const client = new Client({});
-  // Implement place details retrieval
-  return {};
-};
+export { PlacesService };

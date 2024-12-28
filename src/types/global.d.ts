@@ -1,6 +1,6 @@
 declare global {
   namespace NodeJS {
-    interface ProcessEnv {
+    type ProcessEnv = {
       MONGODB_URI: string;
       MONGODB_DB: string;
       NEXTAUTH_SECRET: string;
@@ -14,7 +14,7 @@ declare global {
     }
   }
 
-  interface Window {
+  type Window = {
     google?: {
       maps: {
         places: {
@@ -35,20 +35,20 @@ declare global {
       }
 
       namespace places {
-        interface PlacesService {
+        type PlacesService = {
           nearbySearch(
             request: PlaceSearchRequest, 
             callback: (results: PlaceResult[] | null, status: PlacesServiceStatus) => void
           ): void;
         }
 
-        interface PlaceSearchRequest {
+        type PlaceSearchRequest = {
           location: LatLng;
           radius: number;
           type?: string;
         }
 
-        interface PlaceResult {
+        type PlaceResult = {
           place_id?: string;
           name?: string;
           formatted_address?: string;

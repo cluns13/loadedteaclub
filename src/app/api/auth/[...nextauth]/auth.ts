@@ -1,41 +1,44 @@
-import { AuthOptions } from 'next-auth';
+import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
+import clientPromise from '@/lib/mongodb';
 import { compare } from 'bcryptjs';
 import { getDb } from '@/lib/db/mongodb';
-import type { User } from '@/types/models';
-import { JWT } from 'next-auth/jwt';
-import { Session } from 'next-auth';
+import { User } from '@/types/models';
+import { WithId } from '@/types/database';
 
-// Extend the default types to include role and isAdmin
+// Extend the session type to include additional user properties
 declare module 'next-auth' {
   interface Session {
     user: {
       id: string;
-      name?: string | null;
-      email?: string | null;
-      image?: string | null;
+      email: string;
+      name: string | null;
       role: 'USER' | 'BUSINESS_OWNER' | 'ADMIN';
-      isAdmin: boolean;
-      isClubOwner?: boolean;
+      isClubOwner: boolean;
+      globalCustomerId: string | null;
     }
   }
 
   interface User {
+    id: string;
     role: 'USER' | 'BUSINESS_OWNER' | 'ADMIN';
-    isAdmin: boolean;
-    isClubOwner?: boolean;
+    isClubOwner: boolean;
+    globalCustomerId: string | null;
   }
 }
 
 declare module 'next-auth/jwt' {
   interface JWT {
+    id: string;
     role: 'USER' | 'BUSINESS_OWNER' | 'ADMIN';
-    isAdmin: boolean;
-    isClubOwner?: boolean;
+    isClubOwner: boolean;
+    globalCustomerId: string | null;
   }
 }
 
-export const authOptions: AuthOptions = {
+export const authOptions: NextAuthOptions = {
+  adapter: MongoDBAdapter(clientPromise),
   providers: [
     CredentialsProvider({
       name: 'credentials',
@@ -44,17 +47,17 @@ export const authOptions: AuthOptions = {
         password: { label: 'Password', type: 'password' }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error('Email and password are required');
+        if (!credentials?.email || !credentials.password) {
+          return null;
         }
 
         const db = await getDb();
-        const user = await db.collection('users').findOne({
+        const user = await db.collection<User>('users').findOne({
           email: credentials.email.toLowerCase()
-        }) as User | null;
+        });
 
         if (!user) {
-          throw new Error('No user found with this email');
+          return null;
         }
 
         const isPasswordValid = await compare(
@@ -62,19 +65,15 @@ export const authOptions: AuthOptions = {
           user.hashedPassword
         );
 
-        if (!isPasswordValid) {
-          throw new Error('Invalid password');
-        }
-
-        return {
+        return isPasswordValid ? {
           id: user._id.toString(),
           email: user.email,
           name: user.name,
-          role: user.role,
-          isAdmin: user.role === 'ADMIN',
-          isClubOwner: user.isClubOwner,
-        };
-      }
+          role: user.role || 'USER',
+          isClubOwner: user.isClubOwner || false,
+          globalCustomerId: user.globalCustomerId || null,
+        } : null;
+      },
     })
   ],
   pages: {
@@ -82,19 +81,28 @@ export const authOptions: AuthOptions = {
     error: '/login',
   },
   callbacks: {
+    async signIn({ user }) {
+      return true; // Always allow sign-in
+    },
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role;
-        token.isAdmin = user.role === 'ADMIN';
-        token.isClubOwner = user.isClubOwner;
+        token.id = user.id;
+        token.role = user.role ?? 'USER';
+        token.isClubOwner = user.isClubOwner ?? false;
+        token.globalCustomerId = user.globalCustomerId ?? null;
+        token.name = user.name ?? null;
+        token.email = user.email ?? null;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.role = token.role;
-        session.user.isAdmin = token.isAdmin;
-        session.user.isClubOwner = token.isClubOwner;
+        session.user.id = token.id ?? '';
+        session.user.role = token.role ?? 'USER';
+        session.user.isClubOwner = token.isClubOwner ?? false;
+        session.user.globalCustomerId = token.globalCustomerId ?? null;
+        session.user.name = token.name ?? null;
+        session.user.email = token.email ?? null;
       }
       return session;
     }
@@ -103,5 +111,5 @@ export const authOptions: AuthOptions = {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  secret: process.env.NEXTAUTH_SECRET
+  secret: process.env.NEXTAUTH_SECRET || ''
 };

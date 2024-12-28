@@ -1,19 +1,17 @@
   import { ObjectId } from 'mongodb';
 import { getMongoDb } from '@/lib/db/mongodb';
 import { z } from 'zod';
+import { WithId } from '@/types/database';
 import { 
   BusinessClaim, 
+  ClaimDocuments, 
   ClaimStatus, 
-  VerificationMethod,
+  VerificationStatus, 
   VerificationStep,
-  VerificationStatus
+  ClaimWithDetails,
+  VerificationMethod
 } from '@/types/claims';
-import { User, LoadedTeaClub } from '@/types/models';
 import { sendClaimStatusEmail } from '@/lib/email/email';
-import { EventEmitter } from 'events';
-
-// Explicitly define WithId type
-type WithId<T> = T & { _id: ObjectId };
 
 // Comprehensive input validation schema
 export const ClaimInputSchema = z.object({
@@ -35,122 +33,112 @@ export const ClaimInputSchema = z.object({
   }).optional()
 }).strict();
 
-// Enhanced error handling type
-interface ServiceResult<T> {
+// Service result type for enhanced error handling
+export type ServiceResult<T> = {
   success: boolean;
   data?: T;
   error?: string;
   errorCode?: string;
-}
+};
 
-// Claim service events
-interface ClaimServiceEvents {
-  'claim:created': (claim: WithId<BusinessClaim>) => void;
-  'claim:updated': (claim: WithId<BusinessClaim>) => void;
-  'claim:status-changed': (claim: WithId<BusinessClaim>) => void;
-  'claim:verification-updated': (claim: WithId<BusinessClaim>) => void;
-}
+export class ClaimService {
+  static readonly COLLECTION = 'businessClaims';
 
-class ClaimService extends EventEmitter {
-  private static readonly COLLECTION = 'businessClaims';
-  private static instance: ClaimService;
-
-  private constructor() {
-    super();
-    // Bind methods to ensure correct 'this' context
-    this.on = this.on.bind(this);
-    this.emit = this.emit.bind(this);
-  }
-
-  // Singleton pattern with event-driven architecture
-  public static getInstance(): ClaimService {
-    if (!ClaimService.instance) {
-      ClaimService.instance = new ClaimService();
-    }
-    return ClaimService.instance;
-  }
-
-  // Type-safe event handling
-  on<K extends keyof ClaimServiceEvents>(
-    event: K, 
-    listener: ClaimServiceEvents[K]
-  ): this {
-    return super.on(event, listener);
-  }
-
-  emit<K extends keyof ClaimServiceEvents>(
-    event: K, 
-    ...args: Parameters<ClaimServiceEvents[K]>
-  ): boolean {
-    return super.emit(event, ...args);
-  }
-
-  // Static methods for service operations
-  public static async createClaim(
+  static async createClaim(
     claimData: z.infer<typeof ClaimInputSchema>
   ): Promise<ServiceResult<WithId<BusinessClaim>>> {
     const db = await getMongoDb();
-    const collection = db.collection<BusinessClaim>(this.COLLECTION);
-    const businessCollection = db.collection<LoadedTeaClub>('businesses');
-
     try {
-      // Validate input
-      const validatedData = ClaimInputSchema.parse(claimData);
-
-      // Check if business exists
-      const business = await businessCollection.findOne({ 
-        _id: new ObjectId(validatedData.businessId) 
-      });
-
-      if (!business) {
-        return { 
-          success: false, 
-          error: 'Business not found' 
-        };
-      }
-
       const newClaim: Omit<BusinessClaim, '_id'> = {
-        businessId: new ObjectId(validatedData.businessId),
-        userId: new ObjectId(validatedData.userId),
+        businessName: claimData.businessName,
+        businessId: new ObjectId(claimData.businessId),
+        userId: new ObjectId(claimData.userId),
+        userEmail: claimData.userEmail,
+        businessEmail: claimData.businessEmail,
+        documents: claimData.documents ? {
+          businessLicense: claimData.documents.businessLicense || undefined,
+          proofOfOwnership: claimData.documents.proofOfOwnership || undefined,
+          governmentId: claimData.documents.governmentId || undefined,
+          utilityBill: claimData.documents.utilityBill || undefined,
+          taxDocument: claimData.documents.taxDocument || undefined,
+          additionalDocuments: claimData.documents.additionalDocuments || undefined
+        } : undefined,
         status: 'pending',
-        verificationStatus: 'not_started',
+        verificationStatus: ['pending'] as VerificationStatus[],
         estimatedReviewTime: 48,  // Default 48 hours
         priority: 'standard',
-        documents: {
-          businessLicense: validatedData.documents?.businessLicense || '',
-          proofOfOwnership: validatedData.documents?.proofOfOwnership || '',
-          governmentId: validatedData.documents?.governmentId || '',
-          utilityBill: validatedData.documents?.utilityBill || '',
-          taxDocument: validatedData.documents?.taxDocument || '',
-          additionalDocuments: validatedData.documents?.additionalDocuments || []
-        },
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        reviewedAt: undefined,
         verificationSteps: [],
-        reviewedBy: undefined
+        reviewedAt: undefined,
+        reviewedBy: undefined,
+        createdAt: new Date(),
+        updatedAt: new Date()
       };
 
-      const result = await collection.insertOne(newClaim);
-      const claim = { ...newClaim, _id: result.insertedId };
+      const result = await db.collection<BusinessClaim>(ClaimService.COLLECTION)
+        .insertOne(newClaim);
 
-      // Emit event
-      this.getInstance().emit('claim:created', claim);
+      const claim = { 
+        ...newClaim, 
+        _id: result.insertedId 
+      } as WithId<BusinessClaim>;
 
       return { 
         success: true, 
         data: claim 
       };
     } catch (error) {
-      console.error('Claim creation error:', error);
-      return { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Claim creation failed' 
+      console.error('Error creating claim:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        errorCode: 'CLAIM_CREATE_FAILED'
       };
     }
   }
 
-  public static async updateVerificationStep(
+  static async updateClaimStatus(
+    claimId: string, 
+    status: ClaimStatus, 
+    reviewNotes?: string,
+    reviewedBy?: string
+  ): Promise<WithId<BusinessClaim> | null> {
+    const db = await getMongoDb();
+    const claimCollection = db.collection<BusinessClaim>(ClaimService.COLLECTION);
+    const userCollection = db.collection('users');
+    const businessCollection = db.collection('businesses');
+
+    const result = await claimCollection.findOneAndUpdate(
+      { _id: new ObjectId(claimId) },
+      { 
+        $set: { 
+          status, 
+          reviewNotes: reviewNotes || undefined, 
+          reviewedBy: reviewedBy ? new ObjectId(reviewedBy) : undefined,
+          reviewedAt: new Date() 
+        } 
+      },
+      { returnDocument: 'after' }
+    );
+
+    // Fetch additional details for email notification
+    if (result) {
+      const claimant = await userCollection.findOne({ _id: new ObjectId(result.userId.toString()) });
+      const business = await businessCollection.findOne({ _id: new ObjectId(result.businessId.toString()) });
+
+      if (claimant?.email) {
+        await sendClaimStatusEmail({
+          to: claimant.email,
+          businessName: business?.name || 'Your Business',
+          status: status.toLowerCase() === 'approved' ? 'approved' : 'rejected',
+          notes: reviewNotes
+        });
+      }
+    }
+
+    return result ? { ...result, _id: result._id } : null;
+  }
+
+  static async updateVerificationStep(
     claimId: string, 
     stepData: {
       method: VerificationMethod;
@@ -159,10 +147,9 @@ class ClaimService extends EventEmitter {
     }
   ): Promise<ServiceResult<WithId<BusinessClaim>>> {
     const db = await getMongoDb();
-    const collection = db.collection<BusinessClaim>(this.COLLECTION);
-
     try {
-      const claim = await collection.findOne({ _id: new ObjectId(claimId) });
+      const claim = await db.collection<BusinessClaim>(ClaimService.COLLECTION)
+        .findOne({ _id: new ObjectId(claimId) });
       if (!claim) {
         return { 
           success: false, 
@@ -190,141 +177,105 @@ class ClaimService extends EventEmitter {
         });
       }
 
-      const updateResult = await collection.findOneAndUpdate(
-        { _id: new ObjectId(claimId) },
-        { 
-          $set: { 
-            verificationSteps: updatedVerificationSteps
-          } 
-        },
-        { returnDocument: 'after' }
-      );
+      const updateResult = await db.collection<BusinessClaim>(ClaimService.COLLECTION)
+        .findOneAndUpdate(
+          { _id: new ObjectId(claimId) },
+          { 
+            $set: { 
+              verificationSteps: updatedVerificationSteps,
+              verificationStatus: ['pending'] as VerificationStatus[]
+            } 
+          },
+          { returnDocument: 'after' }
+        );
 
-      if (!updateResult) {
-        return { 
-          success: false, 
-          error: 'Failed to update claim' 
-        };
-      }
-
-      // Emit event
-      this.getInstance().emit('claim:updated', updateResult as WithId<BusinessClaim>);
-
-      return { 
-        success: true, 
-        data: updateResult as WithId<BusinessClaim>
+      return updateResult ? {
+        success: true,
+        data: { ...updateResult, _id: updateResult._id } as WithId<BusinessClaim>
+      } : {
+        success: false,
+        error: 'Failed to update verification step'
       };
     } catch (error) {
-      console.error('Verification step update error:', error);
-      return { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+      console.error('Error updating verification step:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        errorCode: 'VERIFICATION_STEP_UPDATE_FAILED'
       };
     }
   }
 
-  public static async getClaimById(claimId: string): Promise<WithId<BusinessClaim> | null> {
+  static async getAllClaims(): Promise<WithId<BusinessClaim>[]> {
     const db = await getMongoDb();
-    const collection = db.collection<BusinessClaim>(this.COLLECTION);
-    
-    return collection.findOne({ _id: new ObjectId(claimId) }) as Promise<WithId<BusinessClaim> | null>;
+    const claims = await db.collection<BusinessClaim>(ClaimService.COLLECTION)
+      .find({})
+      .toArray();
+    return claims.map(claim => ({
+      ...claim,
+      _id: claim._id as ObjectId
+    }));
   }
 
-  public static async getClaimsByStatus(
-    status: ClaimStatus, 
-    limit: number = 10, 
-    page: number = 1
-  ): Promise<WithId<BusinessClaim>[]> {
+  static async findClaimById(
+    claimId: string
+  ): Promise<WithId<BusinessClaim> | null> {
     const db = await getMongoDb();
-    const collection = db.collection<BusinessClaim>(this.COLLECTION);
-    
-    return collection
-      .find({ status })
-      .sort({ createdAt: -1 })
-      .limit(limit)
-      .skip((page - 1) * limit)
-      .toArray() as Promise<WithId<BusinessClaim>[]>;
+    return await db.collection<BusinessClaim>(ClaimService.COLLECTION)
+      .findOne({ _id: new ObjectId(claimId) });
   }
 
-  public static async getRecentClaims(
-    limit: number = 10, 
-    page: number = 1
-  ): Promise<WithId<BusinessClaim>[]> {
-    const db = await getMongoDb();
-    const collection = db.collection<BusinessClaim>(this.COLLECTION);
-    
-    return collection
-      .find()
-      .sort({ createdAt: -1 })
-      .limit(limit)
-      .skip((page - 1) * limit)
-      .toArray() as Promise<WithId<BusinessClaim>[]>;
-  }
-
-  public static async getPendingClaimsCount(): Promise<number> {
-    const db = await getMongoDb();
-    const collection = db.collection<BusinessClaim>(this.COLLECTION);
-    
-    return collection.countDocuments({ status: 'pending' });
-  }
-
-  // Simplified method to update claim status
-  public static async updateClaimStatus(
+  static async getClaimWithDetails(
     claimId: string, 
-    updateData: ClaimStatus
-  ): Promise<ServiceResult<WithId<BusinessClaim>>> {
+    includeDocuments = false
+  ): Promise<ClaimWithDetails | null> {
     const db = await getMongoDb();
-    const collection = db.collection<BusinessClaim>(this.COLLECTION);
+    const claimCollection = db.collection<BusinessClaim>(ClaimService.COLLECTION);
+    const userCollection = db.collection('users');
+    const businessCollection = db.collection('businesses');
 
-    try {
-      const result = await collection.findOneAndUpdate(
-        { _id: new ObjectId(claimId) },
-        { 
-          $set: { 
-            ...updateData,
-            updatedAt: new Date()
-          } 
-        },
-        { returnDocument: 'after' }
-      );
+    const claim = await claimCollection.findOne({ _id: new ObjectId(claimId) });
+    if (!claim) return null;
 
-      if (!result) {
-        return { 
-          success: false, 
-          error: 'Claim not found' 
-        };
-      }
+    const claimant = await userCollection.findOne({ _id: new ObjectId(claim.userId.toString()) });
+    const business = await businessCollection.findOne({ _id: new ObjectId(claim.businessId.toString()) });
 
-      // Emit event
-      this.getInstance().emit('claim:status-changed', result as WithId<BusinessClaim>);
-
-      // Send email notification
-      await sendClaimStatusEmail(
-        result.businessName || 'Unknown Business', 
-        updateData.status, 
-        result.userId.toString()
-      );
-
-      return { 
-        success: true, 
-        data: result as WithId<BusinessClaim>
-      };
-    } catch (error) {
-      console.error('Claim status update error:', error);
-      return { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
-      };
-    }
+    return {
+      _id: claim._id,
+      business: {
+        _id: business?._id.toString() || '',
+        name: business?.name || '',
+        address: business?.address || '',
+        city: business?.city || '',
+        state: business?.state || ''
+      },
+      claimant: {
+        _id: claimant?._id.toString() || '',
+        name: claimant?.name || '',
+        email: claimant?.email || ''
+      },
+      status: claim.status,
+      verificationSteps: claim.verificationSteps || [],
+      createdAt: claim.createdAt,
+      updatedAt: claim.updatedAt
+    };
   }
 
-  // Update claim verification step
-  public static async updateClaimVerificationStep(
+  static async findClaimsByUserId(
+    userId: string
+  ): Promise<WithId<BusinessClaim>[]> {
+    const db = await getMongoDb();
+    return await db.collection<BusinessClaim>(ClaimService.COLLECTION)
+      .find({ userId: new ObjectId(userId) })
+      .toArray();
+  }
+
+  static async updateClaimVerificationStep(
     claimId: string, 
     verificationStep: VerificationStep
   ): Promise<ServiceResult<WithId<BusinessClaim>>> {
     const db = await getMongoDb();
-    const collection = db.collection<BusinessClaim>(this.COLLECTION);
+    const collection = db.collection<BusinessClaim>(ClaimService.COLLECTION);
 
     try {
       const result = await collection.findOneAndUpdate(
@@ -345,9 +296,6 @@ class ClaimService extends EventEmitter {
         };
       }
 
-      // Emit event
-      this.getInstance().emit('claim:verification-updated', result as WithId<BusinessClaim>);
-
       return { 
         success: true, 
         data: result as WithId<BusinessClaim>
@@ -361,72 +309,41 @@ class ClaimService extends EventEmitter {
     }
   }
 
-  // Approve claim method
-  public static async approveClaim(
-    claimId: string, 
-    businessId?: string
-  ): Promise<boolean> {
+  static async getClaimsByStatus(
+    status: ClaimStatus, 
+    limit: number = 10, 
+    page: number = 1
+  ): Promise<WithId<BusinessClaim>[]> {
     const db = await getMongoDb();
-    const claimCollection = db.collection<BusinessClaim>(this.COLLECTION);
-    const businessCollection = db.collection<LoadedTeaClub>('businesses');
-
-    try {
-      // Update claim status
-      const claimUpdateResult = await claimCollection.findOneAndUpdate(
-        { _id: new ObjectId(claimId) },
-        { 
-          $set: { 
-            status: 'approved',
-            reviewedAt: new Date()
-          } 
-        }
-      );
-
-      // If businessId is provided, update business ownership
-      if (businessId && claimUpdateResult) {
-        await businessCollection.findOneAndUpdate(
-          { _id: new ObjectId(businessId) },
-          { 
-            $set: { 
-              ownerId: claimUpdateResult.userId,
-              claimedAt: new Date()
-            } 
-          }
-        );
-      }
-
-      return true;
-    } catch (error) {
-      console.error('Claim approval error:', error);
-      return false;
-    }
+    const collection = db.collection<BusinessClaim>(ClaimService.COLLECTION);
+    
+    return collection
+      .find({ status })
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .toArray() as Promise<WithId<BusinessClaim>[]>;
   }
 
-  public static async sendClaimStatusEmail(
-    claimId: string, 
-    status: 'approved' | 'rejected'
-  ): Promise<void> {
+  static async getRecentClaims(
+    limit: number = 10, 
+    page: number = 1
+  ): Promise<WithId<BusinessClaim>[]> {
     const db = await getMongoDb();
-    const claimCollection = db.collection<BusinessClaim>(this.COLLECTION);
-    const userCollection = db.collection<User>('users');
-    const businessCollection = db.collection<LoadedTeaClub>('businesses');
+    const collection = db.collection<BusinessClaim>(ClaimService.COLLECTION);
+    
+    return collection
+      .find()
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .toArray() as Promise<WithId<BusinessClaim>[]>;
+  }
 
-    const claim = await claimCollection.findOne({ _id: new ObjectId(claimId) });
-    if (!claim) {
-      throw new Error('Claim not found');
-    }
-
-    const user = await userCollection.findOne({ _id: claim.userId });
-    const business = await businessCollection.findOne({ _id: claim.businessId });
-
-    if (user?.email) {
-      await sendClaimStatusEmail({
-        email: user.email,
-        businessName: business?.name || 'Your Business', 
-        status
-      });
-    }
+  static async getPendingClaimsCount(): Promise<number> {
+    const db = await getMongoDb();
+    const collection = db.collection<BusinessClaim>(ClaimService.COLLECTION);
+    
+    return collection.countDocuments({ status: 'pending' });
   }
 }
-
-export default ClaimService;

@@ -7,18 +7,18 @@ import { generateCustomerId, validateCustomerId } from '@/lib/utils/customerIdGe
 
 export type RewardType = 'purchase' | 'referral' | 'bonus';
 
-export interface RewardsConfig {
+export type RewardsConfig = {
   clubId: string;
   rewardThreshold: number;  // Number of loaded tea purchases to earn a free tea
   rewardType: 'FREE_LOADED_TEA';
-}
+};
 
-export interface CustomerRewardsTracker {
+export type CustomerRewardsTracker = {
   clubId: string;
   customerId: string;
   purchaseCount: number;
   lastPurchaseDate: Date;
-}
+};
 
 export class RewardsService {
   private mockProfiles: UserRewardsProfile[] = [];

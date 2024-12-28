@@ -53,7 +53,7 @@ export async function GET(request: Request) {
         );
 
         return NextResponse.json({
-          claims: claimsWithDetails.filter(Boolean),
+          claims: claimsWithDetails,
           total: await ClaimService.getPendingClaimsCount(),
         });
       }
@@ -100,7 +100,7 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { action } = body;
+    const action = body.action;
 
     switch (action) {
       case 'reviewClaim': {
@@ -113,30 +113,20 @@ export async function POST(request: Request) {
         }
 
         const { claimId, reviewAction, reviewNotes } = result.data;
-        const claim = await ClaimService.getClaimWithDetails(claimId);
-        
-        if (!claim) {
-          return NextResponse.json(
-            { error: 'Claim not found' },
-            { status: 404 }
-          );
-        }
 
-        const testAdminId = '000000000000000000000002';
-        await ClaimService.updateClaimStatus(
-          claimId,
+        const updatedClaim = await ClaimService.updateClaimStatus(
+          claimId, 
           reviewAction === 'approve' ? 'approved' : 'rejected',
-          testAdminId,
           reviewNotes
         );
 
         return NextResponse.json({
-          success: true,
           message: `Claim ${reviewAction}d successfully`,
+          claim: updatedClaim
         });
       }
 
-      case 'initiateVerification': {
+      case 'verifyStep': {
         const result = verificationSchema.safeParse(body);
         if (!result.success) {
           return NextResponse.json(
@@ -146,9 +136,23 @@ export async function POST(request: Request) {
         }
 
         const { claimId, method } = result.data;
-        await VerificationService.initiateVerification(claimId, method);
 
-        return NextResponse.json({ success: true });
+        const verificationStep = {
+          method,
+          status: 'pending' as const,
+          details: `Verified via ${method} method`,
+          completedAt: new Date()
+        };
+
+        const updateResult = await ClaimService.updateClaimVerificationStep(
+          claimId, 
+          verificationStep
+        );
+
+        return NextResponse.json({
+          message: 'Verification step updated successfully',
+          claim: updateResult.data
+        });
       }
 
       default:

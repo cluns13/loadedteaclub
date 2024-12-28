@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 
-export interface LoadedTeaClub {
+export type LoadedTeaClub = {
   _id?: ObjectId;
   id: string;
   name: string;
@@ -68,7 +68,7 @@ export interface LoadedTeaClub {
   };
 }
 
-export interface BusinessHours {
+export type BusinessHours = {
   monday: DailyHours;
   tuesday: DailyHours;
   wednesday: DailyHours;
@@ -78,18 +78,18 @@ export interface BusinessHours {
   sunday: DailyHours;
 }
 
-export interface DailyHours {
+export type DailyHours = {
   open: string;
   close: string;
   isOpen: boolean;
 }
 
-export interface GeoLocation {
+export type GeoLocation = {
   type: 'Point';
   coordinates: [number, number]; // [longitude, latitude]
 }
 
-export interface Location {
+export type Location = {
   city: string;
   state: string;
   count: number;
@@ -99,7 +99,7 @@ export interface Location {
   };
 }
 
-export interface MenuItem {
+export type MenuItem = {
   id: string;
   name: string;
   description: string;
@@ -144,7 +144,7 @@ export interface MenuItem {
   }[];
 }
 
-export interface Review {
+export type Review = {
   _id: string;
   id: string;
   userId: string;
@@ -177,50 +177,56 @@ export interface Review {
   };
 }
 
-export interface User {
+export type User = {
   _id: ObjectId;
   id: string;
   name: string;
   email: string;
   hashedPassword: string;
-  image?: string;
-  reviews?: Review[];
-  savedBusinesses?: string[];
+  image: string | undefined;
+  reviews: Review[] | undefined;
+  savedBusinesses: string[] | undefined;
   
   // Authentication and Authorization
   role: 'USER' | 'BUSINESS_OWNER' | 'ADMIN';
   isAdmin: boolean;
   isBusinessOwner: boolean;
+  globalCustomerId: string | undefined;
   
-  emailVerified?: boolean;
-  twoFactorEnabled?: boolean;
+  emailVerified: boolean | undefined;
+  twoFactorEnabled: boolean | undefined;
   
-  businessInfo?: {
+  businessInfo: {
     businessName: string;
     phone: string;
-    businessId?: string;
-  };
+    businessId?: string | undefined;
+  } | undefined;
   
-  businessName: string;
-  phone: string;
-  businessId?: string;
-  clubId?: string;
-  globalCustomerId?: string;
-  isClubOwner?: boolean;
+  businessName: string | undefined;
+  phone: string | undefined;
   
-  rewardPoints?: number;
-  lastLogin?: Date;
-  registrationSource?: 'GOOGLE' | 'FACEBOOK' | 'EMAIL' | 'APPLE';
+  // Club-related fields
+  clubId: string | undefined;
+  isClubOwner: boolean | undefined;
+  rewardPoints: number | undefined;
+  
+  // User activity
+  lastLogin: Date | undefined;
+  registrationSource: ('GOOGLE' | 'FACEBOOK' | 'EMAIL' | 'APPLE') | undefined;
+  
+  // Payment and Subscription
+  stripeCustomerId: string | undefined;
+  stripeSubscriptionId: string | undefined;
+  
+  // Referral system
+  referralCode: string | undefined;
+  referredBy: string | undefined;
   
   createdAt: Date;
   updatedAt: Date;
+};
 
-  // Social and engagement
-  followedBusinesses?: string[];
-  referralCode?: string;
-}
-
-export interface BusinessClaim {
+export type BusinessClaim = {
   _id: ObjectId;
   id: string;
   businessId: ObjectId;
@@ -242,14 +248,14 @@ export interface BusinessClaim {
   reviewedAt?: Date;
 }
 
-export interface ProcessedMenu {
+export type ProcessedMenu = {
   items: MenuItem[];
   confidence: number;
   rawText: string;
   source: 'OCR' | 'MANUAL' | 'API';
 }
 
-export interface Promotion {
+export type Promotion = {
   id: string;
   title: string;
   description: string;
@@ -265,7 +271,7 @@ export interface Promotion {
   updatedAt: Date;
 }
 
-export interface BusinessPromotion {
+export type BusinessPromotion = {
   id: string;
   text: string;
   active: boolean;

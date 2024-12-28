@@ -2,23 +2,31 @@ import { NextResponse } from 'next/server';
 import { hash } from 'bcryptjs';
 import { getDb } from '@/lib/db/mongodb';
 import type { User } from '@/types/models';
-import { ObjectId } from 'mongodb';
 
-export async function POST(request: Request) {
+type RegistrationData = {
+  email: string;
+  password: string;
+  name?: string;
+  businessName?: string;
+  phone?: string;
+  role?: string;
+};
+
+export async function POST(request: Request): Promise<NextResponse> {
   try {
-    const { name, email, password, role = 'USER', businessInfo } = await request.json();
+    const db = await getDb();
+    const data: RegistrationData = await request.json();
 
-    // Validate input
-    if (!name || !email || !password) {
+    if (!data.email || !data.password) {
       return NextResponse.json(
-        { error: 'Name, email, and password are required' },
+        { error: 'Email and password are required' },
         { status: 400 }
       );
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(data.email)) {
       return NextResponse.json(
         { error: 'Invalid email format' },
         { status: 400 }
@@ -26,7 +34,7 @@ export async function POST(request: Request) {
     }
 
     // Validate password strength
-    if (password.length < 8) {
+    if (data.password.length < 8) {
       return NextResponse.json(
         { error: 'Password must be at least 8 characters long' },
         { status: 400 }
@@ -34,66 +42,51 @@ export async function POST(request: Request) {
     }
 
     // Validate role
-    if (!['USER', 'BUSINESS_OWNER'].includes(role)) {
+    if (data.role && !['USER', 'BUSINESS_OWNER'].includes(data.role)) {
       return NextResponse.json(
         { error: 'Invalid role' },
         { status: 400 }
       );
     }
 
-    // Validate business info if role is BUSINESS_OWNER
-    if (role === 'BUSINESS_OWNER') {
-      if (!businessInfo?.businessName || !businessInfo?.phone) {
-        return NextResponse.json(
-          { error: 'Business name and phone are required for business owners' },
-          { status: 400 }
-        );
-      }
-    }
-
-    const db = await getDb();
-    
-    // Check if user already exists
-    const existingUser = await db.collection('users').findOne({
-      email: email.toLowerCase()
-    }) as User | null;
+    const existingUser = await db.collection('users').findOne({ 
+      email: data.email.toLowerCase() 
+    });
 
     if (existingUser) {
       return NextResponse.json(
-        { error: 'Email already registered' },
-        { status: 400 }
+        { error: 'User with this email already exists' },
+        { status: 409 }
       );
     }
 
-    // Hash password
-    const hashedPassword = await hash(password, 12);
+    const hashedPassword = await hash(data.password, 10);
 
-    // Create user object
-    const user: Partial<User> = {
-      name,
-      email: email.toLowerCase(),
+    const newUser: Omit<User, '_id'> = {
+      email: data.email.toLowerCase(),
+      name: data.name ?? '',
       hashedPassword,
-      role,
+      role: data.role ?? 'USER',
+      isClubOwner: false,
+      businessName: data.businessName ?? '',
+      phone: data.phone ?? '',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
-    // Add business info if provided
-    if (role === 'BUSINESS_OWNER' && businessInfo) {
-      user.businessInfo = businessInfo;
-    }
+    const result = await db.collection('users').insertOne(newUser);
 
-    // Insert user
-    const result = await db.collection('users').insertOne(user as User);
-
-    return NextResponse.json({
-      message: 'Account created successfully',
-      userId: result.insertedId
-    });
-  } catch (error: any) {
+    return NextResponse.json(
+      { 
+        id: result.insertedId.toString(), 
+        email: newUser.email 
+      }, 
+      { status: 201 }
+    );
+  } catch (error) {
     console.error('Registration error:', error);
     return NextResponse.json(
-      { error: 'Failed to create account' },
+      { error: 'Internal server error' }, 
       { status: 500 }
     );
   }

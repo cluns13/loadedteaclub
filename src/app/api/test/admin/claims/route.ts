@@ -4,34 +4,29 @@ import { z } from 'zod';
 import { sendClaimStatusEmail } from '@/lib/email/email';
 import { ObjectId } from 'mongodb';
 import { getDb } from '@/lib/db/mongodb';
+import { BusinessClaim } from '@/types/claims';
 
 // Only allow test mode in development
 const isTestMode = process.env.NODE_ENV === 'development';
 
 // Helper function to create a test user for claims
-const createTestUser = async () => {
+async function createTestUser() {
   const db = await getDb();
-  const testUser = {
-    _id: new ObjectId('000000000000000000000001'),
-    name: 'Test User',
-    email: 'test@example.com',
-    role: 'user',
-  };
-
-  await db.collection('users').updateOne(
-    { _id: testUser._id },
-    { $set: testUser },
-    { upsert: true }
-  );
-
+  const userCollection = db.collection('users');
+  
+  const testUser = await userCollection.findOne({ email: 'test.admin@example.com' });
+  if (!testUser) {
+    throw new Error('Test admin user not found');
+  }
+  
   return testUser;
-};
+}
 
 // Schema for review action
 const reviewSchema = z.object({
   claimId: z.string().min(1, 'Claim ID is required'),
   action: z.enum(['approve', 'reject'], {
-    errorMap: () => ({ message: 'Invalid action' })
+    errorMap: () => ({ message: 'Invalid action' }),
   }),
   reviewNotes: z.string().optional(),
 });
@@ -53,27 +48,56 @@ export async function GET(request: Request) {
     const status = searchParams.get('status') as 'pending' | 'approved' | 'rejected' | undefined;
     const limit = parseInt(searchParams.get('limit') || '10');
 
-    let claims;
+    const db = await getDb();
+    const claimsCollection = db.collection<BusinessClaim>('businessClaims');
+
+    let claims: BusinessClaim[];
     if (status) {
-      claims = await ClaimService.getClaimsByStatus(status);
+      claims = await claimsCollection
+        .find({ status })
+        .limit(limit)
+        .toArray();
     } else {
-      claims = await ClaimService.getRecentClaims(limit);
+      claims = await claimsCollection
+        .find()
+        .sort({ createdAt: -1 })
+        .limit(limit)
+        .toArray();
     }
 
     // Get detailed information for each claim
     const claimsWithDetails = await Promise.all(
-      claims.map(claim => ClaimService.getClaimWithDetails(claim._id!.toString()))
+      claims.map(async (claim) => {
+        const userCollection = db.collection('users');
+        const businessCollection = db.collection('businesses');
+
+        const user = await userCollection.findOne({ _id: claim.userId });
+        const business = await businessCollection.findOne({ _id: claim.businessId });
+
+        return {
+          ...claim,
+          user: {
+            id: user?._id,
+            name: user?.name,
+            email: user?.email
+          },
+          business: {
+            id: business?._id,
+            name: business?.name
+          }
+        };
+      })
     );
 
     return NextResponse.json({
-      claims: claimsWithDetails.filter(Boolean),
-      total: await ClaimService.getPendingClaimsCount(),
+      claims: claimsWithDetails,
+      total: await claimsCollection.countDocuments({ status: 'pending' })
     });
 
   } catch (error) {
     console.error('Error fetching claims:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch claims' },
+      { error: error instanceof Error ? error.message : 'Failed to fetch claims' },
       { status: 500 }
     );
   }
@@ -89,61 +113,61 @@ export async function POST(request: Request) {
   }
 
   try {
-    // Ensure test user exists
-    await createTestUser();
+    const testUser = await createTestUser();
+    const db = await getDb();
+    const userCollection = db.collection('users');
+    const businessCollection = db.collection('businesses');
+    const claimsCollection = db.collection<BusinessClaim>('businessClaims');
 
-    // Validate request body
+    // Parse request body
     const body = await request.json();
-    const result = reviewSchema.safeParse(body);
-    
-    if (!result.success) {
-      return NextResponse.json(
-        { error: result.error.issues.map(i => i.message).join(', ') },
-        { status: 400 }
-      );
-    }
+    const { claimId, action, reviewNotes } = reviewSchema.parse(body);
 
-    const { claimId, action, reviewNotes } = result.data;
+    // Fetch the claim with additional details
+    const claim = await claimsCollection.findOne({ 
+      _id: new ObjectId(claimId) 
+    });
 
-    // Get claim details
-    const claim = await ClaimService.getClaimWithDetails(claimId);
     if (!claim) {
-      return NextResponse.json(
-        { error: 'Claim not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Claim not found' }, { status: 404 });
     }
 
-    // Use test admin ID
-    const testAdminId = '000000000000000000000002';
+    // Fetch user and business details
+    const claimant = await userCollection.findOne({ 
+      _id: claim.userId 
+    });
+
+    const business = await businessCollection.findOne({ 
+      _id: claim.businessId 
+    });
 
     // Update claim status
-    await ClaimService.updateClaimStatus(
-      claimId,
+    const updatedClaim = await ClaimService.updateClaimStatus(
+      claimId, 
       action === 'approve' ? 'approved' : 'rejected',
-      testAdminId,
-      reviewNotes
+      reviewNotes,
+      testUser._id.toString()
     );
 
-    // Send email notification to the claimant
-    if (claim.claimant?.email) {
+    // Send email notification
+    if (claimant?.email) {
       await sendClaimStatusEmail({
-        to: claim.claimant.email,
-        businessName: claim.business.name,
+        to: claimant.email, 
+        businessName: business?.name || 'Your Business', 
         status: action === 'approve' ? 'approved' : 'rejected',
-        notes: reviewNotes,
+        notes: reviewNotes
       });
     }
 
     return NextResponse.json({
-      success: true,
       message: `Claim ${action}d successfully`,
+      claim: updatedClaim
     });
 
   } catch (error) {
     console.error('Error reviewing claim:', error);
     return NextResponse.json(
-      { error: 'Failed to process claim review' },
+      { error: error instanceof Error ? error.message : 'Failed to review claim' },
       { status: 500 }
     );
   }

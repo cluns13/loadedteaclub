@@ -1,12 +1,14 @@
-export interface Coordinates {
+import { ObjectId } from 'mongodb';
+
+export type Coordinates = {
   latitude: number;
   longitude: number;
-}
+};
 
-export interface LocationDetails {
+export type LocationDetails = {
   address?: string;
   city?: string;
   state?: string;
   zipCode?: string;
   coordinates?: Coordinates;
-}
+};

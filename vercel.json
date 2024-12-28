@@ -1,23 +1,5 @@
 {
   "version": 2,
-  "name": "loaded-tea-club",
-  "builds": [
-    {
-      "src": "next.config.js",
-      "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
-  ],
-  "env": {
-    "NEXT_PUBLIC_SITE_URL": "https://loadedteaclub.com",
-    "NODE_ENV": "production"
-  },
   "regions": ["dub1"],
-  "framework": "nextjs",
-  "outputDirectory": ".next"
+  "framework": "nextjs"
 }

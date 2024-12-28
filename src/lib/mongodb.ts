@@ -1,35 +1,50 @@
 import { MongoClient, Db, Collection } from 'mongodb';
 
-// Mock database connection for client-side compatibility
-export async function connectToDatabase(): Promise<{ client: any; db: MockDatabase }> {
-  // Return a mock database connection object
-  return {
-    client: {},
-    db: new MockDatabase(),
+// Ensure the connection is only created once
+const MONGODB_URI = process.env.MONGODB_URI!;
+const MONGODB_DB = process.env.MONGODB_DB!;
+
+if (!MONGODB_URI) {
+  throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+}
+
+if (!MONGODB_DB) {
+  throw new Error('Please define the MONGODB_DB environment variable inside .env.local');
+}
+
+declare global {
+  type MongoClientType = {
+    client: MongoClient | null;
+    promise: Promise<MongoClient> | null;
   };
 }
 
-export class MockDatabase {
-  collection<T>(name: string) {
-    return {
-      find: () => ({
-        toArray: async (): Promise<T[]> => [],
-        sort: () => ({ toArray: async (): Promise<T[]> => [] }),
-      }),
-      findOne: async (): Promise<T | null> => null,
-      insertOne: async (doc: T) => ({ insertedId: null }),
-      updateOne: async () => ({ modifiedCount: 0 }),
-      findOneAndUpdate: async () => ({ value: null }),
-    };
-  }
+let cached: MongoClientType = global.mongo;
+
+if (!cached) {
+  cached = global.mongo = { client: null, promise: null };
+}
+
+if (!cached.promise) {
+  const options = {};
+  const client = new MongoClient(MONGODB_URI, options);
+  cached.promise = client.connect();
+}
+
+export async function connectToDatabase(): Promise<{ client: MongoClient; db: Db }> {
+  const mongoClient = await cached.promise;
+  const db = mongoClient.db(MONGODB_DB);
+  return { client: mongoClient, db };
 }
 
 export async function closeDatabaseConnection() {
-  // No-op for mock implementation
-  return;
+  const mongoClient = await cached.promise;
+  await mongoClient.close();
 }
 
-// Provide a mock for any other database-related functions
 export const ObjectId = {
   createFromHexString: (id: string) => id,
 };
+
+// Export the client promise as the default export
+export default cached.promise;

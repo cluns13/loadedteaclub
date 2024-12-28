@@ -2,28 +2,41 @@ import { IPlacesService, LocationDetails } from './locationInterfaces';
 import { LoadedTeaClub } from '@/types/models';
 import { PlacesError } from '@/types/errors';
 
-interface GooglePlacePhoto {
+type GooglePlacePhoto = {
   getUrl: (options?: { maxWidth?: number; maxHeight?: number }) => string;
 }
 
-interface GooglePlaceResult {
+type GooglePlaceResult = {
   place_id: string;
   name: string;
   formatted_address: string;
-  photos?: GooglePlacePhoto[];
-  geometry: {
-    location: google.maps.LatLng;
-  };
-  rating?: number;
-  user_ratings_total?: number;
+  rating?: number | undefined;
+  user_ratings_total?: number | undefined;
+  photos?: GooglePlacePhoto[] | undefined;
+  types?: string[] | undefined;
+  geometry?: {
+    location: {
+      lat: number;
+      lng: number;
+    };
+  } | undefined;
   opening_hours?: {
     isOpen(): boolean;
     periods?: Array<{
       open: { day: number; time: string };
       close: { day: number; time: string };
-    }>;
-  };
-  types?: string[];
+    }> | undefined;
+  } | undefined;
+}
+
+type BusinessHours = {
+  monday: { open: string; close: string; isOpen: boolean };
+  tuesday: { open: string; close: string; isOpen: boolean };
+  wednesday: { open: string; close: string; isOpen: boolean };
+  thursday: { open: string; close: string; isOpen: boolean };
+  friday: { open: string; close: string; isOpen: boolean };
+  saturday: { open: string; close: string; isOpen: boolean };
+  sunday: { open: string; close: string; isOpen: boolean };
 }
 
 export class GooglePlacesService implements IPlacesService {
@@ -80,7 +93,10 @@ export class GooglePlacesService implements IPlacesService {
                 name: result.name || '',
                 formatted_address: result.formatted_address || '',
                 geometry: {
-                  location: result.geometry?.location || new google.maps.LatLng(0, 0)
+                  location: {
+                    lat: result.geometry?.location?.lat() || 0,
+                    lng: result.geometry?.location?.lng() || 0
+                  }
                 },
                 photos: result.photos,
                 rating: result.rating,
@@ -114,67 +130,58 @@ export class GooglePlacesService implements IPlacesService {
     });
   }
 
-  private convertToLoadedTeaClubs(places: GooglePlaceResult[]): LoadedTeaClub[] {
-    return places.map((place): LoadedTeaClub => {
-      const photos = place.photos?.map(photo => {
-        try {
-          return photo.getUrl({ maxWidth: 800 });
-        } catch (error) {
-          console.warn('Error getting photo URL:', error);
-          return '';
-        }
-      }).filter(Boolean) || [];
-
-      return {
-        id: place.place_id,
-        name: place.name,
-        address: place.formatted_address,
-        photos,
-        placeId: place.place_id,
-        location: {
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng(),
-        },
-        rating: place.rating || 0,
-        reviewCount: place.user_ratings_total || 0,
-        isOpen: place.opening_hours?.isOpen() || false,
-        types: place.types || [],
-        distance: 0,
-        featuredItemIds: [],
-        menuItems: [],
-        description: '',
-        hours: this.convertBusinessHours(place.opening_hours)
-      };
-    });
+  private convertToLoadedTeaClubs(results: GooglePlaceResult[]): LoadedTeaClub[] {
+    return results.map(place => ({
+      id: place.place_id,
+      name: place.name,
+      address: place.formatted_address,
+      location: place.geometry ? {
+        lat: place.geometry.location.lat,
+        lng: place.geometry.location.lng,
+        type: 'Point'
+      } : undefined,
+      latitude: place.geometry?.location.lat,
+      longitude: place.geometry?.location.lng,
+      rating: place.rating ?? undefined,
+      reviewCount: place.user_ratings_total ?? undefined,
+      types: place.types ?? [],
+      photos: place.photos?.map(photo => photo.getUrl({ maxWidth: 400 })),
+      isOpen: place.opening_hours?.isOpen(),
+      hours: this.convertBusinessHours(place.opening_hours),
+      source: 'GOOGLE_PLACES',
+      menuItems: [],
+      featuredItemIds: []
+    }))
   }
 
-  private convertBusinessHours(hours?: GooglePlaceResult['opening_hours']) {
-    const defaultHours = { open: '9:00', close: '17:00' };
-    const defaultDays = {
-      monday: defaultHours,
-      tuesday: defaultHours,
-      wednesday: defaultHours,
-      thursday: defaultHours,
-      friday: defaultHours,
-      saturday: defaultHours,
-      sunday: defaultHours,
+  private convertBusinessHours(hours?: GooglePlaceResult['opening_hours']): BusinessHours | undefined {
+    if (!hours || !hours.periods) return undefined;
+
+    const daysOfWeek: (keyof BusinessHours)[] = [
+      'monday', 'tuesday', 'wednesday', 'thursday', 
+      'friday', 'saturday', 'sunday'
+    ];
+
+    const businessHours: BusinessHours = {
+      monday: { open: '', close: '', isOpen: false },
+      tuesday: { open: '', close: '', isOpen: false },
+      wednesday: { open: '', close: '', isOpen: false },
+      thursday: { open: '', close: '', isOpen: false },
+      friday: { open: '', close: '', isOpen: false },
+      saturday: { open: '', close: '', isOpen: false },
+      sunday: { open: '', close: '', isOpen: false }
     };
 
-    if (!hours?.periods) {
-      return defaultDays;
-    }
-
-    const businessHours = { ...defaultDays };
-    const daysMap = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-
     hours.periods.forEach(period => {
-      if (!period.open?.time || !period.close?.time) return;
-      
-      const dayName = daysMap[period.open.day] as keyof typeof businessHours;
-      businessHours[dayName] = {
-        open: this.formatTime(period.open.time),
-        close: this.formatTime(period.close.time),
-      };
+      const dayIndex = period.open.day;
+      if (dayIndex >= 0 && dayIndex < 7) {
+        const day = daysOfWeek[dayIndex];
+        businessHours[day] = {
+          open: period.open.time || '',
+          close: period.close.time || '',
+          isOpen: true
+        };
+      }
     });
 
     return businessHours;

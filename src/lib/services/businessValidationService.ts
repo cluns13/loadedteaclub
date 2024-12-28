@@ -81,13 +81,13 @@ export const BusinessValidationSchema = z.object({
   ).optional()
 });
 
-interface BusinessValidationResult {
+type BusinessValidationResult = {
   isComplete: boolean;
   issues: string[];
   missingFields?: string[];
-}
+};
 
-interface BusinessData {
+type BusinessData = {
   name: string;
   contact: {
     phone: string;
@@ -109,7 +109,7 @@ interface BusinessData {
     price?: number;
   }>;
   images?: string[];
-}
+};
 
 export class BusinessValidationService {
   // Validate entire business object
@@ -185,7 +185,14 @@ export class BusinessValidationService {
       'hours'
     ];
 
-    const missingFields = requiredFields.filter(field => !business[field]);
+    const missingFields = requiredFields.filter(field => {
+      // Type guard to ensure type safety
+      if (field === 'name') return !business.name;
+      if (field === 'contact') return !business.contact;
+      if (field === 'address') return !business.address;
+      if (field === 'hours') return !business.hours || business.hours.length === 0;
+      return false;
+    });
 
     if (missingFields.length > 0) {
       return {
@@ -199,7 +206,7 @@ export class BusinessValidationService {
     const integrityIssues: string[] = [];
 
     if (!business.menu || business.menu.length === 0) {
-      integrityIssues.push('No menu items');
+      integrityIssues.push('No menu items provided');
     }
 
     if (!business.images || business.images.length === 0) {

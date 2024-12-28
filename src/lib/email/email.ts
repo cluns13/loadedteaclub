@@ -46,13 +46,23 @@ export async function sendEmailData({ to, subject, html }: EmailData) {
   }
 }
 
-export async function sendClaimStatusEmail(
-  to: string,
-  businessName: string,
-  status: 'approved' | 'rejected' | 'pending'
-): Promise<void> {
+export async function sendClaimStatusEmail({
+  to,
+  businessName,
+  status,
+  notes
+}: {
+  to: string;
+  businessName: string;
+  status: 'approved' | 'rejected';
+  notes?: string;
+}): Promise<void> {
   const subject = `Business Claim Status Update - ${businessName}`;
-  const text = `Your business claim for ${businessName} has been ${status}.`;
+  const text = `
+    Your business claim for ${businessName} has been ${status}.
+    
+    ${notes ? `Additional Notes: ${notes}` : ''}
+  `;
   
   await sendEmail({
     to,

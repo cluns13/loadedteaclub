@@ -5,7 +5,7 @@ export type ClaimStatus = 'pending' | 'in_review' | 'needs_more_info' | 'approve
 
 export type VerificationMethod = 'phone' | 'email' | 'mail' | 'documents' | 'menu' | 'ownership_verification';
 
-export interface VerificationStep {
+export type VerificationStep = {
   method: VerificationMethod;
   status: 'pending' | 'in_progress' | 'completed' | 'failed';
   details?: string | undefined;
@@ -14,7 +14,7 @@ export interface VerificationStep {
   value?: string | boolean | number | null | undefined;
 }
 
-export interface VerificationStatus {
+export type VerificationStatus = {
   method: VerificationMethod;
   verified: boolean;
   verifiedAt?: Date | undefined;
@@ -25,7 +25,7 @@ export interface VerificationStatus {
   menuVerificationNotes?: string | undefined;
 }
 
-export interface ClaimDocuments {
+export type ClaimDocuments = {
   businessLicense?: string | undefined;
   proofOfOwnership?: string | undefined;
   governmentId?: string | undefined;
@@ -39,7 +39,7 @@ export interface ClaimDocuments {
   additionalDocuments?: string[] | undefined;
 }
 
-export interface BusinessClaim {
+export type BusinessClaim = {
   _id?: ObjectId | undefined;
   businessId: ObjectId;
   userId: ObjectId;
@@ -58,7 +58,7 @@ export interface BusinessClaim {
   reviewNotes?: string | undefined;
 }
 
-export interface ClaimReviewAction {
+export type ClaimReviewAction = {
   claimId: string;
   action: 'approve' | 'reject';
   reviewNotes?: string | undefined;
@@ -68,7 +68,7 @@ export interface ClaimReviewAction {
   } | undefined;
 }
 
-export interface ClaimWithDetails {
+export type ClaimWithDetails = {
   _id: ObjectId;
   business: {
     _id: string;

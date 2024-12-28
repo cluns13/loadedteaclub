@@ -1,44 +1,21 @@
-export interface MenuItem {
+import { ObjectId } from 'mongodb';
+
+export type MenuItem = {
+  _id?: ObjectId;
+  id: string;
   name: string;
-  category: 'Loaded Teas' | 'Lit Teas' | 'Meal Replacements';
-  description?: string;
-  price?: number;
-  
-  // Nutrition Details
-  nutrition: {
-    calories?: number;
-    protein?: number;
-    sugar?: number;
-    carbohydrates?: number;
-    fat?: number;
-    caffeine?: number;
-    servingSize?: string;
-  };
-  
-  // Ingredients and Dietary Info
+  description: string;
+  price: number;
+  category?: 'Loaded Teas' | 'Lit Teas' | 'Meal Replacements';
+  imageUrl?: string;
   ingredients?: string[];
-  allergens?: string[];
-  dietaryRestrictions?: 'VEGAN' | 'VEGETARIAN' | 'GLUTEN_FREE' | 'DAIRY_FREE';
-  
-  // Social and Popularity Metrics
-  socialMetrics?: {
-    likes?: number;
-    shares?: number;
-    views?: number;
-    favorites?: number;
+  nutritionalInfo?: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fat: number;
   };
-  
-  // Business and Availability
-  new?: boolean;
-  seasonal?: boolean;
-  subcategory?: string;
-  
-  // Optional Media
-  images?: string[];
-  
-  // Tracking and Metadata
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+  caffeine: number;
+};
 
 export type MenuCategory = 'all' | MenuItem['category'];
